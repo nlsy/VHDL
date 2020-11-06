@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.10.14)  6 NOV 2020 16:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.10.14)  6 NOV 2020 16:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -372,10 +372,10 @@ LaTeX Info: Redefining \nameref on input line 18.
 
  ABD: EverySelectfont initializing macros
 LaTeX Info: Redefining \selectfont on input line 18.
-<./hs.png, id=4, 513.92pt x 171.64125pt>
-File: ./hs.png Graphic file (type png)
-<use ./hs.png>
-Package pdftex.def Info: ./hs.png  used on input line 23.
+<../png/hs.png, id=4, 513.92pt x 171.64125pt>
+File: ../png/hs.png Graphic file (type png)
+<use ../png/hs.png>
+Package pdftex.def Info: ../png/hs.png  used on input line 23.
 (pdftex.def)             Requested size: 234.00238pt x 78.1545pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 27--28
@@ -387,14 +387,14 @@ Overfull \hbox (9.09312pt too wide) in paragraph at lines 40--43
 \OT1/ptm/m/n/12 The IC[]4 is de-signed on a PGA prototype-board Max1000 with 10M16SAU169C8G
  []
 
-<./top.png, id=6, 763.85374pt x 422.57875pt>
-File: ./top.png Graphic file (type png)
-<use ./top.png>
-Package pdftex.def Info: ./top.png  used on input line 44.
+<../png/top.png, id=6, 763.85374pt x 422.57875pt>
+File: ../png/top.png Graphic file (type png)
+<use ../png/top.png>
+Package pdftex.def Info: ../png/top.png  used on input line 44.
 (pdftex.def)             Requested size: 390.0pt x 215.75732pt.
 [1
 
-{c:/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/./hs.png>]
+{c:/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/../png/hs.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 69--89
 
  []
@@ -419,14 +419,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 69--89
 
  []
 
-[2 <c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/./top.png>] [3] (c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/Doc.aux)
+[2 <c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/../png/top.png>] [3] (c:/Users/User/Documents/GitHub/VHDL/DOKU/tex/Doc.aux)
 Package rerunfilecheck Info: File `Doc.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 7018 strings out of 479917
- 103478 string characters out of 5886664
- 404853 words of memory out of 5000000
+ 7019 strings out of 479917
+ 103555 string characters out of 5886664
+ 404858 words of memory out of 5000000
  23420 multiletter control sequences out of 15000+600000
  545123 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
