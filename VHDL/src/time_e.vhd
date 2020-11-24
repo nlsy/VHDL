@@ -1,6 +1,6 @@
 -- ----------------------------------------------------------------------------
--- uat_e.vhd
--- ENTITIE for the UAT
+-- hc_e.vhd
+-- ENTITIE for the HC
 -- 
 -- Author: Nils Schlegel, 32067
 --         Tara Jaishi, 32289
@@ -15,14 +15,11 @@ LIBRARY IEEE;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY uat is
+ENTITY time IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
-  nm_i : IN std_logic;
-  eh_i : IN std_logic;
-  hc_i : IN std_logic;
-  txd_o : OUT std_logic
+  sec_i : IN std_logic;
+  tim_o : OUT std_logic
   );
-END uat;
-
+END time;
