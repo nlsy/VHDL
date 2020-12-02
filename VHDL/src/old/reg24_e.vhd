@@ -1,6 +1,6 @@
 -- ----------------------------------------------------------------------------
--- rate_e.vhd
--- ENTITIE for the BaudRate
+-- uat_fsm_e.vhd
+-- ENTITIE for the UAT_FSM
 -- 
 -- Author: Nils Schlegel, 32067
 --         Tara Jaishi, 32289
@@ -12,15 +12,14 @@
 LIBRARY IEEE;
     USE IEEE.STD_LOGIC_1164.all;
     USE IEEE.NUMERIC_STD.all;
-    USE WORK.comp_pack.all;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY rate IS
+ENTITY reg24e IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
-  br_o : OUT std_logic;
-  hz_o : OUT std_logic
-  );
-END rate;
+  en_i : IN std_logic;
+  d_i  : IN std_logic_vector (23 DOWNTO 0) ;
+  q_o  : OUT std_logic_vector (23 DOWNTO 0) );
+END reg24e;

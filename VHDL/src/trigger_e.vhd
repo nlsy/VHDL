@@ -1,6 +1,6 @@
 -- ----------------------------------------------------------------------------
--- rate_e.vhd
--- ENTITIE for the BaudRate
+-- uat_fsm_e.vhd
+-- ENTITIE for the UAT_FSM
 -- 
 -- Author: Nils Schlegel, 32067
 --         Tara Jaishi, 32289
@@ -16,11 +16,14 @@ LIBRARY IEEE;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY rate IS
+ENTITY trigger IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
-  br_o : OUT std_logic;
-  hz_o : OUT std_logic
+  s1_i : IN std_logic;
+  s2_i : IN std_logic;
+  s3_i : IN std_logic;
+  enter_o : OUT std_logic;
+  leave_o : OUT std_logic
   );
-END rate;
+END trigger;
