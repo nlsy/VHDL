@@ -12,15 +12,15 @@ ENTITY TB1_rate IS END TB1_rate;
 
 ARCHITECTURE ar1 OF TB1_rate IS
 
-  SIGNAL rb_s,cp_s,br_s,hz_s : STD_LOGIC;
+  SIGNAL rb_s,cp_s,br_s,hz_s : std_logic;
 
 BEGIN
   
   uux : rate PORT MAP (rb_s,cp_s,br_s,hz_s);
   
   runTB : PROCESS
-    VARIABLE dotimes  : INTEGER :=   0;
-    VARIABLE so_long  : INTEGER := 1000; -- 12000000;
+    VARIABLE dotimes  : integer :=   0;
+    VARIABLE so_long  : integer := 1000; -- 12000000;
   BEGIN
 -- ----------------------------------------------------------------------------
 -- STEP 1: INIT all PINS

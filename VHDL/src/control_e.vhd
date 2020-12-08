@@ -22,11 +22,11 @@ PORT(
   cp_i : IN std_logic;
   enter_i : IN std_logic;
   leave_i : IN std_logic;
+  min_i  : IN  std_logic;
+  max_i  : IN  std_logic;
   inc_o : OUT std_logic;
   dec_o : OUT std_logic;
   evt_o : OUT std_logic_vector(7 DOWNTO 0);
-  sub_o : OUT std_logic;
-  grn_o : OUT std_logic;
-  red_s : OUT std_logic
+  sub_o : OUT std_logic
   );
 END control;

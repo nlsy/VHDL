@@ -54,18 +54,32 @@ END COMPONENT;
 
 -- --------------------------------------------------------------------
 
+COMPONENT count IS
+PORT(
+  rb_i : IN std_logic;
+  cp_i : IN std_logic;
+  inc_i : IN std_logic;
+  dec_i : IN std_logic;
+  min_o : OUT std_logic;
+  max_o : OUT std_logic;
+  num_o : OUT std_logic_vector(7 DOWNTO 0)
+  );
+END COMPONENT;
+
+-- --------------------------------------------------------------------
+
 COMPONENT control IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
   enter_i : IN std_logic;
   leave_i : IN std_logic;
+  min_i  : IN  std_logic;
+  max_i  : IN  std_logic;
   inc_o : OUT std_logic;
   dec_o : OUT std_logic;
   evt_o : OUT std_logic_vector(7 DOWNTO 0);
-  sub_o : OUT std_logic;
-  grn_o : OUT std_logic;
-  red_s : OUT std_logic
+  sub_o : OUT std_logic
   );
 END COMPONENT;
 
@@ -97,9 +111,24 @@ PORT(
 END COMPONENT;
 
 -- --------------------------------------------------------------------
+
+COMPONENT interface is
+PORT(
+  rb_i : IN std_logic;
+  cp_i : IN std_logic;
+  sub_i : IN std_logic;
+  evt_i : IN std_logic_vector(7 DOWNTO 0);
+  num_i : IN std_logic_vector(7 DOWNTO 0);
+  sdi_o : OUT std_logic;
+  sdv_o : OUT std_logic;
+  stx_o : OUT std_logic
+  );
+END COMPONENT;
+
+-- --------------------------------------------------------------------
 -- --------------------------------------------------------------------
 
--- RATE
+-- BAUD RATE GENERATOR
 -- --------------------------------------------------------------------
 
 COMPONENT c10ec IS
@@ -191,6 +220,46 @@ END COMPONENT;
 COMPONENT mx2tdo IS
 PORT (s_i  :  IN STD_LOGIC_VECTOR(  3 DOWNTO 0);  -- get bits
       d_i  :  IN STD_LOGIC_VECTOR(  7 DOWNTO 0);  -- BYTE
+    txd_o  : OUT STD_LOGIC);                      -- txd, Serial Output
+END COMPONENT;
+
+-- --------------------------------------------------------------------
+-- --------------------------------------------------------------------
+
+-- INTERFACE TO S3
+-- --------------------------------------------------------------------
+
+COMPONENT interface_fsm IS
+PORT (
+  rb_i : IN std_logic;                     -- Reset, active low
+  cp_i : IN std_logic;                     -- Syscp, @ 12MHz
+  dv_i : IN std_logic;                     -- Have new RTC or GPS-Data
+  dne_i : IN std_logic;                     -- Last Bit transmitted
+  ldr_o : OUT std_logic;                     -- enable register load
+  act_o : OUT std_logic;
+  vld_o: OUT std_logic;
+  clr_o : OUT std_logic;                     -- clear Bit-Counters
+  nxt_o : OUT std_logic                      -- next Bit, inc count
+      );
+END COMPONENT;
+
+-- --------------------------------------------------------------------
+
+COMPONENT c16bin IS
+PORT (rb_i   :  IN STD_LOGIC;                     -- Reset, active low
+      cp_i   :  IN STD_LOGIC;                     -- Syscp, @ 12MHz
+      en_i   :  IN STD_LOGIC;                     -- Enable Count
+      cl_i   :  IN STD_LOGIC;                     -- Clear Counter
+      co_o   : OUT STD_LOGIC;                     -- Carry Out
+       q_o   : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)   -- Counter Value
+      );
+END COMPONENT;
+
+-- --------------------------------------------------------------------
+
+COMPONENT mx2snd IS
+PORT (s_i  :  IN STD_LOGIC_VECTOR( 3 DOWNTO 0);  -- get bits
+      d_i  :  IN STD_LOGIC_VECTOR(15 DOWNTO 0);  -- BYTE
     txd_o  : OUT STD_LOGIC);                      -- txd, Serial Output
 END COMPONENT;
 

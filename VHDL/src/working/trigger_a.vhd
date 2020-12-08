@@ -31,15 +31,19 @@ BEGIN
                       ELSIF (s1_i='0' AND s2_i='0' AND s3_i='1') THEN nxt_st <= leave1_st;
                       END IF;
       WHEN enter1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN nxt_st <= enter2_st;
+                      --ELSIF (s1_i='0' AND s2_i='0' AND s3_i='1') THEN nxt_st <= leave1_st;
                         ELSE                                            nxt_st <= enter1_st;
                         END IF;
       WHEN leave1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN nxt_st <= leave2_st;
+                      --ELSIF (s1_i='1' AND s2_i='0' AND s3_i='0') THEN nxt_st <= enter1_st;
                         ELSE                                            nxt_st <= leave1_st;
                         END IF;
       WHEN enter2_st => IF    (s1_i='0' AND s2_i='0' AND s3_i='1') THEN nxt_st <= enter3_st;
+                      --ELSIF (s1_i='0' AND s2_i='0' AND s3_i='0') THEN nxt_st <= enter2_st;
                         ELSE                                            nxt_st <= enter2_st;
                         END IF;
       WHEN leave2_st => IF    (s1_i='1' AND s2_i='0' AND s3_i='0') THEN nxt_st <= leave3_st;
+                      --ELSIF (s1_i='0' AND s2_i='0' AND s3_i='0') THEN nxt_st <= leave2_st;
                         ELSE                                            nxt_st <= leave2_st;
                         END IF;
       WHEN enter3_st =>                                                 nxt_st <= init_st;
@@ -50,9 +54,13 @@ BEGIN
   ausgabe: PROCESS (now_st)
   BEGIN
     CASE now_st IS
+      WHEN init_st   => enter_o <= '0'; leave_o <= '0';
+      WHEN enter1_st => enter_o <= '0'; leave_o <= '0';
+      WHEN leave1_st => enter_o <= '0'; leave_o <= '0';
+      WHEN enter2_st => enter_o <= '0'; leave_o <= '0';
+      WHEN leave2_st => enter_o <= '0'; leave_o <= '0';
       WHEN enter3_st => enter_o <= '1'; leave_o <= '0';
       WHEN leave3_st => enter_o <= '0'; leave_o <= '1';
-      WHEN OTHERS => enter_o <= '0'; leave_o <= '0';
     END CASE;
   END PROCESS ausgabe;
 

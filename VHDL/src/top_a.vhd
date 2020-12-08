@@ -42,8 +42,8 @@ ARCHITECTURE ar1 OF top IS
   SIGNAL dv_s : std_logic;	-- submit serial (data valid)
   SIGNAL num_s : std_logic_vector(7 DOWNTO 0);	-- head count number
 
-  SIGNAL grn_s : std_logic;
-  SIGNAL red_s : std_logic;
+  SIGNAL min_s : std_logic;
+  SIGNAL max_s : std_logic;
   SIGNAL txd_s : std_logic;
   SIGNAL sdi_s : std_logic;
   SIGNAL sdv_s : std_logic;
@@ -52,20 +52,20 @@ ARCHITECTURE ar1 OF top IS
 BEGIN
 
   rat : rate PORT MAP (rb_i,cp_i,br_s,hz_s); -- Boad Rate
-  --cou1 : count PORT MAP (rb_i, cp_i, inc_s, dec_s, num_s); -- HeadCount
+  cou1 : count PORT MAP (rb_i, cp_i, inc_s, dec_s, min_s, max_s, num_s); -- HeadCount
   tri : trigger PORT MAP (rb_i, cp_i, s1_i, s2_i, s3_i, entr_s, leav_s); -- EventHandler
-  con : control PORT MAP (rb_i, cp_i, entr_s, leav_s, inc_s, dec_s, evt_s, dv_s, grn_s, red_s); -- UniqueTime
+  con : control PORT MAP (rb_i, cp_i, entr_s, leav_s, min_s, max_s, inc_s, dec_s, evt_s, dv_s); -- UniqueTime
   uar1 : uat PORT MAP (rb_i, cp_i, br_s, dv_s, num_s, txd_s); -- UART
   --int1 : interface PORT MAP (rb_i, cp_i, evt_s, dv_s, num_s, -, sdi_s, sdv_s, stx_s); -- 3WireInterface
 
-  rb_o <= rb_i;
-  grn_o <= grn_s; -- green LED
-  red_o <= red_s; -- red LED
-  tled_o <= txd_s;
-  txd_o <= txd_s; -- data transmission
-  sdi_o <= sdi_s; -- ic3 interface
-  sdv_o <= sdv_s; -- ic3 interface
-  stx_o <= stx_s; -- ic3 interface
-  sec_o <= hz_s;
+  rb_o <= rb_i;       -- reset indication
+  grn_o <= NOT max_s; -- green LED
+  red_o <= max_s;     -- red LED
+  tled_o <= txd_s;    -- data transmission indication
+  txd_o <= txd_s;     -- data transmission
+  sdi_o <= sdi_s;     -- ic3 interface
+  sdv_o <= sdv_s;     -- ic3 interface
+  stx_o <= stx_s;     -- ic3 interface
+  sec_o <= hz_s;      -- device alive
 
 END ar1;

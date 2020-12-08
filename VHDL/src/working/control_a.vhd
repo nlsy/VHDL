@@ -11,7 +11,7 @@
 
 ARCHITECTURE ar1 OF control IS
 
-  TYPE state_name IS (init_st,inc_clac_st,dec_calc_st,inc_wait_st,dec_wait_st,inc_vali_st,dec_vali_st,inc_send_st,dec_send_st,min_send_st,max_send_st);
+  TYPE state_name IS (init_st,inc_clac_st,dec_calc_st,inc_conf_st,dec_conf_st,inc_send_st,dec_send_st,min_send_st,max_send_st);
   SIGNAL now_st,nxt_st : state_name;
 
 BEGIN
@@ -32,23 +32,21 @@ BEGIN
                           ELSE nxt_st <= init_st;
                           END IF;
 
-      WHEN inc_clac_st => nxt_st <= inc_wait_st;
-      WHEN dec_calc_st => nxt_st <= dec_wait_st;
+      WHEN inc_clac_st => nxt_st <= inc_conf_st;
+      WHEN dec_calc_st => nxt_st <= dec_conf_st;
 
-      WHEN inc_wait_st => nxt_st <= inc_vali_st;
-      WHEN dec_wait_st => nxt_st <= dec_vali_st;
-
-      WHEN inc_vali_st => IF    (max_i='1') THEN nxt_st <= max_send_st;
+      WHEN inc_conf_st => IF    (max_i='1') THEN nxt_st <= max_send_st;
                           ELSE  nxt_st <= inc_send_st;
                           END IF;
-      WHEN dec_vali_st => IF    (min_i='1') THEN nxt_st <= min_send_st;
+
+      WHEN dec_conf_st => IF    (min_i='1') THEN nxt_st <= min_send_st;
                           ELSE  nxt_st <= dec_send_st;
                           END IF;
-      
+
       WHEN inc_send_st => nxt_st <= init_st;
       WHEN dec_send_st => nxt_st <= init_st;
       WHEN min_send_st => nxt_st <= init_st;
-      WHEN max_send_st => nxt_st <= init_st;
+      WHEN max_send_st => nxt_st <= wait_st;
     END CASE;
   END PROCESS st_fsm;
 
@@ -57,12 +55,10 @@ BEGIN
     CASE now_st IS
       WHEN inc_clac_st => inc_o <= '1'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00000000";
       WHEN dec_calc_st => inc_o <= '0'; dec_o <= '1'; sub_o <= '0'; evt_o <= "00000000";
-      WHEN inc_vali_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00000000";
-      WHEN dec_vali_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00000000";
-      WHEN inc_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00101011"; -- ascii '+'
-      WHEN dec_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00101101"; -- ascii '-'
-      WHEN min_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00101101"; -- ascii '-'
-      WHEN max_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00100001"; -- ascii '!'
+      WHEN inc_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00101011"; -- ascii '+'
+      WHEN dec_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00101101"; -- ascii '-'
+      WHEN min_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00101101"; -- ascii '-'
+      WHEN max_send_st => inc_o <= '0'; dec_o <= '0'; sub_o <= '1'; evt_o <= "00100001"; -- ascii '!'
       WHEN OTHERS      => inc_o <= '0'; dec_o <= '0'; sub_o <= '0'; evt_o <= "00000000";
     END CASE;
   END PROCESS ausgabe;

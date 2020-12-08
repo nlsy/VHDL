@@ -1,6 +1,6 @@
 -- ----------------------------------------------------------------------------
--- hc_e.vhd
--- ENTITIE for the HC
+-- uat_fsm_e.vhd
+-- ENTITIE for the UAT_FSM
 -- 
 -- Author: Nils Schlegel, 32067
 --         Tara Jaishi, 32289
@@ -12,19 +12,18 @@
 LIBRARY IEEE;
     USE IEEE.STD_LOGIC_1164.all;
     USE IEEE.NUMERIC_STD.all;
+    USE WORK.comp_pack.all;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY count IS
+ENTITY trigger IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
-  inc_i : IN std_logic;
-  dec_i : IN std_logic;
-  --dne_o : OUT std_logic;
-  min_o : OUT std_logic;
-  max_o : OUT std_logic;
-  num_o : OUT std_logic_vector(7 DOWNTO 0)
+  s1_i : IN std_logic;
+  s2_i : IN std_logic;
+  s3_i : IN std_logic;
+  enter_o : OUT std_logic;
+  leave_o : OUT std_logic
   );
-END count;
-
+END trigger;

@@ -2,29 +2,31 @@ VHDL-Lab Task
 --------------------
 
 Blocks:
-  - top
-  -- Rate       - done
-  --- c10ec     - done
-  --- c10xc     - done
-  --- c12ec     - done
-  -- count       
-  -- trigger    - done
-  -- uart       - done (bit is send in reverse)
-  --- fsm       - done
-  --- c12bin    - done
-  --- reg8      - done
-  --- mx2tdo    - done
-  -- interface
-  --- reg
-  --- fsm
-  -- control
+  - top           
+  -- Rate         - done
+  --- c10ec       - done
+  --- c10xc       - done
+  --- c12ec       - done
+  -- count        - done
+  -- trigger      - done
+  -- uart         - done (bit is send in reverse)
+  --- fsm         - done
+  --- c11bin      - done
+  --- reg8        - done
+  --- mx2tdo      - done
+  -- interface    - done
+  --- fsm         - done
+  --- c16bin      - done
+  --- reg8        - done
+  --- mx2snd      - done (bit is send in reverse)
+  -- control      - done
 
 Testbenches
-  - TB-top        
-  - TB-count      
+  - TB-top        - done
+  - TB-count      - done
   - TB-trigger    - done
   - TB-uart       - done
-  - TB-control    
+  - TB-control    - done
   - TB-interface  
 
 Structure:

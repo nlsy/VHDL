@@ -12,16 +12,16 @@ ENTITY TB1_uat IS END TB1_uat;
 
 ARCHITECTURE ar1 OF TB1_uat IS
 
-  SIGNAL rb_s,cp_s,br_s,dv_s,txd_s : STD_LOGIC;
-  SIGNAL d_s : STD_LOGIC_VECTOR(7 DOWNTO 0);
+  SIGNAL rb_s,cp_s,br_s,dv_s,txd_s : std_logic;
+  SIGNAL d_s : std_logic_vector(7 DOWNTO 0);
 
 BEGIN
   
   uux : uat PORT MAP (rb_s,cp_s,br_s,dv_s,d_s,txd_s);
   
   runTB : PROCESS
-    VARIABLE dotimes  : INTEGER :=   0;
-    VARIABLE so_long  : INTEGER := 110;
+    VARIABLE dotimes  : integer :=   0;
+    VARIABLE so_long  : integer := 110;
   BEGIN
 -- ----------------------------------------------------------------------------
 -- STEP 1: INIT all PINS
