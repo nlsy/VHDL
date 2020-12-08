@@ -2,7 +2,7 @@
 
 ARCHITECTURE ar1 OF interface_fsm IS
 
-  TYPE state_name IS (wtdv_st, load_st, tick_st, incr_st, vali_st);
+  TYPE state_name IS (wtdv_st, load_st, tick_st, incr_st,gaps_st, vali_st);
   SIGNAL now_st,nxt_st : state_name;
 
 BEGIN
@@ -22,11 +22,12 @@ BEGIN
 	                    ELSE                nxt_st <= wtdv_st;
                       END IF;
      WHEN load_st  =>                     nxt_st <= tick_st;
-     WHEN tick_st  =>                     nxt_st <= incr_st;
-     WHEN incr_st  =>                     nxt_st <= vali_st;
-     WHEN vali_st  => IF (dne_i='1') THEN nxt_st <= wtdv_st;
-                      ELSE                nxt_st <= tick_st;
+     WHEN tick_st  => IF (dne_i='1') THEN nxt_st <= wtdv_st;
+                      ELSE                nxt_st <= incr_st;
                       END IF;
+     WHEN incr_st  =>                     nxt_st <= gaps_st;
+     WHEN gaps_st  =>                     nxt_st <= vali_st;
+     WHEN vali_st  =>                     nxt_st <= tick_st;
   END CASE;
   END PROCESS st_trans;
 
@@ -37,6 +38,7 @@ BEGIN
      WHEN load_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '1'; vld_o <= '0'; act_o <= '0';
      WHEN tick_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
      WHEN incr_st => clr_o <= '0'; nxt_o  <= '1'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
+     WHEN gaps_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
      WHEN vali_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0';	vld_o <= '1'; act_o <= '1';
     END CASE;
   END PROCESS ausgabe;

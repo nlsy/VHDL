@@ -3,7 +3,7 @@
 ARCHITECTURE ar1 OF interface IS
 
   SIGNAL ld_s,clr_s,dne_s,nxt_s : std_logic;
-  SIGNAL sel_s : std_logic_vector( 3 DOWNTO 0);
+  SIGNAL sel_s : std_logic_vector( 4 DOWNTO 0);
   SIGNAL dat_s : std_logic_vector(15 DOWNTO 0);
 
 BEGIN

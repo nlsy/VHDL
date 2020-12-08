@@ -251,14 +251,14 @@ PORT (rb_i   :  IN STD_LOGIC;                     -- Reset, active low
       en_i   :  IN STD_LOGIC;                     -- Enable Count
       cl_i   :  IN STD_LOGIC;                     -- Clear Counter
       co_o   : OUT STD_LOGIC;                     -- Carry Out
-       q_o   : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)   -- Counter Value
+       q_o   : OUT STD_LOGIC_VECTOR(4 DOWNTO 0)   -- Counter Value
       );
 END COMPONENT;
 
 -- --------------------------------------------------------------------
 
 COMPONENT mx2snd IS
-PORT (s_i  :  IN STD_LOGIC_VECTOR( 3 DOWNTO 0);  -- get bits
+PORT (s_i  :  IN STD_LOGIC_VECTOR( 4 DOWNTO 0);  -- get bits
       d_i  :  IN STD_LOGIC_VECTOR(15 DOWNTO 0);  -- BYTE
     txd_o  : OUT STD_LOGIC);                      -- txd, Serial Output
 END COMPONENT;

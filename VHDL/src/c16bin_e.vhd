@@ -11,7 +11,7 @@ PORT (rb_i   :  IN STD_LOGIC;                     -- Reset, active low
       en_i   :  IN STD_LOGIC;                     -- Enable Count
       cl_i   :  IN STD_LOGIC;                     -- Clear Counter
       co_o   : OUT STD_LOGIC;                     -- Carry Out
-       q_o   : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)   -- Counter Value
+       q_o   : OUT STD_LOGIC_VECTOR(4 DOWNTO 0)   -- Counter Value
       );
 END c16bin;
 
