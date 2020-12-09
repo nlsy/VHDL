@@ -27,7 +27,7 @@ Testbenches
   - TB-trigger    - done
   - TB-uart       - done
   - TB-control    - done
-  - TB-interface  
+  - TB-interface  - done
 
 Structure:
   - DOKU    // contains documentation
