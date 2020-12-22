@@ -24,11 +24,11 @@ ARCHITECTURE ar1 OF TB1_top IS
 BEGIN
   
   --rat : rate PORT MAP (rb_s,cp_i,br_s,hz_s); -- Boad Rate
-  cou1 : count PORT MAP (rb_s, cp_s, inc_s, dec_s, min_s, max_s, num_s); -- HeadCount
-  tri : trigger PORT MAP (rb_s, cp_s, s1_s, s2_s, s3_s, entr_s, leav_s); -- EventHandler
-  con : control PORT MAP (rb_s, cp_s, entr_s, leav_s, min_s, max_s, inc_s, dec_s, evt_s, dv_s); -- UniqueTime
-  uar1 : uat PORT MAP (rb_s, cp_s, br_s, dv_s, num_s, txd_s); -- UART
-  int1 : interface PORT MAP (rb_s, cp_s, dv_s, evt_s, num_s, sdi_s, sdv_s, stx_s); -- 3WireInterface
+  cunt : count PORT MAP (rb_s, cp_s, inc_s, dec_s, min_s, max_s, num_s); -- HeadCount
+  trgr : trigger PORT MAP (rb_s, cp_s, s1_s, s2_s, s3_s, entr_s, leav_s); -- EventHandler
+  ctrl : control PORT MAP (rb_s, cp_s, entr_s, leav_s, min_s, max_s, inc_s, dec_s, evt_s, dv_s); -- UniqueTime
+  uart : uat PORT MAP (rb_s, cp_s, br_s, dv_s, num_s, txd_s); -- UART
+  ifs3 : interface PORT MAP (rb_s, cp_s, dv_s, evt_s, num_s, sdi_s, sdv_s, stx_s); -- 3WireInterface
   
   grn_s <= NOT max_s; -- green LED
   red_s <= max_s; -- red LED
@@ -104,12 +104,12 @@ BEGIN
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '0'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
 -- Some SYScp-cycles:
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
-    cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;	
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
-    cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;	
+    cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
+    cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;

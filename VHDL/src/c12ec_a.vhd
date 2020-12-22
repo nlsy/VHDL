@@ -1,6 +1,7 @@
 -- ----------------------------------------------------------------------------
 ARCHITECTURE ar1 OF c12ec IS
 
+  -- Internal Signals --------------------------------
   SIGNAL state_s : STD_LOGIC_VECTOR (3 DOWNTO 0);
 
 BEGIN
@@ -27,7 +28,9 @@ BEGIN
     END IF;
   END PROCESS cntx;
 
-  co_o <= en_i AND state_s(3) AND (NOT state_s(2))
-               AND state_s(1) AND state_s(0);
+  -- Carry Bit
+  co_o <= en_i AND state_s(3) AND (NOT state_s(2)) AND state_s(1) AND state_s(0);
   
 END ar1;
+
+-- ----------------------------------------------------------------------------

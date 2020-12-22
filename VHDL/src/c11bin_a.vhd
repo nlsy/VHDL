@@ -1,6 +1,8 @@
+-- ----------------------------------------------------------------------------
 
 ARCHITECTURE ar1 OF c11bin IS
 
+  -- Internal Signals --------------------------------
   SIGNAL state_s : STD_LOGIC_VECTOR (3 DOWNTO 0);
 
 BEGIN
@@ -30,9 +32,11 @@ BEGIN
     END IF;
   END PROCESS cntx;
 
+  -- Current value
   q_o   <= state_s;
+  -- Carry Bit
   co_o  <= state_s(3) AND (NOT state_s(2)) AND state_s(1) AND state_s(0);
 
 END ar1;
 
-
+-- ----------------------------------------------------------------------------

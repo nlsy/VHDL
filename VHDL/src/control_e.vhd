@@ -1,18 +1,9 @@
 -- ----------------------------------------------------------------------------
--- control_e.vhd
--- ENTITIE for the Control
--- 
--- Author: Nils Schlegel, 32067
---         Tara Jaishi, 32289
--- Last edited: 2020-11-13
--- ----------------------------------------------------------------------------
--- FPGA-chip: 10M16SAU169C8G (most likely)
--- ----------------------------------------------------------------------------
 
 LIBRARY IEEE;
-    USE IEEE.STD_LOGIC_1164.all;
-    USE IEEE.NUMERIC_STD.all;
-    USE WORK.comp_pack.all;
+USE IEEE.STD_LOGIC_1164.all;
+USE IEEE.NUMERIC_STD.all;
+USE WORK.comp_pack.all;
 
 -- ----------------------------------------------------------------------------
 
@@ -30,3 +21,5 @@ PORT(
   sub_o : OUT std_logic
   );
 END control;
+
+-- ----------------------------------------------------------------------------

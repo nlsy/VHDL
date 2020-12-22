@@ -2,45 +2,58 @@
 
 ARCHITECTURE ar1 OF interface_fsm IS
 
-  TYPE state_name IS (wtdv_st, load_st, tick_st, incr_st,gaps_st, vali_st);
-  SIGNAL now_st,nxt_st : state_name;
+  -- States ------------------------------------------
+  TYPE state_t IS (wtdv_st, load_st, tick_st, incr_st,gaps_st, vali_st);
+  -- Internal Signals --------------------------------
+  SIGNAL stnow_s,stnxt_s : state_t;
 
 BEGIN
 
-  clkd: PROCESS (rb_i,cp_i)
+  -- FSM Cycle ---------------------------------------
+  fsm: PROCESS (rb_i,cp_i)
   BEGIN
-    IF (rb_i='0') THEN now_st <= wtdv_st;
-    ELSIF (cp_i'EVENT AND cp_i='1') THEN now_st <= nxt_st;
+    IF (rb_i='0') THEN stnow_s <= wtdv_st;
+    ELSIF (cp_i'EVENT AND cp_i='1') THEN stnow_s <= stnxt_s;
     END IF;
-  END PROCESS clkd;
+  END PROCESS fsm;
 
-  st_trans: PROCESS (now_st,dv_i,dne_i)
+  -- State Transition --------------------------------
+  st_fsm: PROCESS (stnow_s,dv_i,dne_i)
   BEGIN
-    nxt_st <= wtdv_st;
-    CASE now_st IS
-     WHEN wtdv_st  => IF (dv_i ='1') THEN nxt_st <= load_st;
-	                    ELSE                nxt_st <= wtdv_st;
+    stnxt_s <= wtdv_st;
+    CASE stnow_s IS
+     WHEN wtdv_st  => IF (dv_i ='1') THEN stnxt_s <= load_st;
+	                    ELSE                stnxt_s <= wtdv_st;
                       END IF;
-     WHEN load_st  =>                     nxt_st <= tick_st;
-     WHEN tick_st  => IF (dne_i='1') THEN nxt_st <= wtdv_st;
-                      ELSE                nxt_st <= incr_st;
+     WHEN load_st  =>                     stnxt_s <= tick_st;
+     WHEN tick_st  => IF (dne_i='1') THEN stnxt_s <= wtdv_st;
+                      ELSE                stnxt_s <= incr_st;
                       END IF;
-     WHEN incr_st  =>                     nxt_st <= gaps_st;
-     WHEN gaps_st  =>                     nxt_st <= vali_st;
-     WHEN vali_st  =>                     nxt_st <= tick_st;
+     WHEN incr_st  =>                     stnxt_s <= gaps_st;
+     WHEN gaps_st  =>                     stnxt_s <= vali_st;
+     WHEN vali_st  =>                     stnxt_s <= tick_st;
   END CASE;
-  END PROCESS st_trans;
+  END PROCESS st_fsm;
 
-  ausgabe: PROCESS (now_st)
+  -- State Outputs -----------------------------------
+  st_out: PROCESS (stnow_s)
   BEGIN
-    CASE now_st IS
-     WHEN wtdv_st => clr_o <= '1'; nxt_o  <= '0'; ldr_o <= '0'; vld_o <= '0'; act_o <= '0';
-     WHEN load_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '1'; vld_o <= '0'; act_o <= '0';
-     WHEN tick_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
-     WHEN incr_st => clr_o <= '0'; nxt_o  <= '1'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
-     WHEN gaps_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0'; vld_o <= '0'; act_o <= '1';
-     WHEN vali_st => clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0';	vld_o <= '1'; act_o <= '1';
+    CASE stnow_s IS
+     WHEN wtdv_st =>  clr_o <= '1'; nxt_o  <= '0'; ldr_o <= '0';
+                      vld_o <= '0'; act_o <= '0';
+     WHEN load_st =>  clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '1';
+                      vld_o <= '0'; act_o <= '0';
+     WHEN tick_st =>  clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0';
+                      vld_o <= '0'; act_o <= '1';
+     WHEN incr_st =>  clr_o <= '0'; nxt_o  <= '1'; ldr_o <= '0';
+                      vld_o <= '0'; act_o <= '1';
+     WHEN gaps_st =>  clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0';
+                      vld_o <= '0'; act_o <= '1';
+     WHEN vali_st =>  clr_o <= '0'; nxt_o  <= '0'; ldr_o <= '0';
+                      vld_o <= '1'; act_o <= '1';
     END CASE;
-  END PROCESS ausgabe;
+  END PROCESS st_out;
 
 END ar1;
+
+-- ----------------------------------------------------------------------------

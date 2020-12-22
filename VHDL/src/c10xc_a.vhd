@@ -1,10 +1,13 @@
 -- ----------------------------------------------------------------------------
+
 ARCHITECTURE ar1 OF c10xc IS
 
+  -- Internal Signals --------------------------------
   SIGNAL state_s : STD_LOGIC_VECTOR (3 DOWNTO 0);
 
 BEGIN
 
+  -- Counter Process ---------------------------------
   cntx : PROCESS (rb_i,cp_i)
   BEGIN
     IF (rb_i='0') THEN state_s <= "0000";
@@ -25,7 +28,9 @@ BEGIN
     END IF;
   END PROCESS cntx;
 
-  co_o <= state_s(3) AND (NOT state_s(2))
-          AND (NOT state_s(1)) AND state_s(0);
+  -- Output ------------------------------------------
+  co_o <= state_s(3) AND (NOT state_s(2)) AND (NOT state_s(1)) AND state_s(0); -- Cary Bit
   
 END ar1;
+
+-- ----------------------------------------------------------------------------

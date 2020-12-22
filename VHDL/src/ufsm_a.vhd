@@ -2,46 +2,53 @@
 
 ARCHITECTURE ar1 OF uat_fsm IS
 
-  TYPE state_name IS (wtdv_st, ldrg_st, wtb0_st, cinc_st, wt2_st);
-  SIGNAL now_st,nxt_st : state_name;
+  -- States ------------------------------------------
+  TYPE state_t IS (wtdv_st, ldrg_st, wtb0_st, cinc_st, wt2_st);
+  -- Internal Signals --------------------------------
+  SIGNAL stnow_s,stnxt_s : state_t;
 
 BEGIN
 
-  clkd: PROCESS (rb_i,cp_i)
+  -- FSM Cycle ---------------------------------------
+  fsm: PROCESS (rb_i,cp_i)
   BEGIN
-    IF (rb_i='0') THEN now_st <= wtdv_st;
-    ELSIF (cp_i'EVENT AND cp_i='1') THEN now_st <= nxt_st;
+    IF (rb_i='0') THEN stnow_s <= wtdv_st;
+    ELSIF (cp_i'EVENT AND cp_i='1') THEN stnow_s <= stnxt_s;
     END IF;
-  END PROCESS clkd;
+  END PROCESS fsm;
 
-  st_trans: PROCESS (now_st,dv_i,br_i,dne_i)
+  -- State Transition --------------------------------
+  st_fsm: PROCESS (stnow_s,dv_i,br_i,dne_i)
   BEGIN
-    nxt_st <= wtdv_st;
-    CASE now_st IS
-     WHEN wtdv_st  => IF (dv_i ='1') THEN nxt_st <= ldrg_st;
-	                    ELSE                nxt_st <= wtdv_st;
+    stnxt_s <= wtdv_st;
+    CASE stnow_s IS
+     WHEN wtdv_st  => IF (dv_i ='1') THEN stnxt_s <= ldrg_st;
+	                    ELSE                stnxt_s <= wtdv_st;
                       END IF;
-     WHEN ldrg_st  =>                     nxt_st <= wtb0_st;
+     WHEN ldrg_st  =>                     stnxt_s <= wtb0_st;
 
-     WHEN wtb0_st  => IF  (br_i ='1') THEN nxt_st <= cinc_st;
-                      ELSE                 nxt_st <= wtb0_st;
+     WHEN wtb0_st  => IF  (br_i ='1') THEN stnxt_s <= cinc_st;
+                      ELSE                 stnxt_s <= wtb0_st;
                       END IF;
-     WHEN cinc_st  =>                      nxt_st <= wt2_st;
-     WHEN wt2_st   => IF  (dne_i='1') THEN nxt_st <= wtdv_st;
-                      ELSE                 nxt_st <= wtb0_st;
+     WHEN cinc_st  =>                      stnxt_s <= wt2_st;
+     WHEN wt2_st   => IF  (dne_i='1') THEN stnxt_s <= wtdv_st;
+                      ELSE                 stnxt_s <= wtb0_st;
                       END IF;
   END CASE;
-  END PROCESS st_trans;
+  END PROCESS st_fsm;
 
-  ausgabe: PROCESS (now_st)
+  -- State Outputs -----------------------------------
+  st_out: PROCESS (stnow_s)
   BEGIN
-    CASE now_st IS
+    CASE stnow_s IS
      WHEN wtdv_st  =>  clr_o <= '1'; nxt_o  <= '0'; sto_o <= '0';
      WHEN ldrg_st  =>  clr_o <= '0'; nxt_o  <= '0'; sto_o <= '1';
      WHEN wtb0_st  =>  clr_o <= '0'; nxt_o  <= '0'; sto_o <= '0';
      WHEN cinc_st  =>  clr_o <= '0'; nxt_o  <= '1'; sto_o <= '0';	
      WHEN wt2_st   =>  clr_o <= '0'; nxt_o  <= '0'; sto_o <= '0';	
     END CASE;
-  END PROCESS ausgabe;
+  END PROCESS st_out;
 
 END ar1;
+
+-- ----------------------------------------------------------------------------

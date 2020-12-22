@@ -1,8 +1,8 @@
 -- ----------------------------------------------------------------------------
 
 LIBRARY IEEE;
-    USE IEEE.STD_LOGIC_1164.all;
-    USE IEEE.NUMERIC_STD.all;
+USE IEEE.STD_LOGIC_1164.all;
+USE IEEE.NUMERIC_STD.all;
 
 -- ----------------------------------------------------------------------------
 
@@ -19,3 +19,5 @@ PORT(
   nxt_o : OUT std_logic                      -- next Bit, inc count
   );
 END interface_fsm;
+
+-- ----------------------------------------------------------------------------
