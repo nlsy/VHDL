@@ -9,10 +9,10 @@ ARCHITECTURE ar1 OF clkgn IS
 BEGIN
 
   -- Counter Process ---------------------------------
-  cntx : PROCESS (rb_i,cp_i)
+  cntx : PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF (rb_i='0') THEN ck_s <= (others=>'0');
-    ELSIF (cp_i='1' AND cp_i'EVENT) THEN
+    IF (rst_n_i='0') THEN ck_s <= (others=>'0');
+    ELSIF (clk_i='1' AND clk_i'EVENT) THEN
       IF (ck_s = to_unsigned(div_cnt-1,ck_s'LENGTH)) THEN
         ck_s <= (others=>'0');
         co_s <= '1';

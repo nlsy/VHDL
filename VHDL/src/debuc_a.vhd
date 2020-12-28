@@ -7,10 +7,10 @@ ARCHITECTURE ar1 OF debnc IS
 
 BEGIN
 
-  PROCESS (rb_i,cp_i)
+  PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF (rb_i='0') THEN cnt_s <= (others=>'0');
-    ELSIF (cp_i='1' AND cp_i'EVENT) THEN
+    IF (rst_n_i='0') THEN cnt_s <= (others=>'0');
+    ELSIF (clk_i='1' AND clk_i'EVENT) THEN
       IF (unb_i=sig_s) THEN
         cnt_s <= (others=>'0');
       ELSE

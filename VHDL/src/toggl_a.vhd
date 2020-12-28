@@ -6,10 +6,10 @@ ARCHITECTURE ar1 OF toggl IS
 
 BEGIN
 
-  fsm: PROCESS (rb_i,cp_i)
+  fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF (rb_i='0') THEN tog_s <= '0';
-    ELSIF (cp_i'EVENT AND cp_i='1' AND sig_i='1') THEN
+    IF (rst_n_i='0') THEN tog_s <= '0';
+    ELSIF (clk_i'EVENT AND clk_i='1' AND sig_i='1') THEN
       tog_s <= NOT tog_s;
     END IF;
   END PROCESS fsm;

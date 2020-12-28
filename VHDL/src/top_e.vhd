@@ -1,29 +1,28 @@
 -- ----------------------------------------------------------------------------
 
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
-USE IEEE.NUMERIC_STD.all;
-USE WORK.comp_pack.all;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE WORK.comp_pack.ALL;
 
 -- ----------------------------------------------------------------------------
 
 ENTITY top IS
-PORT(
-  rb_i   : IN  std_logic;
-  cp_i   : IN  std_logic;
-  s1_i   : IN  std_logic;
-  s2_i   : IN  std_logic;
-  s3_i   : IN  std_logic;
-  --cl_i   : IN  std_logic;
-  rb_o   : OUT std_logic;
-  sec_o  : OUT std_logic;
-  grn_o  : OUT std_logic;
-  red_o  : OUT std_logic;
-  tled_o : OUT std_logic;
-  txd_o  : OUT std_logic;
-  sdi_o  : OUT std_logic;
-  sdv_o  : OUT std_logic;
-  stx_o  : OUT std_logic
+PORT (
+  rst_n_i : IN  std_logic;
+  clk_i   : IN  std_logic;
+  s1_i    : IN  std_logic;
+  s2_i    : IN  std_logic;
+  s3_i    : IN  std_logic;
+  rb_o    : OUT std_logic;
+  sec_o   : OUT std_logic;
+  grn_o   : OUT std_logic;
+  red_o   : OUT std_logic;
+  tled_o  : OUT std_logic;
+  txd_o   : OUT std_logic;
+  sdi_o   : OUT std_logic;
+  sdv_o   : OUT std_logic;
+  stx_o   : OUT std_logic
   );
 END top;
 

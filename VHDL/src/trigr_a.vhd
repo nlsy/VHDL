@@ -7,40 +7,50 @@ ARCHITECTURE ar1 OF trigr IS
   -- Internal Signals --------------------------------
   SIGNAL stnow_s,stnxt_s : state_t;
 
+  SIGNAL s1_s : std_logic;
+  SIGNAL s2_s : std_logic;
+  SIGNAL s3_s : std_logic;
+
 BEGIN
+  
+  -- Modules -----------------------------------------
+  -- Debouncing the input
+  db1 : debnc PORT MAP (rst_n_i,clk_i,s1_i,s1_s);
+  db2 : debnc PORT MAP (rst_n_i,clk_i,s2_i,s2_s);
+  db3 : debnc PORT MAP (rst_n_i,clk_i,s3_i,s3_s);
 
   -- FSM Cycle ---------------------------------------
-  fsm: PROCESS (rb_i,cp_i)
+  fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF    (rb_i='0')       			THEN stnow_s <= init_st;
-    ELSIF (cp_i'EVENT AND cp_i='1') THEN stnow_s <= stnxt_s;
+    IF    (rst_n_i='0')       			THEN stnow_s <= init_st;
+    ELSIF (clk_i'EVENT AND clk_i='1') THEN stnow_s <= stnxt_s;
     END IF;
   END PROCESS fsm;
 
   -- State Transition --------------------------------
-  st_fsm: PROCESS (s1_i,s2_i,s3_i)
+  st_fsm: PROCESS (s1_s,s2_s,s3_s)
   BEGIN
     stnxt_s <= init_st;
     CASE stnow_s IS
-      WHEN init_st => IF    (s1_i='1' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= enter1_st;
-                      ELSIF (s1_i='0' AND s2_i='0' AND s3_i='1') THEN stnxt_s <= leave1_st;
+      WHEN init_st => IF    (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= enter1_st;
+                      ELSIF (s1_s='0' AND s2_s='0' AND s3_s='1') THEN stnxt_s <= leave1_st;
                       END IF;
-      WHEN enter1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN stnxt_s <= enter2_st;
-								--ELSIF (s1_i='1' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= wait_st;
+      WHEN enter1_st => IF    (s1_s='0' AND s2_s='1' AND s3_s='0') THEN stnxt_s <= enter2_st;
+								--ELSIF (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= wait_st;
                         ELSE                                            stnxt_s <= enter1_st;
                         END IF;
-      WHEN leave1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN stnxt_s <= leave2_st;
+      WHEN leave1_st => IF    (s1_s='0' AND s2_s='1' AND s3_s='0') THEN stnxt_s <= leave2_st;
                         ELSE                                            stnxt_s <= leave1_st;
                         END IF;
-      WHEN enter2_st => IF    (s1_i='0' AND s2_i='0' AND s3_i='1') THEN stnxt_s <= enter3_st;
+      WHEN enter2_st => IF    (s1_s='0' AND s2_s='0' AND s3_s='1') THEN stnxt_s <= enter3_st;
                         ELSE                                            stnxt_s <= enter2_st;
                         END IF;
-      WHEN leave2_st => IF    (s1_i='1' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= leave3_st;
+      WHEN leave2_st => IF    (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= leave3_st;
                         ELSE                                            stnxt_s <= leave2_st;
                         END IF;
       WHEN enter3_st =>                                                 stnxt_s <= wait_st;
       WHEN leave3_st =>                                                 stnxt_s <= wait_st;
-      WHEN wait_st   => IF    (s1_i='0' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= init_st;
+      WHEN wait_st   => IF    (s1_s='0' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= init_st;
                         ELSE                                            stnxt_s <= wait_st;
                         END IF;
     END CASE;

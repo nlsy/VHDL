@@ -1,19 +1,19 @@
 -- ----------------------------------------------------------------------------
 
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
-USE IEEE.NUMERIC_STD.all;
-USE WORK.comp_pack.all;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE WORK.comp_pack.ALL;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY rate IS
-PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  br_o : OUT std_logic;
-  hz_o : OUT std_logic
+ENTITY clkrt IS
+PORT (
+  rst_n_i : IN  std_logic;
+  clk_i   : IN  std_logic;
+  br_o    : OUT std_logic;
+  hz_o    : OUT std_logic
   );
-END rate;
+END clkrt;
 
 -- ----------------------------------------------------------------------------

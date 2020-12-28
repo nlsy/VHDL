@@ -10,10 +10,10 @@ ARCHITECTURE ar1 OF cntrl IS
 BEGIN
 
   -- FSM Cycle ---------------------------------------
-  fsm: PROCESS (rb_i,cp_i)
+  fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF    (rb_i='0')       	        THEN stnow_s <= init_st;
-    ELSIF (cp_i'EVENT AND cp_i='1') THEN stnow_s <= stnxt_s;
+    IF    (rst_n_i='0')       	        THEN stnow_s <= init_st;
+    ELSIF (clk_i'EVENT AND clk_i='1') THEN stnow_s <= stnxt_s;
     END IF;
   END PROCESS fsm;
 

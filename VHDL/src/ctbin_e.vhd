@@ -1,9 +1,9 @@
 -- ---------------------------------------------------------------------------
 
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
-USE IEEE.NUMERIC_STD.all;
-USE WORK.comp_pack.all;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE WORK.comp_pack.ALL;
 
 -- ---------------------------------------------------------------------------
 
@@ -13,12 +13,12 @@ GENERIC (
   cnt_max : integer
   );
 PORT (
-  rb_i   :  IN STD_LOGIC;                     -- Reset, active low
-  cp_i   :  IN STD_LOGIC;                     -- Syscp, @ 12MHz
-  en_i   :  IN STD_LOGIC;                     -- Enable Count
-  cl_i   :  IN STD_LOGIC;                     -- Clear Counter
-  co_o   : OUT STD_LOGIC;                     -- Carry Out
-  q_o   : OUT STD_LOGIC_VECTOR(cnt_width-1 DOWNTO 0)   -- Counter Value
+  rst_n_i : IN  std_logic;                     -- Reset, active low
+  clk_i   : IN  std_logic;                     -- Syscp, @ 12MHz
+  en_i    : IN  std_logic;                     -- Enable Count
+  cl_i    : IN  std_logic;                     -- Clear Counter
+  co_o    : OUT std_logic;                     -- Carry Out
+  q_o     : OUT std_logic_vector(cnt_width-1 DOWNTO 0)   -- Counter Value
   );
 END ctbin;
 

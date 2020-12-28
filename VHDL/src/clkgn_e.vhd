@@ -1,21 +1,21 @@
 -- ----------------------------------------------------------------------------
 
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.all;
-USE IEEE.NUMERIC_STD.all;
-USE WORK.comp_pack.all;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE WORK.comp_pack.ALL;
 
 -- ----------------------------------------------------------------------------
 
 ENTITY clkgn IS
-GENERIC(
+GENERIC (
   cnt_width : integer;
   div_cnt : integer
   );
-PORT(
-  rb_i : IN  std_logic;
-  cp_i : IN  std_logic;
-  tk_o : OUT std_logic
+PORT (
+  rst_n_i : IN  std_logic;
+  clk_i   : IN  std_logic;
+  tk_o    : OUT std_logic
   );
 END clkgn;
 

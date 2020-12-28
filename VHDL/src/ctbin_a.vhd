@@ -7,10 +7,10 @@ ARCHITECTURE ar1 OF ctbin IS
 
 BEGIN
 
-  cntx : PROCESS (rb_i,cp_i,en_i,cl_i)
+  cntx : PROCESS (rst_n_i,clk_i,en_i,cl_i)
   BEGIN
-    IF (rb_i='0') THEN state_s <= (OTHERS=>'0');
-    ELSIF (cp_i='1' AND cp_i'EVENT) THEN
+    IF (rst_n_i='0') THEN state_s <= (OTHERS=>'0');
+    ELSIF (clk_i='1' AND clk_i'EVENT) THEN
       IF (cl_i='1') THEN state_s <= (OTHERS=>'0');
       ELSIF (en_i='1') THEN
         IF (state_s = cnt_max) THEN state_s <= (OTHERS=>'0');
