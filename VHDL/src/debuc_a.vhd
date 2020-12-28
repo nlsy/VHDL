@@ -9,16 +9,16 @@ BEGIN
 
   PROCESS (rb_i,cp_i)
   BEGIN
-    IF (rb_i='0') THEN cnt_s <= "0000000000000000";
+    IF (rb_i='0') THEN cnt_s <= (others=>'0');
     ELSIF (cp_i='1' AND cp_i'EVENT) THEN
       IF (unb_i=sig_s) THEN
-        cnt_s <= "0000000000000000";
+        cnt_s <= (others=>'0');
       ELSE
         cnt_s <= cnt_s + 1;
       END IF;
 
       IF (cnt_s = "1111111111111111") THEN
-        cnt_s <= "0000000000000000";
+        cnt_s <= (others=>'0');
         sig_s <= unb_i;
       END IF;
     END IF;

@@ -57,7 +57,7 @@ int main()
                 cout << "Someone LEFT\n";
             else if(OLD < TempChar)
                 cout << "Someone ENTERED\n";
-            if(TempChar == maxPepole)
+            if(TempChar >= maxPepole)
                 cout << "Max. number of People is reached\n";
         }
         OLD = TempChar;     //Save current number

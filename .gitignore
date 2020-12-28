@@ -28,3 +28,9 @@ DOKU/tex/S4-Specification.fls
 DOKU/tex/S4-Specification.log
 DOKU/tex/S4-Specification.synctex.gz
 *.bak
+*.tlog
+*.tlog
+*.pdb
+*.idb
+*.log
+*.opendb

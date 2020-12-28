@@ -13,7 +13,7 @@ PORT(
   cp_i :  IN  std_logic;
   br_i :  IN  std_logic;  -- baud rate
   dv_i :  IN  std_logic;  -- data valid
-  num_i : IN  std_logic_vector(7 DOWNTO 0); -- data (number)
+  num_i : IN  std_logic_vector(num_width_const-1 DOWNTO 0); -- data (number)
   txd_o : OUT std_logic -- serial output
   );
 END uat;

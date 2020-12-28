@@ -11,11 +11,11 @@ BEGIN
   -- Counter Process ---------------------------------
   cntx : PROCESS (rb_i,cp_i)
   BEGIN
-    IF (rb_i='0') THEN ck_s <= "000000000000000000000000";
+    IF (rb_i='0') THEN ck_s <= (others=>'0');
     ELSIF (cp_i='1' AND cp_i'EVENT) THEN
       CASE ck_s IS
         WHEN "101101110001101011111111"
-          =>  ck_s <= "000000000000000000000000";
+          =>  ck_s <= (others=>'0');
               co_s <= '1';
         WHEN OTHERS
           =>  ck_s <= ck_s + 1;

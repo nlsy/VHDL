@@ -18,6 +18,15 @@ PACKAGE comp_pack IS
 -- --------------------------------------------------------------------
 -- --------------------------------------------------------------------
 
+-- Constants
+-- --------------------------------------------------------------------
+
+CONSTANT num_width_const : integer := 8;
+CONSTANT evt_width_const : integer := 8;
+
+-- --------------------------------------------------------------------
+-- --------------------------------------------------------------------
+
 -- TOP
 -- --------------------------------------------------------------------
 
@@ -43,7 +52,7 @@ END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT debnc is
+COMPONENT debnc is  -- Debouncer
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
@@ -54,7 +63,7 @@ END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT toggl IS
+COMPONENT toggl IS  -- Signal Toggle
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
@@ -76,7 +85,11 @@ END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT count IS
+COMPONENT hdcnt IS
+GENERIC(
+  cnt_width : integer := 8;
+  max_cnt : integer := 3
+  );
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
@@ -84,13 +97,13 @@ PORT(
   dec_i : IN std_logic;
   min_o : OUT std_logic;
   max_o : OUT std_logic;
-  num_o : OUT std_logic_vector(7 DOWNTO 0)
+  num_o : OUT std_logic_vector(cnt_width-1 DOWNTO 0)
   );
 END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT control IS
+COMPONENT cntrl IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
@@ -100,14 +113,14 @@ PORT(
   max_i  : IN  std_logic;
   inc_o : OUT std_logic;
   dec_o : OUT std_logic;
-  evt_o : OUT std_logic_vector(7 DOWNTO 0);
+  evt_o : OUT std_logic_vector(evt_width_const-1 DOWNTO 0);
   sub_o : OUT std_logic
   );
 END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT trigger IS
+COMPONENT trigr IS
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
@@ -127,20 +140,20 @@ PORT(
   cp_i : IN std_logic;
   br_i : IN std_logic;  -- baud rate
   dv_i : IN std_logic;  -- data valid
-  num_i : std_logic_vector(7 DOWNTO 0); -- data (number)
+  num_i : std_logic_vector(num_width_const-1 DOWNTO 0); -- data (number)
   txd_o : OUT std_logic -- serial output
   );
 END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT interface is
+COMPONENT infs3 is
 PORT(
   rb_i : IN std_logic;
   cp_i : IN std_logic;
   sub_i : IN std_logic;
-  evt_i : IN std_logic_vector(7 DOWNTO 0);
-  num_i : IN std_logic_vector(7 DOWNTO 0);
+  evt_i : IN std_logic_vector(evt_width_const-1 DOWNTO 0);
+  num_i : IN std_logic_vector(num_width_const-1 DOWNTO 0);
   sdi_o : OUT std_logic;
   sdv_o : OUT std_logic;
   stx_o : OUT std_logic
@@ -153,45 +166,15 @@ END COMPONENT;
 -- BAUD RATE GENERATOR
 -- --------------------------------------------------------------------
 
-COMPONENT c10ec IS
-PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  en_i : IN STD_LOGIC;
-  co_o : OUT std_logic
+COMPONENT clkgn IS  --clock generator
+GENERIC(
+  cnt_width : integer;
+  div_cnt : integer
   );
-END COMPONENT;
-
--- --------------------------------------------------------------------
-
-COMPONENT c10xc IS
 PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  co_o : OUT std_logic
-  );
-END COMPONENT;
-
--- --------------------------------------------------------------------
-
-COMPONENT c12ec IS
-PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  en_i : IN std_logic;
-  co_o : OUT std_logic
-  );
-END COMPONENT;
-
--- --------------------------------------------------------------------
-
-COMPONENT reg24e IS
-PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  en_i : IN std_logic;
-  d_i  : IN std_logic_vector(7 DOWNTO 0);
-  q_o  : OUT std_logic_vector(7 DOWNTO 0)
+  rb_i : IN  std_logic;
+  cp_i : IN  std_logic;
+  tk_o : OUT std_logic
   );
 END COMPONENT;
 
@@ -215,14 +198,33 @@ END COMPONENT;
 
 -- --------------------------------------------------------------------
 
-COMPONENT reg8 IS
-PORT(
-  rb_i : IN std_logic;
-  cp_i : IN std_logic;
-  en_i : IN std_logic;
-  d_i  : IN std_logic_vector(7 DOWNTO 0);
-  q_o  : OUT std_logic_vector(7 DOWNTO 0)
+COMPONENT regsr IS  --register
+GENERIC(
+  dta_width : integer
   );
+PORT(
+  rb_i : IN  std_logic;
+  cp_i : IN  std_logic;
+  en_i : IN  std_logic;
+  d_i  : IN  std_logic_vector(dta_width-1 DOWNTO 0);
+  q_o  : OUT std_logic_vector(dta_width-1 DOWNTO 0)
+  );
+END COMPONENT;
+
+-- --------------------------------------------------------------------
+
+COMPONENT ctbin IS
+GENERIC (
+  cnt_width : integer;
+  cnt_max : integer
+  );
+PORT (rb_i   :  IN STD_LOGIC;                     -- Reset, active low
+      cp_i   :  IN STD_LOGIC;                     -- Syscp, @ 12MHz
+      en_i   :  IN STD_LOGIC;                     -- Enable Count
+      cl_i   :  IN STD_LOGIC;                     -- Clear Counter
+      co_o   : OUT STD_LOGIC;                     -- Carry Out
+       q_o   : OUT STD_LOGIC_VECTOR(cnt_width-1 DOWNTO 0)   -- Counter Value
+      );
 END COMPONENT;
 
 -- --------------------------------------------------------------------

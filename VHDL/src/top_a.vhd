@@ -31,13 +31,13 @@ ARCHITECTURE ar1 OF top IS
   SIGNAL s2_s : std_logic;
   SIGNAL s3_s : std_logic;
 
-  SIGNAL evt_s : std_logic_vector(7 DOWNTO 0);
+  SIGNAL evt_s : std_logic_vector(evt_width_const-1 DOWNTO 0);
   SIGNAL entr_s : std_logic;	-- trigger signal
   SIGNAL leav_s : std_logic;	-- trigger signal
   SIGNAL inc_s : std_logic;	-- increment counter
   SIGNAL dec_s : std_logic;	-- decrement counter
   SIGNAL dv_s : std_logic;	-- submit serial (data valid)
-  SIGNAL num_s : std_logic_vector(7 DOWNTO 0);	-- head count number
+  SIGNAL num_s : std_logic_vector(num_width_const-1 DOWNTO 0);	-- head count number
 
   SIGNAL min_s : std_logic;
   SIGNAL max_s : std_logic;
@@ -55,12 +55,19 @@ BEGIN
   db2 : debnc PORT MAP (rb_i,cp_i,s2_i,s2_s);
   db3 : debnc PORT MAP (rb_i,cp_i,s3_i,s3_s);
 
-  rat : rate PORT MAP (rb_i,cp_i,br_s,hz_s); -- Boad Rate
-  cou1 : count PORT MAP (rb_i, cp_i, inc_s, dec_s, min_s, max_s, num_s); -- HeadCount
-  tri : trigger PORT MAP (rb_i, cp_i, s1_s, s2_s, s3_s, entr_s, leav_s); -- EventHandler
-  con : control PORT MAP (rb_i, cp_i, entr_s, leav_s, min_s, max_s, inc_s, dec_s, evt_s, dv_s); -- UniqueTime
-  uar1 : uat PORT MAP (rb_i, cp_i, br_s, dv_s, num_s, txd_s); -- UART
-  int1 : interface PORT MAP (rb_i, cp_i, dv_s, evt_s, num_s, sdi_s, sdv_s, stx_s); -- 3WireInterface
+  cbr : clkgn GENERIC MAP (11, 1250)          --BoadRate
+              PORT    MAP (rb_i, cp_i, br_s);
+  csc : clkgn GENERIC MAP (24, 12000000)      --Herz
+              PORT    MAP (rb_i, cp_i, hz_s);
+
+  hdc : hdcnt GENERIC MAP (8, 3)
+              PORT    MAP (rb_i, cp_i, inc_s, dec_s, min_s, max_s, num_s); -- HeadCount
+  tri : trigr PORT    MAP (rb_i, cp_i, s1_s, s2_s, s3_s, entr_s, leav_s); -- EventHandler
+  con : cntrl PORT    MAP (rb_i, cp_i, entr_s, leav_s, min_s, max_s, inc_s, dec_s, evt_s, dv_s); -- UniqueTime
+  
+  uar : uat PORT MAP (rb_i, cp_i, br_s, dv_s, num_s, txd_s); -- UART
+  inf : infs3 PORT    MAP (rb_i, cp_i, dv_s, evt_s, num_s, sdi_s, sdv_s, stx_s); -- 3WireInterface
+
   tgl : toggl PORT MAP (rb_i, cp_i, hz_s, blnk_s);
 
   -- Outputs -----------------------------------------
@@ -72,9 +79,7 @@ BEGIN
   sdi_o <= sdi_s;     -- ic3 interface
   sdv_o <= sdv_s;     -- ic3 interface
   stx_o <= stx_s;     -- ic3 interface
-  --sec_o <= hz_s;      -- device alive
-  
-  sec_o <= blnk_s;      -- device alive
+  sec_o <= blnk_s;    -- device alive
 
 END ar1;
 
