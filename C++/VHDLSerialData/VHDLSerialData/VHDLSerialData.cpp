@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const int maxPepole = 3;
+
 int main()
 {
     // Open serial port
@@ -11,7 +13,7 @@ int main()
 
     serialHandle = CreateFileA("\\\\.\\COM5", GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    if (serialHandle == INVALID_HANDLE_VALUE)
+    if (serialHandle == INVALID_HANDLE_VALUE)   //Check Connection
         cout << "Error in opening serial port\n";
     else
         cout << "opening serial port successful\n";
@@ -37,29 +39,7 @@ int main()
 
     SetCommTimeouts(serialHandle, &timeout);
 
-
     // Receiving Data
-    /*
-    char TempChar; //Temporary character used for reading
-    char SerialBuffer[254];//Buffer for storing Rxed Data
-    DWORD NoBytesRead;
-    int i = 0;
-    byte OLD = 0;
-
-    do
-    {
-        ReadFile(serialHandle,           //Handle of the Serial port
-            &TempChar,       //Temporary character
-            sizeof(TempChar),//Size of TempChar
-            &NoBytesRead,    //Number of bytes read
-            NULL);
-
-        SerialBuffer[i] = TempChar;// Store Tempchar into buffer
-        cout << SerialBuffer;
-        i++;
-    } while (NoBytesRead > 0);
-    */
-
     byte TempChar = 0; //Temporary character used for reading
     DWORD NoBytesRead;
     byte OLD = TempChar;
@@ -71,14 +51,16 @@ int main()
             &NoBytesRead,    //Number of bytes read
             NULL);
 
-        if (TempChar != OLD) {
+        if (TempChar != OLD) {  //Compare Current Value with Old one
             cout << time(0) << " " << (int)TempChar << "\n";
             if(OLD > TempChar)
                 cout << "Someone LEFT\n";
             else if(OLD < TempChar)
                 cout << "Someone ENTERED\n";
+            if(TempChar == maxPepole)
+                cout << "Max. number of People is reached\n";
         }
-        OLD = TempChar;
+        OLD = TempChar;     //Save current number
     }
 
     CloseHandle(serialHandle);//Closing the Serial Port
