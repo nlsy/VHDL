@@ -2,7 +2,7 @@
 
 ARCHITECTURE ar1 OF debnc IS
 
-  SIGNAL cnt_s : unsigned(15 DOWNTO 0);
+  SIGNAL cnt_s : unsigned(15 DOWNTO 0); -- about 5 ms
   SIGNAL sig_s : std_logic;
 
 BEGIN
@@ -24,7 +24,7 @@ BEGIN
     END IF;
   END PROCESS;
   deb_o <= sig_s;
-  
+
 END ar1;
 
 -- ----------------------------------------------------------------------------

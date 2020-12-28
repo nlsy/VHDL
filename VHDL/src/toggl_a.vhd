@@ -2,7 +2,7 @@
 
 ARCHITECTURE ar1 OF toggl IS
 
-  SIGNAL tog_s : std_logic;
+  SIGNAL tog_s : std_logic; -- toggeling signal
 
 BEGIN
 

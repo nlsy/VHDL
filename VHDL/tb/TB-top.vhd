@@ -66,8 +66,9 @@ BEGIN
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '1'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '0'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     
+    WAIT FOR 10 NS;
     ASSERT (inc_s = '1') REPORT "Enter triggered" SEVERITY note;
-    ASSERT (inc_s = '0') REPORT "Enter not triggered" SEVERITY error;
+    ASSERT (inc_s = '0') REPORT "Enter not triggered" SEVERITY note;
 
 -- Some SYScp-cycles:
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
@@ -107,8 +108,9 @@ BEGIN
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '1'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '0'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     
+    WAIT FOR 10 NS;
     ASSERT (inc_s = '1') REPORT "Enter triggered" SEVERITY note;
-    ASSERT (inc_s = '0') REPORT "Enter not triggered" SEVERITY error;
+    ASSERT (inc_s = '0') REPORT "Enter not triggered" SEVERITY note;
 
 -- Some SYScp-cycles:
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
@@ -148,8 +150,9 @@ BEGIN
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '1'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR  10 NS; s3_s  <= '0'; WAIT FOR  90 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     
+    WAIT FOR 10 NS;
     ASSERT (dec_s = '1') REPORT "Leave triggered" SEVERITY note;
-    ASSERT (dec_s = '0') REPORT "Leave not triggered" SEVERITY error;
+    ASSERT (dec_s = '0') REPORT "Leave not triggered" SEVERITY note;
 -- Some SYScp-cycles:
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
     cp_s  <= '1'; WAIT FOR 100 NS; cp_s  <= '0'; WAIT FOR 100 NS;
@@ -217,6 +220,7 @@ BEGIN
     cp_s  <= '0'; WAIT FOR 500 NS;
 -- ----------------------------------------------------------------------------
 
+    WAIT FOR 10 NS;
     ASSERT (false) REPORT "Done" SEVERITY error;
 
     WAIT;
