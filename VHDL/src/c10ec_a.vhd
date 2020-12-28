@@ -30,6 +30,7 @@ BEGIN
   
   -- Counter Process ---------------------------------
   co_o <= en_i AND state_s(3) AND (NOT state_s(2)) AND (NOT state_s(1)) AND state_s(0); -- Cary Bit
+  --co_o <= state_s(3) AND (NOT state_s(2)) AND (NOT state_s(1)) AND state_s(0); -- Cary Bit
   
 END ar1;
 

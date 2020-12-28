@@ -20,7 +20,8 @@ BEGIN
 
   -- Output ------------------------------------------
   min_o <= '1' WHEN num_s="00000000" ELSE '0';
-  max_o <= '1' WHEN num_s="11111111" ELSE '0';
+  --max_o <= '1' WHEN num_s="11111111" ELSE '0';
+  max_o <= '1' WHEN num_s="00000011" ELSE '0';
   num_o <= std_logic_vector(num_s);
 
 END ar2;

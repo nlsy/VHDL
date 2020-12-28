@@ -20,7 +20,7 @@ BEGIN
   
   runTB : PROCESS
     VARIABLE dotimes  : integer :=   0;
-    VARIABLE so_long  : integer := 1000; -- 12000000;
+    VARIABLE so_long  : integer := 60; -- 12000000;
   BEGIN
 -- ----------------------------------------------------------------------------
 -- STEP 1: INIT all PINS
