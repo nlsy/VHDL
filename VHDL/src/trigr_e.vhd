@@ -14,8 +14,8 @@ PORT (
   s1_i    : IN  std_logic;
   s2_i    : IN  std_logic;
   s3_i    : IN  std_logic;
-  enter_o : OUT std_logic;
-  leave_o : OUT std_logic
+  add_o   : OUT std_logic;
+  sub_o   : OUT std_logic
   );
 END trigr;
 

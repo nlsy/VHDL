@@ -3,56 +3,56 @@
 ARCHITECTURE ar1 OF trigr IS
 
   -- States ------------------------------------------
-  TYPE state_t IS (init_st,enter1_st,leave1_st,enter2_st,leave2_st,enter3_st,leave3_st,wait_st);
+  TYPE state_t IS (
+    init_st,    -- wait for either sensor 1 or sensor 2 triggered
+    ewt1_st,    -- someone entering, sensor 1 triggered wait for sensor 2
+    lwt1_st,    -- someone leaving, sensor 3 triggered wait for sensor 2
+    ewt2_st,    -- someone entering, sensor 2 triggered wait for sensor 3
+    lwt2_st,    -- someone leaving, sensor 2 triggered wait for sensor 1
+    ewt3_st,    -- someone entering, sensor 3 triggered -> wait
+    lwt3_st,    -- someone leaving, sensor 1 triggered -> wait
+    wait_st     -- wait till all signals are off again
+    );
   -- Internal Signals --------------------------------
   SIGNAL stnow_s,stnxt_s : state_t;
-
-  SIGNAL s1_s : std_logic;
-  SIGNAL s2_s : std_logic;
-  SIGNAL s3_s : std_logic;
 
 BEGIN
   
   -- Modules -----------------------------------------
-  -- Debouncing the input
-  db1 : debnc PORT MAP (rst_n_i,clk_i,s1_i,s1_s);
-  db2 : debnc PORT MAP (rst_n_i,clk_i,s2_i,s2_s);
-  db3 : debnc PORT MAP (rst_n_i,clk_i,s3_i,s3_s);
 
   -- FSM Cycle ---------------------------------------
   fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF    (rst_n_i='0')       			THEN stnow_s <= init_st;
+    IF    (rst_n_i='0')       	  		THEN stnow_s <= init_st;
     ELSIF (clk_i'EVENT AND clk_i='1') THEN stnow_s <= stnxt_s;
     END IF;
   END PROCESS fsm;
 
   -- State Transition --------------------------------
-  st_fsm: PROCESS (s1_s,s2_s,s3_s)
+  st_fsm: PROCESS (s1_i,s2_i,s3_i)
   BEGIN
     stnxt_s <= init_st;
     CASE stnow_s IS
-      WHEN init_st => IF    (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= enter1_st;
-                      ELSIF (s1_s='0' AND s2_s='0' AND s3_s='1') THEN stnxt_s <= leave1_st;
+      WHEN init_st => IF    (s1_i='1' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= ewt1_st;
+                      ELSIF (s1_i='0' AND s2_i='0' AND s3_i='1') THEN stnxt_s <= lwt1_st;
                       END IF;
-      WHEN enter1_st => IF    (s1_s='0' AND s2_s='1' AND s3_s='0') THEN stnxt_s <= enter2_st;
-								--ELSIF (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= wait_st;
-                        ELSE                                            stnxt_s <= enter1_st;
-                        END IF;
-      WHEN leave1_st => IF    (s1_s='0' AND s2_s='1' AND s3_s='0') THEN stnxt_s <= leave2_st;
-                        ELSE                                            stnxt_s <= leave1_st;
-                        END IF;
-      WHEN enter2_st => IF    (s1_s='0' AND s2_s='0' AND s3_s='1') THEN stnxt_s <= enter3_st;
-                        ELSE                                            stnxt_s <= enter2_st;
-                        END IF;
-      WHEN leave2_st => IF    (s1_s='1' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= leave3_st;
-                        ELSE                                            stnxt_s <= leave2_st;
-                        END IF;
-      WHEN enter3_st =>                                                 stnxt_s <= wait_st;
-      WHEN leave3_st =>                                                 stnxt_s <= wait_st;
-      WHEN wait_st   => IF    (s1_s='0' AND s2_s='0' AND s3_s='0') THEN stnxt_s <= init_st;
-                        ELSE                                            stnxt_s <= wait_st;
-                        END IF;
+      WHEN ewt1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN stnxt_s <= ewt2_st;
+                      ELSE                                            stnxt_s <= ewt1_st;
+                      END IF;
+      WHEN lwt1_st => IF    (s1_i='0' AND s2_i='1' AND s3_i='0') THEN stnxt_s <= lwt2_st;
+                      ELSE                                            stnxt_s <= lwt1_st;
+                      END IF;
+      WHEN ewt2_st => IF    (s1_i='0' AND s2_i='0' AND s3_i='1') THEN stnxt_s <= ewt3_st;
+                      ELSE                                            stnxt_s <= ewt2_st;
+                      END IF;
+      WHEN lwt2_st => IF    (s1_i='1' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= lwt3_st;
+                      ELSE                                            stnxt_s <= lwt2_st;
+                      END IF;
+      WHEN ewt3_st =>                                                 stnxt_s <= wait_st;
+      WHEN lwt3_st =>                                                 stnxt_s <= wait_st;
+      WHEN wait_st => IF    (s1_i='0' AND s2_i='0' AND s3_i='0') THEN stnxt_s <= init_st;
+                      ELSE                                            stnxt_s <= wait_st;
+                      END IF;
     END CASE;
   END PROCESS st_fsm;
 
@@ -60,9 +60,9 @@ BEGIN
   st_out: PROCESS (stnow_s)
   BEGIN
     CASE stnow_s IS
-      WHEN enter3_st => enter_o <= '1'; leave_o <= '0';
-      WHEN leave3_st => enter_o <= '0'; leave_o <= '1';
-      WHEN OTHERS => enter_o <= '0'; leave_o <= '0';
+      WHEN ewt3_st => add_o <= '1'; sub_o <= '0';
+      WHEN lwt3_st => add_o <= '0'; sub_o <= '1';
+      WHEN OTHERS => add_o <= '0'; sub_o <= '0';
     END CASE;
   END PROCESS st_out;
 

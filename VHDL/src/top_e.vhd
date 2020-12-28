@@ -14,7 +14,7 @@ PORT (
   s1_i    : IN  std_logic;
   s2_i    : IN  std_logic;
   s3_i    : IN  std_logic;
-  rb_o    : OUT std_logic;
+  rst_n_o : OUT std_logic;
   sec_o   : OUT std_logic;
   grn_o   : OUT std_logic;
   red_o   : OUT std_logic;

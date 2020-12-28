@@ -8,9 +8,10 @@ BEGIN
 
   fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF (rst_n_i='0') THEN tog_s <= '0';
-    ELSIF (clk_i'EVENT AND clk_i='1' AND sig_i='1') THEN
-      tog_s <= NOT tog_s;
+    IF    (rst_n_i='0')               THEN tog_s <= '0';
+    ELSIF (clk_i'EVENT AND clk_i='1') THEN
+      IF (sig_i='1') THEN tog_s <= NOT tog_s;
+      END IF;
     END IF;
   END PROCESS fsm;
 

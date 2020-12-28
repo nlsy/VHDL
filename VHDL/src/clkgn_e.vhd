@@ -15,7 +15,7 @@ GENERIC (
 PORT (
   rst_n_i : IN  std_logic;
   clk_i   : IN  std_logic;
-  tk_o    : OUT std_logic
+  res_o    : OUT std_logic
   );
 END clkgn;
 

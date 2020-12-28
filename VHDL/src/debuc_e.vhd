@@ -8,6 +8,9 @@ USE WORK.comp_pack.ALL;
 -- ----------------------------------------------------------------------------
 
 ENTITY debnc IS
+GENERIC (
+  debounce_width : integer
+  );
 PORT (
   rst_n_i : IN  std_logic;
   clk_i   : IN  std_logic;

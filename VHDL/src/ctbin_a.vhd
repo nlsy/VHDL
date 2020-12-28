@@ -9,14 +9,18 @@ BEGIN
 
   cntx : PROCESS (rst_n_i,clk_i,en_i,cl_i)
   BEGIN
-    IF (rst_n_i='0') THEN state_s <= (OTHERS=>'0');
-    ELSIF (clk_i='1' AND clk_i'EVENT) THEN
-      IF (cl_i='1') THEN state_s <= (OTHERS=>'0');
+    IF    (rst_n_i='0')               THEN state_s <= (OTHERS=>'0');
+    ELSIF (clk_i'EVENT AND clk_i='1') THEN
+
+      IF    (cl_i='1') THEN state_s <= (OTHERS=>'0');
       ELSIF (en_i='1') THEN
+      
         IF (state_s = cnt_max) THEN state_s <= (OTHERS=>'0');
-        ELSE state_s <= state_s + 1;
+        ELSE                        state_s <= state_s + 1;
         END IF;
+
       END IF;
+
     END IF;
   END PROCESS cntx;
 

@@ -3,7 +3,19 @@
 ARCHITECTURE ar1 OF cntrl IS
 
   -- States ------------------------------------------
-  TYPE state_t IS (init_st,inc_clac_st,dec_calc_st,inc_wait_st,dec_wait_st,inc_vali_st,dec_vali_st,inc_send_st,dec_send_st,min_send_st,max_send_st);
+  TYPE state_t IS (
+    ini_wait_st,    -- wait until
+    inc_clac_st,    -- send increase signal to headcounter
+    dec_calc_st,    -- send decrease signal to headcounter
+    inc_wait_st,    -- wait until headcount calculated
+    dec_wait_st,    -- wait until headcount calculated
+    inc_vali_st,    -- done calculating, check if max
+    dec_vali_st,    -- done calculating, check if min
+    inc_send_st,    -- start sending num and ascii
+    dec_send_st,    -- start sending num and ascii
+    min_send_st,    -- start sending num and ascii
+    max_send_st     -- start sending num and ascii
+    );
   -- Internal Signals --------------------------------
   SIGNAL stnow_s,stnxt_s : state_t;
 
@@ -12,38 +24,34 @@ BEGIN
   -- FSM Cycle ---------------------------------------
   fsm: PROCESS (rst_n_i,clk_i)
   BEGIN
-    IF    (rst_n_i='0')       	        THEN stnow_s <= init_st;
+    IF    (rst_n_i='0')       	      THEN stnow_s <= ini_wait_st;
     ELSIF (clk_i'EVENT AND clk_i='1') THEN stnow_s <= stnxt_s;
     END IF;
   END PROCESS fsm;
 
   -- State Transition --------------------------------
-  st_fsm: PROCESS (stnow_s, enter_i, leave_i)
+  st_fsm: PROCESS (stnow_s, add_i, sub_i)
   BEGIN
-    stnxt_s <= init_st;
+    stnxt_s <= ini_wait_st;
     CASE stnow_s IS
-      WHEN init_st     => IF    (enter_i='1' AND leave_i='0' AND max_i='0') THEN stnxt_s <= inc_clac_st;
-                          ELSIF (enter_i='0' AND leave_i='1' AND min_i='0') THEN stnxt_s <= dec_calc_st;
-                          ELSE stnxt_s <= init_st;
+      WHEN ini_wait_st => IF    (add_i='1' AND sub_i='0' AND max_i='0') THEN stnxt_s <= inc_clac_st;
+                          ELSIF (add_i='0' AND sub_i='1' AND min_i='0') THEN stnxt_s <= dec_calc_st;
+                          ELSE stnxt_s <= ini_wait_st;
                           END IF;
-
       WHEN inc_clac_st => stnxt_s <= inc_wait_st;
       WHEN dec_calc_st => stnxt_s <= dec_wait_st;
-
       WHEN inc_wait_st => stnxt_s <= inc_vali_st;
       WHEN dec_wait_st => stnxt_s <= dec_vali_st;
-
       WHEN inc_vali_st => IF    (max_i='1') THEN stnxt_s <= max_send_st;
                           ELSE  stnxt_s <= inc_send_st;
                           END IF;
       WHEN dec_vali_st => IF    (min_i='1') THEN stnxt_s <= min_send_st;
                           ELSE  stnxt_s <= dec_send_st;
                           END IF;
-      
-      WHEN inc_send_st => stnxt_s <= init_st;
-      WHEN dec_send_st => stnxt_s <= init_st;
-      WHEN min_send_st => stnxt_s <= init_st;
-      WHEN max_send_st => stnxt_s <= init_st;
+      WHEN inc_send_st => stnxt_s <= ini_wait_st;
+      WHEN dec_send_st => stnxt_s <= ini_wait_st;
+      WHEN min_send_st => stnxt_s <= ini_wait_st;
+      WHEN max_send_st => stnxt_s <= ini_wait_st;
     END CASE;
   END PROCESS st_fsm;
 

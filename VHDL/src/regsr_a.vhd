@@ -10,10 +10,9 @@ BEGIN
   -- Storeage Handling -------------------------------
   ldx : PROCESS (rst_n_i,clk_i,state_s)
   BEGIN
-    IF (rst_n_i='0') THEN state_s <= (others=>'0');
-    ELSIF (clk_i='1' AND clk_i'EVENT)
-    THEN
-      IF  (en_i='1') THEN state_s<=d_i;
+    IF    (rst_n_i='0')               THEN state_s <= (others=>'0');
+    ELSIF (clk_i'EVENT AND clk_i='1') THEN
+      IF  (en_i='1') THEN state_s <= d_i;
       END IF;
     END IF;
   END PROCESS ldx;

@@ -10,9 +10,9 @@ BEGIN
   -- Calculation -------------------------------------
   ru_n: PROCESS (clk_i, rst_n_i, inc_i, dec_i)
   BEGIN
-    IF (rst_n_i = '0') THEN num_s <= (OTHERS=>'0');
+    IF    (rst_n_i = '0')               THEN num_s <= (OTHERS=>'0');
     ELSIF (clk_i'EVENT AND clk_i = '1') THEN
-      IF (inc_i = '1') THEN num_s <= num_s + 1;
+      IF    (inc_i = '1') THEN num_s <= num_s + 1;
       ELSIF (dec_i = '1') THEN num_s <= num_s - 1;
       END IF;
     END IF;

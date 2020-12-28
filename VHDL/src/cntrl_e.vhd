@@ -11,8 +11,8 @@ ENTITY cntrl IS
 PORT (
   rst_n_i : IN  std_logic;
   clk_i   : IN  std_logic;
-  enter_i : IN  std_logic;
-  leave_i : IN  std_logic;
+  add_i   : IN  std_logic;
+  sub_i   : IN  std_logic;
   min_i   : IN  std_logic;
   max_i   : IN  std_logic;
   inc_o   : OUT std_logic;

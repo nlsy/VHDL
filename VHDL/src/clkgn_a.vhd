@@ -20,20 +20,11 @@ BEGIN
         ck_s <= ck_s + 1;
         co_s <= '0';
       END IF;
-
-      --CASE ck_s IS
-      --  WHEN to_unsigned(div_cnt-1,ck_s'LENGTH)
-      --    =>  ck_s <= (others=>'0');
-      --        co_s <= '1';
-      --  WHEN OTHERS
-      --    =>  ck_s <= ck_s + 1;
-      --        co_s <= '0';
-      --END CASE;
     END IF;
   END PROCESS cntx;
 
   -- Output ------------------------------------------
-  tk_o <= co_s;      -- 1.2KHz, needed for baud-rate
+  res_o <= co_s;      -- 1.2KHz, needed for baud-rate
 
 END ar1;
 
