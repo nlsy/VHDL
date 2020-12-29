@@ -6,7 +6,7 @@ ARCHITECTURE ar1 OF utfsm IS
   TYPE state_t IS (
     wtdv_st,    -- wait until data valid
     ldrg_st,    -- load data in register
-    wtbr_st,    -- wait till baud rate is 1 or go to wtdv when done transmitting
+    wtbr_st,    -- wait till baud rate is 1 or goto wtdv when done transmitting
     cinc_st     -- get next bit (increment counter)
     );
   -- Internal Signals --------------------------------
