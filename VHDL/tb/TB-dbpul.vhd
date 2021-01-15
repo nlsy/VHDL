@@ -73,10 +73,19 @@ BEGIN
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR  10 NS;
       si_s   <= '0'; WAIT FOR  90 NS;
     clk_s  <= '0'; WAIT FOR 100 NS;
+
 -- Some SYScp-cycles:
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
+    clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;
     clk_s  <= '1'; WAIT FOR 100 NS; clk_s  <= '0'; WAIT FOR 100 NS;

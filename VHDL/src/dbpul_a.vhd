@@ -13,6 +13,8 @@ BEGIN
   PROCESS (rst_n_i,clk_i)
   BEGIN
     IF    (rst_n_i='0')               THEN cnt_s <= (others=>'0');
+                                           sig_s <= unb_i;
+                                           pul_s <= '0';
     ELSIF (clk_i'EVENT AND clk_i='1') THEN
 
       IF   (unb_i=sig_s) THEN cnt_s <= (others=>'0');

@@ -7,11 +7,11 @@ USE WORK.comp_pack.ALL;
 
 -- ----------------------------------------------------------------------------
 
-ENTITY TB1_top IS END TB1_top;
+ENTITY TB_top IS END TB_top;
 
 -- ----------------------------------------------------------------------------
 
-ARCHITECTURE ar1 OF TB1_top IS
+ARCHITECTURE ar1 OF TB_top IS
 
   -- input
   SIGNAL rst_n_s,clk_s,s1_s,s2_s,s3_s,br_s : std_logic;
