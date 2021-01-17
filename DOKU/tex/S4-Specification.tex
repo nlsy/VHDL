@@ -7,6 +7,7 @@
 \usepackage{enumitem}
 \usepackage{fixltx2e}
 \usepackage{geometry}
+\usepackage{hyperref}
 \geometry{a4paper , tmargin=3cm , bmargin=2cm , lmargin=2cm , rmargin=2cm}
 
 \title{
@@ -50,23 +51,17 @@
 
 \newpage
 
-\chapter{General discription}
+\chapter{General description}
 IC4 is a single chip based application containing processing capabilities to detect and keep track of the amount of people in one room. It is part of a system solution to fullfill the covid-19-restrictions and regulate the amount of people in an area. This solution is only meant for a chamber with only one doorway available to enter or to exit.\newline
 The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device on board.
-\newpage	
-\section{Block diagram}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.6]{../png/top.png}
-\end{figure}
 
 \newpage
 
 \chapter{Requirements}
 \begin{center}
-	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
+	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{1.5cm}|p{2cm}|p{5.5cm}|}
 		\hline
-		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description}\\
+		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description} \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{General}} \\
 		\hline
@@ -97,9 +92,9 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
+	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{1.5cm}|p{2cm}|p{5.5cm}|}
 		\hline
-		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description}\\
+		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description} \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{UART}} \\
 		\hline
@@ -117,7 +112,7 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		\multicolumn{5}{|l|}{\textbf{PC}} \\
 		\hline	
-		PC01 & PC: language & Medium & C++-program &  The information should be displayed on a PC, the language is C++. \\
+		PC01 & PC: language & Medium & N/A &  Information should be displayed on a PC, the language is C++. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{IC\_S3}} \\
 		\hline
@@ -133,27 +128,58 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 \newpage
 
 \chapter{Top Level View}
-\begin{flushleft}
-	rb\_i \hspace{1cm} reset \hfill reset, active low
-\end{flushleft} 
-cp\_i \hspace{1cm} system clock \hfill e.g. 10MHz \\
-s1\_i \hspace{1cm} light\_curtain s1 \hfill log1: something passes \\
-s2\_i \hspace{1cm} light\_curtain s2 \hfill log1: something passes \\
-s3\_i \hspace{1cm} light\_curtain s3 \hfill log1: something passes \\
-grn\_o\hspace{0.9cm}LED, access garanted \hfill Green LED, go ahead \\
-red\_o\hspace{0.9cm}LED, stop, no entry \hfill Red LED, stop, access denied \\
-sdo\_o\hspace{0.9cm}serial data out \hfill drives S3 or MC\\
-sdv\_o\hspace{0.9cm}serial data valid \hfill drives S3 or MC\\
-stx\_o\hspace{1cm}serial transfer active \hfill drives S3 or MC\\
-txd\_o\hspace{1cm}serial out \hfill to RS-232-driver, 9k6,8N2,ASCII,to PC\\
-snd\_o\hspace{0.9cm}sound signal \hfill acoustic signal, to loudspeaker\\
-\\
-inc\_s \hspace{0.9cm} increment \hfill increments head count when triggered\\
-dec\_s \hspace{0.8cm} decrement \hfill decrements head count when triggered\\
-num\_s \hspace{0.6cm} number \hfill contains the head count number\\
-evh\_s \hspace{0.8cm} event \hfill contains the current event\\
+\begin{center}
+	\begin{tabular}{|l|l|c|r|}
+		\hline
+		\textbf{Signal} & \textbf{Pin} & \textbf{Direction} & \textbf{Description} \\
+		\hline
+		\hline
+		rst\_n\_i & E6 & reset & reset, active low \\
+		\hline
+		cp\_i & H6 & system clock & e.g. 10MHz \\
+		\hline
+		s1\_i & L12 & light\_curtain & log1: something passes \\
+		\hline
+		s2\_i & J12 & light\_curtain & log1: something passes \\
+		\hline
+		s3\_i & J13 & light\_curtain & log1: something passes \\
+		\hline
+		rst\_n\_o & A8 & light\_curtain & log1: something passes \\
+		\hline
+		sec\_o & A9 & light\_curtain & log1: something passes \\
+		\hline
+		grn\_o & A11 & LED, access garanted & Green LED, go ahead \\
+		\hline
+		red\_o & A10 & LED, stop, no entry & Red LED, stop, access denied \\
+		\hline
+		tled\_o & B10 & serial data out & drives S3 or MC\\
+		\hline
+		txd\_o & K11 & serial out & to RS-232-driver, 9k6,8N2,ASCII,to PC\\
+		\hline
+		sdi\_o & K12 & serial data valid & drives S3 or MC\\
+		\hline
+		sdv\_o & J10 & serial transfer active & drives S3 or MC\\
+		\hline
+		stx\_o & H10 & sound signal & acoustic signal, to loudspeaker\\
+		\hline
+		\hline
+		inc\_s & - & increment & increments head count when triggered\\
+		\hline
+		dec\_s & - & decrement & decrements head count when triggered\\
+		\hline
+		num\_s & - & number & contains the head count number\\
+		\hline
+		evh\_s & - & event & contains the current event\\
+		\hline
+	\end{tabular}
+\end{center}
 
-\chapter{Functional description}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.6]{../png/top.png}
+\end{figure}
+
+\chapter{VHDL Design}
 \section*{HeadCount}
 Stores the current number of people in the room. It increments or decrements the number if needed.
 \section*{EventHandler}
@@ -924,14 +950,20 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		Source State& Destination State & Condition \\
 		\hline	
 		
-		
 	\end{tabular}	
 \end{center}
 
 \newpage
 
-\chapter{PC Program}
-
+\chapter{Program Design}
+The pc program is written in C++. It monitors a choosen COM-Port and receives the current number of people in the room when it changes.\\
+The program is asking for a port number (between 0 and 10) and tries to open the serial connection afterwards. When an invalid number is entered, it tries to open the serial connection at the standard port COM5.
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.8]{../png/program.png}
+	\newline
+	fig: program\\
+\end{figure}
 \begin{center}
 	\begin{tabular}{|l|c|c|r|}
 		\hline
@@ -945,5 +977,17 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		\hline
 	\end{tabular}
 \end{center}
+
+\newpage
+
+\chapter{Repository - Download}
+The repository includes:
+\begin{itemize}
+	\item VHDL source code
+	\item VHDL testbenches
+	\item C++ source code
+	\item Documentation/Specification
+\end{itemize}
+The lastest version of this project can be downloaded directly from \href{https://github.com/nlsy/VHDL}{GitHub}. \\
 
 \end{document}
