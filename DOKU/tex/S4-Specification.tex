@@ -1,128 +1,136 @@
-\documentclass[12pt,a4 paper] {article}
+\documentclass[12pt,a4 paper] {report}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[english]{babel}
+\usepackage{microtype}
 \usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{fourier}
-\usepackage{eulervm}
-\title{S4\_VHDL Specifications}
-\author{Nils Schlegel, 32067 & Tara Jaishi, 32289}
-\date{06.11.2020}
+\usepackage{index}
+\usepackage{enumitem}
+\usepackage{fixltx2e}
+\usepackage{geometry}
+\geometry{a4paper , tmargin=3cm , bmargin=2cm , lmargin=2cm , rmargin=2cm}
+
+\title{
+	\textbf{S4\_VHDL Specifications} \\
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.4]{../png/rwu.png}
+	\end{figure}
+	Circuit Design (WS2020/21) \\
+	Prof. Dr. -Ing Andreas Siggelkow \\
+}
+\author{Nils Schlegel, 32067 \& Tara Jaishi, 32289}
+\date{17.01.2021}
 
 
 \begin{document}
-	\maketitle
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.4]{../png/rwu.png}
-	
-\end{figure}
-\newpage
-\section{Requirements}
-\begin{center}
-	\begin{tabular}{ |c|c|c|c|p{2cm}|p{2cm}| } 
-		\hline
-		Requirement& ID & Importance& Verifiable& Description& Remarks \\
-		\hline
-		General & & & & &\\
-		\hline
-		Gen.: \#persons& G01 &  High &  VHDL Testbench & The number of persons in a room must be known. & \\
-		\hline
-		Gen.: max & G02 & High &  VHDL Testbench & The number of persons in a room must not exceed a given limit. & \\
-		\hline
-		Gen.: only one pers. & G03 & High & ? & Only one person can either enter or leave the room at a time. & Check test. \\
-		\hline
-		Gen.: three light sensors & G04 & Medium & VHDL Testbench & Along the doorway, there are three light-curtains to allow directiontracking of possible visitors.& Why not only two? \\
-		\hline
-		Gen.: only one door & G05 & High & ? & Only one door exists.&  Check test. Req. given during the lecture. \\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-	\begin{tabular}{ |c|c|c|c|p{2cm}|p{2cm}| } 
-		\hline
-		Sound & & & & & \\
-		\hline
-		Sound: entered & S01 & High & VHDL Testbench & A person entered the room, play a unique sound. & Check, if this is on the FPGA or on the uC.\\
-		\hline
-		Sound: left & S02 & High & VHDL Testbench & A person left the room, play a unique sound. & Check, if this is on the FPGA or on the uC.\\
-		\hline
-		Sound: stop & S03 & High & VHDL Testbench & The room is full, play a unique sound. & Check, if this is on the FPGA or on the uC.\\
-		\hline
-		LED & & & & & \\
-		\hline
-		LED: red & LED01 &  High & VHDL Testbench & The maximal number of persons reached. & \\
-		\hline
-		LED: green & LED02 & High & VHDL Testbench & The maximal number of persons not reached. & \\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-	\begin{tabular}{ |c|c|c|c|p{2cm}|p{2cm}| } 
-		\hline
-		UART & & & & & \\
-		\hline
-		UART: 9600 baud & UART01 & High &  VHDL Testbench & The speed of the serial transmission should be set to 9600 baud. & \\
-		\hline
-		UART: 8 bit & UART02 & High & VHDL Testbench & The data width of the serial transmission should be set to 8 bit. & \\
-		\hline
-		UART: no parity & UART03 & High & VHDL Testbench & The serial transmission should not be checked with a parity bit.& \\
-		\hline
-		UART: one stop bit & UART04 & High  & VHDL Testbench & The serial transmission should have only one stop bit. & \\
-		\hline
-		UART: time & UART05 & High & VHDL Testbench  & The time stamp of an event should be delivered to a PC. & \\
-		\hline
-		UART: \#persons & UART06 & High &  VHDL Testbench &  The \#persons should be transmitted to a PC. & \\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-	\begin{tabular}{ |c|c|c|c|p{2cm}|p{2cm}| } 
-		\hline
-		PC &&&&& \\
-		\hline	
-		PC: language & PC01 & Medium & C++-program &  The information should be displayed on a PC, the language is C++. & Medium: Other languages would do the job also.\\
-		\hline
-		IC\_S3 & & & &  Events and head-counts are transferred to IC S3 using a ThreeWire-Interface. & \\
-		\hline
-		IC\_S3: interface & IC01 & Low & VHDL Testbench & Use a three wire IF. & Low: Not needed for the functionality \\
-		\hline
-		IC\_S3: events & IC02 & Low & VHDL Testbench & All events should be transmitted via the three wire IF.& Low: Not needed for the functionality. Not atomic: which events?\\
-		\hline3		IC\_S3: \#persons & IC03 & Low  & VHDL Testbench & The \#persons should be transmitted via the three wire IF. & Low: Not needed for the functionality \\
-		\hline
-	\end{tabular}
-\end{center}
-	
+\maketitle
 
 \newpage
-\section{Product:IC\_4}
 
-
-History\\
+\textbf{History - Change Log} \\
 \line(1,0){400}
 \begin{flushleft}
-	Target Spec. Current version: 0.1, 2020-11-9 \\
-\hspace{2.2cm}	Previous version:-\\
-\line(1,0){400}\\	             
-\hspace{2.2cm}	06.11.2020 \hfill General description added\\
-\hspace{2.2cm}	06.11.2020 \hfill Block diagram added\\
-\hspace{2.2cm}	06.11.2020	\hfill Functional description added
+	Target Spec. Current version: 1.0, 2021-01-17 \\
+\hspace{2.2cm}	Previous version: 0.1, 2020-11-9 \\
+\line(1,0){400} \\
+\hspace{2.2cm}	17.01.2021 \hfill FiniteStateMachines added \\
+\hspace{2.2cm}	17.01.2021 \hfill Block diagrams created and updated \\
+\hspace{2.2cm}	17.01.2021 \hfill Block descriptions added \\
+\hspace{2.2cm}	06.11.2020 \hfill General description added \\
+\hspace{2.2cm}	06.11.2020 \hfill Block diagram added \\
+\hspace{2.2cm}	06.11.2020 \hfill Functional description added \\
+\hspace{2.2cm}	06.11.2020 \hfill Document created
 \end{flushleft}
 
+\newpage
 
-		 
-\subsection{General discription}
+\tableofcontents
+
+\newpage
+
+\chapter{General discription}
 IC4 is a single chip based application containing processing capabilities to detect and keep track of the amount of people in one room. It is part of a system solution to fullfill the covid-19-restrictions and regulate the amount of people in an area. This solution is only meant for a chamber with only one doorway available to enter or to exit.\newline
 The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device on board.
 \newpage	
-\subsection{Block diagram}
+\section{Block diagram}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.6]{../png/top.png}
 \end{figure}
+
 \newpage
 
+\chapter{Requirements}
+\begin{center}
+	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
+		\hline
+		\textbf{ID} & \textbf{Requirement} & \textbf{Importance} & \textbf{Verifiable} & \textbf{Description}\\
+		\hline
+		\textbf{General} & & & & \\
+		\hline
+		G01 & Gen.: \#persons &  High &  Testbench & The number of persons in a room must be known. \\
+		\hline
+		G02 & Gen.: max & High &  Testbench & The number of persons in a room must not exceed a given limit. \\
+		\hline
+		G03 & Gen.: only one pers. & High & ? & Only one person can either enter or leave the room at a time. \\
+		\hline
+		G04 & Gen.: three light sensors & Medium & Testbench & Along the doorway, there are three light-curtains to allow directiontracking of possible visitors. \\
+		\hline
+		G05 & Gen.: only one door & High & ? & Only one door exists. \\
+		\hline
+		\textbf{Sound} & & & & \\
+		\hline
+		S01 & Sound: entered & High & Testbench & A person entered the room, play a unique sound. \\
+		\hline
+		S02 & Sound: left & High & Testbench & A person left the room, play a unique sound. \\
+		\hline
+		S03 & Sound: stop & High & Testbench & The room is full, play a unique sound. \\
+		\hline
+		\textbf{LED} & & & & \\
+		\hline
+		LED01 & LED: red &  High & Testbench & The maximal number of persons reached. \\
+		\hline
+		LED02 & LED: green & High & Testbench & The maximal number of persons not reached. \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
+		\hline
+		\textbf{ID} & \textbf{Requirement} & \textbf{Importance} & \textbf{Verifiable} & \textbf{Description}\\
+		\hline
+		\textbf{UART} & & & & \\
+		\hline
+		UART01 & UART: 9600 baud & High &  Testbench & The speed of the serial transmission should be set to 9600 baud. \\
+		\hline
+		UART02 & UART: 8 bit & High & Testbench & The data width of the serial transmission should be set to 8 bit. \\
+		\hline
+		UART03 & UART: no parity & High & Testbench & The serial transmission should not be checked with a parity bit. \\
+		\hline
+		UART04 & UART: one stop bit & High  & Testbench & The serial transmission should have only one stop bit. \\
+		\hline
+		UART05 & UART: time & High & Testbench  & The time stamp of an event should be delivered to a PC. \\
+		\hline
+		UART06 & UART: \#persons & High &  Testbench &  The \#persons should be transmitted to a PC. \\
+		\hline
+		\textbf{PC} & & & & \\
+		\hline	
+		PC01 & PC: language & Medium & C++-program &  The information should be displayed on a PC, the language is C++. \\
+		\hline
+		\textbf{IC\_S3} & & & & \\
+		\hline
+		IC01 & IC\_S3: interface & Low & Testbench & Use a three wire IF. \\
+		\hline
+		IC02 & IC\_S3: events & Low & Testbench & All events should be transmitted via the three wire IF. \\
+		\hline
+		IC03 & IC\_S3: \#persons & Low  & Testbench & The \#persons should be transmitted via the three wire IF. \\
+		\hline
+	\end{tabular}
+\end{center}
 
+\newpage
+
+\chapter{Top Level View}
 \begin{flushleft}
 	rb\_i \hspace{1cm} reset \hfill reset, active low
 \end{flushleft} 
@@ -143,19 +151,18 @@ dec\_s \hspace{0.8cm} decrement \hfill decrements head count when triggered\\
 num\_s \hspace{0.6cm} number \hfill contains the head count number\\
 evh\_s \hspace{0.8cm} event \hfill contains the current event\\
 
-\subsection{Functional description}
-\subsection*{HeadCount}
+\chapter{Functional description}
+\section*{HeadCount}
 Stores the current number of people in the room. It increments or decrements the number if needed.
-\subsection*{EventHandler}
+\section*{EventHandler}
 It recieves the signals from the light curtains and dectects with event is triggered. Depending on the event it will play a sound, turn on a LED and create an output signal.
-\subsection*{UniqueTime}
+\section*{UniqueTime}
 This element is only counting the clock-cycles, to generate a unique timestamp. \newpage
-\subsection*{UART}
+\section*{UART}
 The connection to RS232 is done by the UART. It takes the unique timestamp from the UART as well as the head count from the HeadCount and event type from the EventHandler, when a signal from the EventHandler is recieved.
-\subsection*{3WireInterface}
+\section*{3WireInterface}
 The IC\_3 can be connected by using the 3WireInterface. When it recieves a signal from the EventHandler it should pass the head count and event type to the IC\_3.
 
-\section{Top Level View}
 
 The ASIC must:\\
 • identify, if a person enters or leaves the room\\
@@ -164,54 +171,58 @@ The ASIC must:\\
 • The transmission to the PC is 9600 baud, 8 bit, no parity, 1 stop bit. \\
 On the PC side, get the information and display it. The programming language is
 C++.\\
+
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/top.png}
 	fig: Top level diagram\\
 \end{figure}
+
 \newpage
+
  Table: Top level I/O \\
 \begin{center}
 	\begin{tabular}{ |p{2cm}|p{2cm}|p{1cm}|p{5cm}| } 
 	\hline
 	Pin & Direction & Width & Explanation \\
 	\hline
-	rst\_n\_i  & IN & 1 & Reset, active low  \\
+	rst\_n\_i & IN & 1 & Reset, active low \\
 	\hline
-	clk\_i  & IN & 1 & Syscp, @ 12MHz \\
+	clk\_i & IN & 1 & Syscp, @ 12MHz \\
 	\hline
 	s1\_i & IN & 3 & Sensor 1 \\
 	\hline
-	s2\_i  & IN & 1 & Sensor 2 \\
+	s2\_i & IN & 1 & Sensor 2 \\
 	\hline
-	s3\_i  & IN & 1 & Sensor 3 \\
+	s3\_i & IN & 1 & Sensor 3 \\
 	\hline
-	rst\_n\_o & OUT & 1 & Reset state LED  \\
+	rst\_n\_o & OUT & 1 & Reset state LED \\
 	\hline
-	sec\_o  & OUT & 1 & Pulse LED \\
+	sec\_o & OUT & 1 & Pulse LED \\
 	\hline
-	grn\_o  & OUT & 1 & Green LED  \\
+	grn\_o & OUT & 1 & Green LED \\
 	\hline
-	 red\_o & OUT & 1 & Red LED\\
+	red\_o & OUT & 1 & Red LED\\
 	\hline
-	tled\_o & OUT & 1 & Transmission LED  \\
+	tled\_o & OUT & 1 & Transmission LED \\
 	\hline
 	txd\_o & OUT & 1 & Transmission \\
 	\hline
-	 sdi\_o  & OUT & 1 & S3 data value  \\
+	sdi\_o & OUT & 1 & S3 data value \\
 	\hline
-	 sdv\_o & OUT &  1& S3 data valid \\
+	sdv\_o & OUT &  1& S3 data valid \\
 	\hline
-	stx\_o  & OUT & 1 & S3 transmission active  \\
+	stx\_o & OUT & 1 & S3 transmission active \\
 	\hline
 	
 	\end{tabular}
 \end{center}
+
 \newpage
 
 Blocks of Top Level diagram and its Pin and Sifnal are described below. 
 
-\subsection{Debouncing all Signals}	
+\section{Debouncing all Signals}	
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/debnc_deb.png}
@@ -546,7 +557,7 @@ Lower Level Modules are described below.\\
 		\hline
 		br\_i    & IN  & Baud-Rate to ena Counter\\
 		\hline
-		dne\_i   & IN  &  Last Bit transmitted\\
+		dne\_i   & IN  & Last Bit transmitted\\
 		\hline
 		sto\_o   & OUT & enable register load\\
 		\hline
@@ -603,17 +614,9 @@ dta\_width : integer\\
 
 \newpage
 \subsection{Binary Counter}
-
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/Ctbin_cnt .jpeg}
-	\newline
-	fig:Ctbin\_cnt\\
-\end{figure}
-
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/ctbin_cnt.jpeg}
+	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
 	\newline
 	fig:ctbin\_cnt\\
 \end{figure}
@@ -729,7 +732,7 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
  \begin{center}
 	\begin{tabular}{| p{4cm} | p{7cm} |}
 		\hline
-		Internal Signal & Explanation \\
+		State Name & Explanation \\
 		\hline
 		ini\_wait\_st & wait until\\
 		\hline
@@ -753,7 +756,6 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		\hline
 		max\_send\_st&     start sending num and ascii\\
 		\hline
-		
 	\end{tabular}
 \end{center}
 \newpage
@@ -798,7 +800,9 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		\hline	
 	\end{tabular}
 \end{center}
+
 \newpage
+
 \subsection{Trigger Fsm}
 \begin{figure}[h]
 	\centering	
@@ -807,6 +811,27 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	fig: Trigger FSM\\
 \end{figure}
 \begin{center}
+ \begin{tabular}{| p{4cm} | p{7cm} |}
+	 \hline
+	 State Name & Description \\
+	 \hline
+	 init\_st & wait for either sensor 1 or sensor 2 triggered \\
+	 \hline
+	 ewt1\_st & someone entering, sensor 1 triggered wait for sensor 2 \\
+	 \hline
+	 lwt1\_st & someone leaving, sensor 3 triggered wait for sensor 2 \\
+	 \hline
+	 ewt2\_st & someone entering, sensor 2 triggered wait for sensor 3 \\
+	 \hline
+	 lwt2\_st & someone leaving, sensor 2 triggered wait for sensor 1 \\
+	 \hline
+	 ewt3\_st & someone entering, sensor 3 triggered -> back to init \\
+	 \hline
+	 lwt3\_st & someone leaving, sensor 1 triggered -> back to init \\
+	 \hline
+ \end{tabular}
+\end{center}
+\begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
 		\hline
 		Source State& Destination State & Condition \\
@@ -814,8 +839,10 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		
 			
 	\end{tabular}	
-\end{center}	
+\end{center}
+
 \newpage
+
 \subsection{Uart Fsm}
 \begin{figure}[h]
 	\centering	
@@ -823,6 +850,21 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	\newline
 	fig: Uart FSM\\
 \end{figure}
+\begin{center}
+ \begin{tabular}{| p{4cm} | p{7cm} |}
+	 \hline
+	 State Name & Description \\
+	 \hline
+	 wtdv\_st & wait until data valid \\
+	 \hline
+	 ldrg\_st & load data in register \\
+	 \hline
+	 wtbr\_st & wait till baud rate is 1 or goto wtdv when done transmitting \\
+	 \hline
+	 cinc\_st & get next bit (increment counter) \\
+	 \hline
+ \end{tabular}
+\end{center}
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
 		\hline
@@ -832,7 +874,9 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 		
 	\end{tabular}	
 \end{center}
+
 \newpage
+
 \subsection{ifs\_3 Fsm}
 \begin{figure}[h]
 	\centering	
@@ -840,6 +884,25 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	\newline
 	fig: ifs\_3 FSM\\
 \end{figure}
+\begin{center}
+ \begin{tabular}{| p{4cm} | p{7cm} |}
+	 \hline
+	 State Name & Description \\
+	 \hline
+	 wtdv\_st & wait until data valid \\
+	 \hline
+	 ldrg\_st & load data in register \\
+	 \hline
+	 tick\_st & check if done, else go on \\
+	 \hline
+	 incr\_st & get next bit (increment counter) \\
+	 \hline
+	 wocy\_st & wait one clock cycle \\
+	 \hline
+	 vali\_st & send validation bit \\
+	 \hline
+ \end{tabular}
+\end{center}
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
 		\hline
