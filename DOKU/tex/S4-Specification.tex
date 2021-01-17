@@ -69,19 +69,19 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		G02 & Gen.: max & High &  Testbench & The number of persons in a room must not exceed a given limit. \\
 		\hline
-		G03 & Gen.: only one pers. & High & ? & Only one person can either enter or leave the room at a time. \\
+		G03 & Gen.: only one pers. & High & N/A & Only one person can either enter or leave the room at a time. \\
 		\hline
 		G04 & Gen.: three light sensors & Medium & Testbench & Along the doorway, there are three light-curtains to allow directiontracking of possible visitors. \\
 		\hline
-		G05 & Gen.: only one door & High & ? & Only one door exists. \\
+		G05 & Gen.: only one door & High & N/A & Only one door exists. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{Sound}} \\
 		\hline
-		S01 & Sound: entered & High & Testbench & A person entered the room, play a unique sound. \\
+		S01 & Sound: entered & High & N/A & A person entered the room, play a unique sound. \\
 		\hline
-		S02 & Sound: left & High & Testbench & A person left the room, play a unique sound. \\
+		S02 & Sound: left & High & N/A & A person left the room, play a unique sound. \\
 		\hline
-		S03 & Sound: stop & High & Testbench & The room is full, play a unique sound. \\
+		S03 & Sound: stop & High & N/A & The room is full, play a unique sound. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{LED}} \\
 		\hline
@@ -106,13 +106,13 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		UART04 & UART: one stop bit & High  & Testbench & The serial transmission should have only one stop bit. \\
 		\hline
-		UART05 & UART: time & High & Testbench  & The time stamp of an event should be delivered to a PC. \\
-		\hline
 		UART06 & UART: \#persons & High &  Testbench &  The \#persons should be transmitted to a PC. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{PC}} \\
 		\hline	
 		PC01 & PC: language & Medium & N/A &  Information should be displayed on a PC, the language is C++. \\
+		\hline
+		PC02 & PC: timestamp & Low & N/A  & Every event should have a unique timestamp. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{IC\_S3}} \\
 		\hline
@@ -127,142 +127,108 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 
 \newpage
 
+\chapter{Architecture Concepts}
+\section*{Clock Cycle - Trigger}
+This project uses a 12MHz clock with a rising edge trigger signal. This allows to syncronize the modules within the IC\_S4.
+Each block has the same clock cycle starting with the rising edge event.
+\section*{Reset}
+To reset the whole project an active low is required. That is due to FPGA board, which has buttons with active low signals build in.
+\section*{FSM}
+The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows to easily construct and madify them if needed.
+
+\newpage
+
 \chapter{Top Level View}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{../png/top.png}
+	\caption{IC\_S4 Top View}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{../png/top-level.png}
+	\caption{Top Level Block Diagram}
+\end{figure}
 \begin{center}
 	\begin{tabular}{|l|l|c|r|}
 		\hline
 		\textbf{Signal} & \textbf{Pin} & \textbf{Direction} & \textbf{Description} \\
 		\hline
 		\hline
-		rst\_n\_i & E6 & reset & reset, active low \\
+		rst\_n\_i & E6 & IN & Reset, active low \\
 		\hline
-		cp\_i & H6 & system clock & e.g. 10MHz \\
+		cp\_i & H6 & IN & Syscp, @ 12MHz \\
 		\hline
-		s1\_i & L12 & light\_curtain & log1: something passes \\
+		s1\_i & L12 & IN & Sensor 1 \\
 		\hline
-		s2\_i & J12 & light\_curtain & log1: something passes \\
+		s2\_i & J12 & IN & Sensor 2 \\
 		\hline
-		s3\_i & J13 & light\_curtain & log1: something passes \\
+		s3\_i & J13 & IN & Sensor 3 \\
 		\hline
-		rst\_n\_o & A8 & light\_curtain & log1: something passes \\
+		rst\_n\_o & A8 & OUT & Reset state LED  \\
 		\hline
-		sec\_o & A9 & light\_curtain & log1: something passes \\
+		sec\_o & A9 & OUT & Pulse LED \\
 		\hline
-		grn\_o & A11 & LED, access garanted & Green LED, go ahead \\
+		grn\_o & A11 & OUT & Green LED, go ahead \\
 		\hline
-		red\_o & A10 & LED, stop, no entry & Red LED, stop, access denied \\
+		red\_o & A10 & OUT & Red LED, stop, access denied \\
 		\hline
-		tled\_o & B10 & serial data out & drives S3 or MC\\
+		tled\_o & B10 & OUT & Transmission LED \\
 		\hline
-		txd\_o & K11 & serial out & to RS-232-driver, 9k6,8N2,ASCII,to PC\\
+		txd\_o & K11 & OUT & Transmission RS-232-driver, 9k6,8N2,ASCII,to PC \\
 		\hline
-		sdi\_o & K12 & serial data valid & drives S3 or MC\\
+		sdi\_o & K12 & OUT & S3 data value \\
 		\hline
-		sdv\_o & J10 & serial transfer active & drives S3 or MC\\
+		sdv\_o & J10 & OUT & S3 data valid \\
 		\hline
-		stx\_o & H10 & sound signal & acoustic signal, to loudspeaker\\
+		stx\_o & H10 & OUT & S3 transmission active \\
 		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | p{5cm} |}
 		\hline
-		inc\_s & - & increment & increments head count when triggered\\
+		\textbf{Internal Signal} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		dec\_s & - & decrement & decrements head count when triggered\\
+		br\_s & 1 & 9600 baud rate signal \\
 		\hline
-		num\_s & - & number & contains the head count number\\
+		hz\_s & 1 & 1Hz signal \\
 		\hline
-		evh\_s & - & event & contains the current event\\
+		add\_s & 1 & trigger signal that someone entered \\
+		\hline
+		sub\_s & 1 & trigger signal that someone left \\
+		\hline
+		inc\_s & 1 & increment headcount signal \\
+		\hline
+		dec\_s & 1 & decrement headcount signal \\
+		\hline
+		min\_s & 1 & headcount reached min \\
+		\hline
+		max\_s & 1 & headcount reached max \\
+		\hline
+		num\_s & 8 & contains the headcount number \\
+		\hline
+		evh\_s & 8 & contains the current event (ASCII) \\
 		\hline
 	\end{tabular}
 \end{center}
 
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.6]{../png/top.png}
-\end{figure}
 
 \chapter{VHDL Design}
-\section*{HeadCount}
-Stores the current number of people in the room. It increments or decrements the number if needed.
-\section*{EventHandler}
-It recieves the signals from the light curtains and dectects with event is triggered. Depending on the event it will play a sound, turn on a LED and create an output signal.
-\section*{UniqueTime}
-This element is only counting the clock-cycles, to generate a unique timestamp. \newpage
-\section*{UART}
-The connection to RS232 is done by the UART. It takes the unique timestamp from the UART as well as the head count from the HeadCount and event type from the EventHandler, when a signal from the EventHandler is recieved.
-\section*{3WireInterface}
-The IC\_3 can be connected by using the 3WireInterface. When it recieves a signal from the EventHandler it should pass the head count and event type to the IC\_3.
 
-
-The ASIC must:\\
-• identify, if a person enters or leaves the room\\
-• activate or deactivate a "STOP- " or a "GO-LED"\\
-• track and count the number of people presently in the room. Events and head-counts are transferred to IC S3 using a three-wire-Interface and via a UART to a PC. \\
-• The transmission to the PC is 9600 baud, 8 bit, no parity, 1 stop bit. \\
-On the PC side, get the information and display it. The programming language is
-C++.\\
-
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.3]{../png/top.png}
-	fig: Top level diagram\\
-\end{figure}
-
-\newpage
-
- Table: Top level I/O \\
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline
-		rst\_n\_i & IN & 1 & Reset, active low \\
-		\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		s1\_i & IN & 3 & Sensor 1 \\
-		\hline
-		s2\_i & IN & 1 & Sensor 2 \\
-		\hline
-		s3\_i & IN & 1 & Sensor 3 \\
-		\hline
-		rst\_n\_o & OUT & 1 & Reset state LED \\
-		\hline
-		sec\_o & OUT & 1 & Pulse LED \\
-		\hline
-		grn\_o & OUT & 1 & Green LED \\
-		\hline
-		red\_o & OUT & 1 & Red LED\\
-		\hline
-		tled\_o & OUT & 1 & Transmission LED \\
-		\hline
-		txd\_o & OUT & 1 & Transmission \\
-		\hline
-		sdi\_o & OUT & 1 & S3 data value \\
-		\hline
-		sdv\_o & OUT & 1 & S3 data valid \\
-		\hline
-		stx\_o & OUT & 1 & S3 transmission active \\
-		\hline
-	\end{tabular}
-\end{center}
-
-\newpage
-
-Blocks of Top Level diagram and its Pin and Sifnal are described below. 
-
-\section{Debouncing all Signals}	
+\section{debnc: Signal Debouncing}
+This module debounces three incomming signals into unbounced pulsed signals.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/debnc_deb.png}
-	\newline
-	fig: debnc\_deb \\
+	\caption{debnc\_deb}
 \end{figure}
-
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-	  rst\_n\_i & IN & 1 & Reset, active low\\
+	  rst\_n\_i & IN & 1 & Reset, active low \\
 	  \hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
@@ -283,17 +249,50 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 
 \newpage
 
-\subsection{Signal Toggle}
+\subsection{dbpul: Pulse Debouncer}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/toggl_tgl.png}
-	\newline
-	fig: toggle\_tgl \\
+	\includegraphics[scale=0.3]{../png/dbpul_db2.png}
+	\caption{dbpul\_db2}
 \end{figure}
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+  	rst\_n\_i & IN & 1 &  Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		unb\_i & IN & 1 & Unbounced Input \\
+		\hline
+		deb\_o & OUT & 1 & Debounced Output \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\hline
+	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\hline
+	debounce\_width & integer & Duration of debouncing (vector size) \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\section{toggl: Signal Toggle}
+This module works as a flipflop. Every time it gets a impulse the output toggles.
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/toggl_tgl.png}
+	\caption{toggle\_tgl}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
 	  rst\_n\_i & IN & 1 & Reset, active low \\
 	  \hline
@@ -305,19 +304,20 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
-\subsection{Generates Clock Rates}
+
+\section{clkrt: Clock Rate Generator}
+This module generates an 1Hz signal as well as an 9600Hz baud rate.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.3]{../png/clkrt_rts.png}
-	\newline
-	fig : clkrt\_rts \\
+	\caption{clkrt\_rts}
 \end{figure}
-
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
@@ -332,17 +332,55 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 
 \newpage
 
-\subsection{Sensor Handling}
+\subsection{clkgn: Clock Generator}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/trigr_tri.png}
-	\newline
-	fig: trigr\_tri \\
+	\includegraphics[scale=0.2]{../png/clkgn_cbr.png}
+	\caption{clkgn\_cbr}
+\end{figure}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/clkgn_csc.png}
+	\caption{clkgn\_csc}
 \end{figure}
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+  	rst\_n\_i & IN & 1 & Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		res\_o & OUT & 1 & Resulting Ticks \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\hline
+	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\hline
+	cnt\_width & integer & Counter bit vector \\
+	\hline
+	div\_cnt & integer & Clock cycle durations \\	
+	\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\section{trigr: Sensor Handling}
+This module handles the debounced and pulsed sensor inputs and detects the events.
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/trigr_tri.png}
+	\caption{trigr\_tri}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
@@ -360,19 +398,50 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
 
-\subsection{HeadCounter}
+\subsection*{trigr - Finite State Machine}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.4]{../png/trigger.png}
+	\caption{Trigger FSM}
+\end{figure}
+\begin{center}
+ \begin{tabular}{| p{4cm} | p{7cm} |}
+	 \hline
+	 \textbf{State Name} & \textbf{Description} \\
+	 \hline
+	 init\_st & wait for either sensor 1 or sensor 2 triggered \\
+	 \hline
+	 ewt1\_st & someone entering, sensor 1 triggered wait for sensor 2 \\
+	 \hline
+	 lwt1\_st & someone leaving, sensor 3 triggered wait for sensor 2 \\
+	 \hline
+	 ewt2\_st & someone entering, sensor 2 triggered wait for sensor 3 \\
+	 \hline
+	 lwt2\_st & someone leaving, sensor 2 triggered wait for sensor 1 \\
+	 \hline
+	 ewt3\_st & someone entering, sensor 3 triggered -> back to init \\
+	 \hline
+	 lwt3\_st & someone leaving, sensor 1 triggered -> back to init \\
+	 \hline
+ \end{tabular}
+\end{center}
+
+\newpage
+
+\section{hdcnt: HeadCounter}
+This module stores the current number of people in the room. It increments or decrements the number if needed. Additionally it indecates if min or max number of people is reached.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/hdcnt_hdc.png}
-	\newline
-	fig: hdcnt\_hdc \\
+	\caption{hdcnt\_hdc}
 \end{figure}
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
@@ -402,19 +471,19 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 	\end{tabular}	
 \end{center}
 
-
 \newpage
-\subsection{ControllFSM}
+
+\section{cntrl: Controller}
+This module controls the whole system and decides what to do next.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/cntrl_con.png}
-	\newline
-	fig: cntrl\_con \\
+	\caption{cntrl\_con}
 \end{figure}
 \begin{center}
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
@@ -441,342 +510,11 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 
 \newpage
 
-\subsection{UART to PC}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.3]{../png/uatpc_uar.png}
-	\newline
-	fig: uatpc\_uar\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
-  	rst\_n\_i & IN & 1 & Reset, active low\\
-  	\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		br\_i & IN & 1 & Baud rate \\
-		\hline
-		sub\_i & IN & 1 & Submitt/Send Data \\
-		\hline
-		num\_i & IN &  & Head count number \\
-		\hline
-		txd\_o & OUT & 1 & Serial output \\
-		\hline
-	\end{tabular}
-\end{center}
-
-\newpage
-
-\subsection{Interface to S3}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.3]{../png/infs3_inf.png}
-	\newline
-	fig: infs3\_inf\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
-  	rst\_n\_i & IN & 1 & Reset, active low \\
-  	\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		sub\_i & IN & 1 & Submitt/Send Data \\
-		\hline
-		evt\_i & IN & 1 &  Occured event char \\
-		\hline
-		num\_i & IN & 1 & Head count number \\
-		\hline
-		sdi\_o & OUT & 1 & S3 data value \\
-		\hline
-		sdv\_o & OUT & 1 & S3 data valid \\
-		\hline
-		stx\_o & OUT & 1 & S3 transmission active\\
-		\hline
-	\end{tabular}
-\end{center}
-
-\newpage
-
-Lower Level Modules are described below.\\
-\subsection{Debounc Input resulting in Pulse}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.3]{../png/dbpul_db2.png}
-	\newline
-	fig: dbpul\_db2\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
-  	rst\_n\_i & IN & 1 &  Reset, active low \\
-  	\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		unb\_i & IN & 1 & Unbounced Input \\
-		\hline
-		deb\_o & OUT & 1 & Debounced Output \\
-		\hline
-	\end{tabular}
-\end{center}
-\newpage
-\subsection{Clock Generator}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/clkgn_cbr.png}
-	\newline
-	fig: clkgn\_cbr\\
-\end{figure}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/clkgn_csc.png}
-	\newline
-	fig: clkgn\_csc\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
-  	rst\_n\_i & IN & 1 & Reset, active low \\
-  	\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		res\_o & OUT & 1 & Resulting Ticks \\
-		\hline
-		
-	\end{tabular}
-\end{center}
-\begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
-	\hline
-	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
-	\hline
-	cnt\_width & integer & \\
-	\hline
-	div\_cnt & integer & \\	
-	\hline
-	\end{tabular}	
-\end{center}
-
-
-\newpage
-
-\subsection{Finite State Machine for UART}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/utfsm_fsm.png}
-	\newline
-	fig: utfsm\_fsm\\
-\end{figure}
-
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
-		rst\_n\_i & IN & 1 & Reset, active low \\
-		\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		dv\_i  & IN & 1 & Have new RTC or GPS-Data \\
-		\hline
-		br\_i  & IN & 1 & Baud-Rate to ena Counter \\
-		\hline
-		dne\_i & IN & 1 & Last Bit transmitted \\
-		\hline
-		sto\_o & OUT & 1 & enable register load \\
-		\hline
-		clr\_o & OUT & 1 & clear Bit-Counters \\
-		\hline
-		nxt\_o & OUT & 1 & next Bit, inc count \\
-		\hline
-		
-	\end{tabular}
-\end{center}
-
-\newpage
-
-\subsection{Register to store bits}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.1]{../png/regsr_reg.png}
-	\newline
-	fig: regsr\_reg\\
-\end{figure}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.1]{../png/regsr_rge.png}
-	\newline
-	fig: regsr\_rge\\
-\end{figure}
-\newpage
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/regsr_rgn.png}
-	\newline
-	fig: regsr\_rgn\\
-\end{figure}
-dta\_width : integer\\
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
- 		rst\_n\_i & IN & 1 & Reset, active low \\
- 		\hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		en\_i & IN & 1 & Store Data \\
-		\hline
-		d\_i & IN & 1 & Input Data \\
-		\hline
-		q\_o & OUT & 1 & Stored Data \\
-		\hline
-		
-	\end{tabular}
-\end{center}
-
-
-
-\newpage
-\subsection{Binary Counter}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
-	\newline
-	fig:ctbin\_cnt\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
-		\hline
-		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
-		\hline
- 		cnt\_width & integer & \\
-		\hline
-		cnt\_max & integer & \\
-		\hline
-	\end{tabular}	
-\end{center}
-
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
- 		 rst\_n\_i & IN & 1 & Reset, active low \\
- 		 \hline
-		clk\_i & IN & 1 & Syscp, @ 12MHz \\
-		\hline
-		en\_i & IN & 1 & Enable Count \\
-		\hline
-		cl\_i & IN & 1 & Clear Counter \\
-		\hline
-		co\_o & OUT & 1 & Carry Out \\
-		\hline
-		q\_o & OUT & 1 & Counter Value \\
-		\hline
-		
-	\end{tabular}
-\end{center}
-\newpage
-
-\subsection{Multiplexer for TXD}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/mxtxd_mxp.png}
-	\newline
-	fig:mxtxd\_mxp\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline
-		s\_i & IN & X & Bit position \\
-		\hline
-		d\_i & IN & X & Bit vector \\
-		\hline
-		txd\_o & OUT & 1 & Txd, Serial Output \\
-		\hline	
-		
-	\end{tabular}
-\end{center} 
-\subsection{Finite State Machine for Interface to S3}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/iffsm_fsm.png}
-	\newline
-	fig:iffsm\_fsm\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline
-		rst\_n\_i & IN &  & Reset, active low \\
-		\hline
-		clk\_i & IN &  & Syscp, @ 12MHz \\
-		\hline
-		dv\_i & IN &  & Have new RTC or GPS-Data \\
-		\hline
-		dne\_i & IN &  & Last Bit transmitted \\
-		\hline
-		ldr\_o & OUT &  & Enable register load \\
-		\hline
-		act\_o & OUT &  & Transmission active \\
-		\hline
-		vld\_o & OUT &  & Data Bit valid \\
-		\hline
-		clr\_o & OUT &  & Clear Bit-Counters \\
-		\hline
-		nxt\_o & OUT &  & Next Bit, inc count \\
-		\hline
-		
-	\end{tabular}
-	\end{center}
-\subsection{Multiplexer for Interface to S3}
-\begin{figure}[h]
-	\centering	
-	\includegraphics[scale=0.2]{../png/mxsnd_mxp.png}
-	\newline
-	fig:mxsnd\_mxp\\
-\end{figure}
-\begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
-		\hline
-		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline
-		s\_i & IN &  & Bit position \\
-		\hline
-		d\_i & IN &  &  Bit vector \\
-		\hline	
-		txd\_o & OUT &  & txd, Serial Output \\
-		\hline
-		
-	\end{tabular}
-\end{center}
-
-\newpage
-
-\section{State Diagrams}
-The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 are given below\\
-
-\newpage
-
-\subsection{Control Fsm}
+\subsection*{cntrl Finite State Machine}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/Control.png}
-	\newline
-	fig: Control FSM\\
+	\caption{Control FSM}
 \end{figure}
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
@@ -808,88 +546,170 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
  \end{tabular}
 \end{center}
 
+\newpage
+
+\section{uatpc: UART to PC}
+This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate, 8 bit, no parity and 1 stop bit.
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.3]{../png/uatpc_uar.png}
+	\caption{uatpc\_uar}
+\end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Source State& Destination State & Condition \\
-		\hline
-		ewt1\_st & ewt2\_st & (!s3\_i).(!s1\_i).(s2\_i) \\
-		\hline
-		ewt1\_st & ewt1\_st  & (!s3\_i).(!s1\_i).(!s3\_i)+(!s3\_i).(s1\_i)+(s3\_i) \\
-		\hline
-		ewt2\_st & ewt3\_st & (s3\_i).(!s1\_i).(!s2\_i)\\
-		\hline
-		ewt2\_st & ewt2\_st & (!s3\_i)+(s3\_i).(!s1\_i)+(s3\_i).(s1\_i)\\
-		\hline
-		ewt3\_st & init\_st & \\
-		\hline
-		init\_st & ewt1\_st & (!s3\_i).(s1\_i).(!s2\_i)\\
-		\hline
-		init\_st & lwt1\_st & (s3\_i).(!s1\_i).(!s2\_i)\\
-		\hline
-		init\_st & init\_st & (!s3\_i).(!s1\_i)+(!s3\_i).(s1\_i).(s2\_i)+(s3\_i).(!s3\_i).(s2\_i)+(s3\_i).(s1\_i)\\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		lwt1\_st & lwt2\_st & (!s3\_i).(!s1\_i).(!s2\_i)\\
-		\hline	
-		lwt1\_st & lwt1\_st & (!s3\_i).(!s1\_i).(!s2\_i)+ (!s3\_i).(s1\_i)+(s3\_i)\\
+  	rst\_n\_i & IN & 1 & Reset, active low\\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		lwt2\_st & lwt3\_st & (!S3\_i).(s1\_i).(!s2\_i) \\
+		br\_i & IN & 1 & Baud rate \\
 		\hline
-		lwt2\_st & lwt2\_st & (!s3\_i).(!s1\_i)+(!s3\_i)(s1\_i).(s2\_i)+(s3\_i) \\
+		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		lwt3\_st & init\_st  & \\
-		\hline	
+		num\_i & IN &  & Head count number \\
+		\hline
+		txd\_o & OUT & 1 & Serial output \\
+		\hline
 	\end{tabular}
 \end{center}
 
 \newpage
 
-\subsection{Trigger Fsm}
+\subsection{regsr: Register to store bits}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.4]{../png/Trigger.png}
-	\newline
-	fig: Trigger FSM\\
+	\includegraphics[scale=0.1]{../png/regsr_reg.png}
+	\caption{regsr\_reg}
 \end{figure}
 \begin{center}
- \begin{tabular}{| p{4cm} | p{7cm} |}
-	 \hline
-	 \textbf{State Name} & \textbf{Description} \\
-	 \hline
-	 init\_st & wait for either sensor 1 or sensor 2 triggered \\
-	 \hline
-	 ewt1\_st & someone entering, sensor 1 triggered wait for sensor 2 \\
-	 \hline
-	 lwt1\_st & someone leaving, sensor 3 triggered wait for sensor 2 \\
-	 \hline
-	 ewt2\_st & someone entering, sensor 2 triggered wait for sensor 3 \\
-	 \hline
-	 lwt2\_st & someone leaving, sensor 2 triggered wait for sensor 1 \\
-	 \hline
-	 ewt3\_st & someone entering, sensor 3 triggered -> back to init \\
-	 \hline
-	 lwt3\_st & someone leaving, sensor 1 triggered -> back to init \\
-	 \hline
- \end{tabular}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+ 		rst\_n\_i & IN & 1 & Reset, active low \\
+ 		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		en\_i & IN & 1 & Store Data \\
+		\hline
+		d\_i & IN & 1 & Input Data \\
+		\hline
+		q\_o & OUT & 1 & Stored Data \\
+		\hline
+	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\hline
+	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\hline
+	dta\_width & integer & Data bit vector size \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection{ctbin: Binary Counter}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
+	\caption{ctbin\_cnt}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Source State& Destination State & Condition \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		
-			
+ 		 rst\_n\_i & IN & 1 & Reset, active low \\
+ 		 \hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		en\_i & IN & 1 & Enable Count \\
+		\hline
+		cl\_i & IN & 1 & Clear Counter \\
+		\hline
+		co\_o & OUT & 1 & Carry Out \\
+		\hline
+		q\_o & OUT & 1 & Counter Value \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+		\hline
+		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+		\hline
+ 		cnt\_width & integer & Counter bit vector size \\
+		\hline
+		cnt\_max & integer & Trigger number \\
+		\hline
 	\end{tabular}	
 \end{center}
 
 \newpage
 
-\subsection{Uart Fsm}
+\subsection{mxtxd: Multiplexer for TXD}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/mxtxd_mxp.png}
+	\caption{mxtxd\_mxp}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
+		s\_i & IN & X & Bit position \\
+		\hline
+		d\_i & IN & X & Bit vector \\
+		\hline
+		txd\_o & OUT & 1 & Txd, Serial Output \\
+		\hline
+	\end{tabular}
+\end{center} 
+
+\newpage
+
+\subsection{utfsm: Finite State Machine for UART}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/utfsm_fsm.png}
+	\caption{utfsm\_fsm}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		dv\_i  & IN & 1 & Have new RTC or GPS-Data \\
+		\hline
+		br\_i  & IN & 1 & Baud-Rate to ena Counter \\
+		\hline
+		dne\_i & IN & 1 & Last Bit transmitted \\
+		\hline
+		sto\_o & OUT & 1 & enable register load \\
+		\hline
+		clr\_o & OUT & 1 & clear Bit-Counters \\
+		\hline
+		nxt\_o & OUT & 1 & next Bit, inc count \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection*{Uart Fsm}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.5]{../png/Uart.png}
-	\newline
-	fig: Uart FSM\\
+	\caption{Uart FSM}
 \end{figure}
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
@@ -906,24 +726,183 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	 \hline
  \end{tabular}
 \end{center}
+
+\newpage
+
+\section{infs3: Interface to S3}
+This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes the current event as well as the number of people in the room.
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.3]{../png/infs3_inf.png}
+	\caption{infs3\_inf}
+\end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Source State& Destination State & Condition \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		
-		
+  	rst\_n\_i & IN & 1 & Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		sub\_i & IN & 1 & Submitt/Send Data \\
+		\hline
+		evt\_i & IN & 1 &  Occured event char \\
+		\hline
+		num\_i & IN & 1 & Head count number \\
+		\hline
+		sdi\_o & OUT & 1 & S3 data value \\
+		\hline
+		sdv\_o & OUT & 1 & S3 data valid \\
+		\hline
+		stx\_o & OUT & 1 & S3 transmission active\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection{regsr: Register to store bits}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.1]{../png/regsr_rge.png}
+	\caption{regsr\_rge}
+\end{figure}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/regsr_rgn.png}
+	\caption{regsr\_rgn}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+ 		rst\_n\_i & IN & 1 & Reset, active low \\
+ 		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		en\_i & IN & 1 & Store Data \\
+		\hline
+		d\_i & IN & 1 & Input Data \\
+		\hline
+		q\_o & OUT & 1 & Stored Data \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\hline
+	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\hline
+	dta\_width & integer & Data bit vector size \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection{ctbin: Binary Counter}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
+	\caption{ctbin\_cnt}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+ 		 rst\_n\_i & IN & 1 & Reset, active low \\
+ 		 \hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		en\_i & IN & 1 & Enable Count \\
+		\hline
+		cl\_i & IN & 1 & Clear Counter \\
+		\hline
+		co\_o & OUT & 1 & Carry Out \\
+		\hline
+		q\_o & OUT & 1 & Counter Value \\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+		\hline
+		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+		\hline
+ 		cnt\_width & integer & Counter bit vector size \\
+		\hline
+		cnt\_max & integer & Trigger number \\
+		\hline
 	\end{tabular}	
 \end{center}
 
 \newpage
 
-\subsection{ifs\_3 Fsm}
+\subsection{mxsnd: Multiplexer for Interface to S3}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.4]{../png/ifs_3.png}
-	\newline
-	fig: ifs\_3 FSM\\
+	\includegraphics[scale=0.2]{../png/mxsnd_mxp.png}
+	\caption{mxsnd\_mxp}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
+		s\_i & IN &  & Bit position \\
+		\hline
+		d\_i & IN &  &  Bit vector \\
+		\hline	
+		txd\_o & OUT &  & txd, Serial Output \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection{iffsm: Finite State Machine for Interface to S3}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.2]{../png/iffsm_fsm.png}
+	\caption{iffsm\_fsm}
+\end{figure}
+\begin{center}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
+		rst\_n\_i & IN &  & Reset, active low \\
+		\hline
+		clk\_i & IN &  & Syscp, @ 12MHz \\
+		\hline
+		dv\_i & IN &  & Have new RTC or GPS-Data \\
+		\hline
+		dne\_i & IN &  & Last Bit transmitted \\
+		\hline
+		ldr\_o & OUT &  & Enable register load \\
+		\hline
+		act\_o & OUT &  & Transmission active \\
+		\hline
+		vld\_o & OUT &  & Data Bit valid \\
+		\hline
+		clr\_o & OUT &  & Clear Bit-Counters \\
+		\hline
+		nxt\_o & OUT &  & Next Bit, inc count \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\newpage
+
+\subsection*{ifs3 Fsm}
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.5]{../png/ifs3.png}
+	\caption{ifs3 FSM}
 \end{figure}
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
@@ -944,14 +923,6 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	 \hline
  \end{tabular}
 \end{center}
-\begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
-		\hline
-		Source State& Destination State & Condition \\
-		\hline	
-		
-	\end{tabular}	
-\end{center}
 
 \newpage
 
@@ -961,8 +932,7 @@ The program is asking for a port number (between 0 and 10) and tries to open the
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.8]{../png/program.png}
-	\newline
-	fig: program\\
+	\caption{C++ Program Console}
 \end{figure}
 \begin{center}
 	\begin{tabular}{|l|c|c|r|}

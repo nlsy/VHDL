@@ -1,27 +1,25 @@
 \BOOKMARK [0][-]{chapter.1}{General description}{}% 1
 \BOOKMARK [0][-]{chapter.2}{Requirements}{}% 2
-\BOOKMARK [0][-]{chapter.3}{Top Level View}{}% 3
-\BOOKMARK [0][-]{chapter.4}{VHDL Design}{}% 4
-\BOOKMARK [1][-]{section.4.1}{Debouncing all Signals}{chapter.4}% 5
-\BOOKMARK [2][-]{subsection.4.1.1}{Signal Toggle}{section.4.1}% 6
-\BOOKMARK [2][-]{subsection.4.1.2}{Generates Clock Rates}{section.4.1}% 7
-\BOOKMARK [2][-]{subsection.4.1.3}{Sensor Handling}{section.4.1}% 8
-\BOOKMARK [2][-]{subsection.4.1.4}{HeadCounter}{section.4.1}% 9
-\BOOKMARK [2][-]{subsection.4.1.5}{ControllFSM}{section.4.1}% 10
-\BOOKMARK [2][-]{subsection.4.1.6}{UART to PC}{section.4.1}% 11
-\BOOKMARK [2][-]{subsection.4.1.7}{Interface to S3}{section.4.1}% 12
-\BOOKMARK [2][-]{subsection.4.1.8}{Debounc Input resulting in Pulse}{section.4.1}% 13
-\BOOKMARK [2][-]{subsection.4.1.9}{Clock Generator}{section.4.1}% 14
-\BOOKMARK [2][-]{subsection.4.1.10}{Finite State Machine for UART}{section.4.1}% 15
-\BOOKMARK [2][-]{subsection.4.1.11}{Register to store bits}{section.4.1}% 16
-\BOOKMARK [2][-]{subsection.4.1.12}{Binary Counter}{section.4.1}% 17
-\BOOKMARK [2][-]{subsection.4.1.13}{Multiplexer for TXD}{section.4.1}% 18
-\BOOKMARK [2][-]{subsection.4.1.14}{Finite State Machine for Interface to S3}{section.4.1}% 19
-\BOOKMARK [2][-]{subsection.4.1.15}{Multiplexer for Interface to S3}{section.4.1}% 20
-\BOOKMARK [1][-]{section.4.2}{State Diagrams}{chapter.4}% 21
-\BOOKMARK [2][-]{subsection.4.2.1}{Control Fsm}{section.4.2}% 22
-\BOOKMARK [2][-]{subsection.4.2.2}{Trigger Fsm}{section.4.2}% 23
-\BOOKMARK [2][-]{subsection.4.2.3}{Uart Fsm}{section.4.2}% 24
-\BOOKMARK [2][-]{subsection.4.2.4}{ifs\1373 Fsm}{section.4.2}% 25
-\BOOKMARK [0][-]{chapter.5}{Program Design}{}% 26
-\BOOKMARK [0][-]{chapter.6}{Repository - Download}{}% 27
+\BOOKMARK [0][-]{chapter.3}{Architecture Concepts}{}% 3
+\BOOKMARK [0][-]{chapter.4}{Top Level View}{}% 4
+\BOOKMARK [0][-]{chapter.5}{VHDL Design}{}% 5
+\BOOKMARK [1][-]{section.5.1}{debnc: Signal Debouncing}{chapter.5}% 6
+\BOOKMARK [2][-]{subsection.5.1.1}{dbpul: Pulse Debouncer}{section.5.1}% 7
+\BOOKMARK [1][-]{section.5.2}{toggl: Signal Toggle}{chapter.5}% 8
+\BOOKMARK [1][-]{section.5.3}{clkrt: Clock Rate Generator}{chapter.5}% 9
+\BOOKMARK [2][-]{subsection.5.3.1}{clkgn: Clock Generator}{section.5.3}% 10
+\BOOKMARK [1][-]{section.5.4}{trigr: Sensor Handling}{chapter.5}% 11
+\BOOKMARK [1][-]{section.5.5}{hdcnt: HeadCounter}{chapter.5}% 12
+\BOOKMARK [1][-]{section.5.6}{cntrl: Controller}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.7}{uatpc: UART to PC}{chapter.5}% 14
+\BOOKMARK [2][-]{subsection.5.7.1}{regsr: Register to store bits}{section.5.7}% 15
+\BOOKMARK [2][-]{subsection.5.7.2}{ctbin: Binary Counter}{section.5.7}% 16
+\BOOKMARK [2][-]{subsection.5.7.3}{mxtxd: Multiplexer for TXD}{section.5.7}% 17
+\BOOKMARK [2][-]{subsection.5.7.4}{utfsm: Finite State Machine for UART}{section.5.7}% 18
+\BOOKMARK [1][-]{section.5.8}{infs3: Interface to S3}{chapter.5}% 19
+\BOOKMARK [2][-]{subsection.5.8.1}{regsr: Register to store bits}{section.5.8}% 20
+\BOOKMARK [2][-]{subsection.5.8.2}{ctbin: Binary Counter}{section.5.8}% 21
+\BOOKMARK [2][-]{subsection.5.8.3}{mxsnd: Multiplexer for Interface to S3}{section.5.8}% 22
+\BOOKMARK [2][-]{subsection.5.8.4}{iffsm: Finite State Machine for Interface to S3}{section.5.8}% 23
+\BOOKMARK [0][-]{chapter.6}{Program Design}{}% 24
+\BOOKMARK [0][-]{chapter.7}{Repository - Download}{}% 25

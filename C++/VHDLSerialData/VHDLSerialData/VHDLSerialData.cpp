@@ -8,15 +8,33 @@ const int maxPepole = 3;
 
 int main()
 {
+    // Get COM-Port
+    char ComPortNum = '5';
+    char ComPorts[9] = "\\\\.\\COM5";
+
+    cout << "Enter COM-PORT Number (standard \"COM5\"): ";
+    cin >> ComPortNum;
+    cout << "\n";
+
+    if ((int)ComPortNum < 48 || (int)ComPortNum > 57)
+        ComPortNum = '5';
+
+    ComPorts[7] = ComPortNum;
+
+    cout << "Opening Port: " << ComPorts << "\n";
+
     // Open serial port
     HANDLE serialHandle;
+    serialHandle = CreateFileA(ComPorts, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    serialHandle = CreateFileA("\\\\.\\COM5", GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+    cout << "--------------------------\n";
 
     if (serialHandle == INVALID_HANDLE_VALUE)   //Check Connection
         cout << "Error in opening serial port\n";
     else
         cout << "opening serial port successful\n";
+
+    cout << "--------------------------\n\n";
 
     // Do some basic settings
     DCB serialParams = { 0 };
@@ -53,12 +71,24 @@ int main()
 
         if (TempChar != OLD) {  //Compare Current Value with Old one
             cout << time(0) << " " << (int)TempChar << "\n";
-            if(OLD > TempChar)
+            if (OLD > TempChar) {
                 cout << "Someone LEFT\n";
-            else if(OLD < TempChar)
+                // beep sound - HIGH, LOW
+                Beep(1500, 1000); // HIGH Pitch
+                Beep( 500, 1000); // LOW Pitch
+            }
+            else if (OLD < TempChar) {
                 cout << "Someone ENTERED\n";
-            if(TempChar >= maxPepole)
+                // beep sound - LOW, HIGH
+                Beep( 500, 1000); // LOW Pitch
+                Beep(1500, 1000); // HIGH Pitch
+            }
+            if (TempChar >= maxPepole) {
                 cout << "Max. number of People is reached\n";
+                // beep sound - MEDIUM, MEDIUM
+                Beep(1000, 1000); // MEDIUM Pitch
+                Beep(1000, 1000); // MEDIUM Pitch
+            }
         }
         OLD = TempChar;     //Save current number
     }
