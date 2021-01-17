@@ -25,3 +25,4 @@
 \contentsline {subsection}{\numberline {4.2.2}Trigger Fsm}{29}{}%
 \contentsline {subsection}{\numberline {4.2.3}Uart Fsm}{30}{}%
 \contentsline {subsection}{\numberline {4.2.4}ifs\_3 Fsm}{31}{}%
+\contentsline {chapter}{\numberline {5}PC Program}{32}{}%

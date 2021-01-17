@@ -27,20 +27,22 @@
 
 \newpage
 
-\textbf{History - Change Log} \\
-\line(1,0){400}
-\begin{flushleft}
-	Target Spec. Current version: 1.0, 2021-01-17 \\
-\hspace{2.2cm}	Previous version: 0.1, 2020-11-9 \\
-\line(1,0){400} \\
-\hspace{2.2cm}	17.01.2021 \hfill FiniteStateMachines added \\
-\hspace{2.2cm}	17.01.2021 \hfill Block diagrams created and updated \\
-\hspace{2.2cm}	17.01.2021 \hfill Block descriptions added \\
-\hspace{2.2cm}	06.11.2020 \hfill General description added \\
-\hspace{2.2cm}	06.11.2020 \hfill Block diagram added \\
-\hspace{2.2cm}	06.11.2020 \hfill Functional description added \\
-\hspace{2.2cm}	06.11.2020 \hfill Document created
-\end{flushleft}
+\begin{center}
+	\begin{tabular}{llr}
+		\multicolumn{3}{l}{\textbf{History - Change Log}} \\
+		\hline
+		Target Spec. & \multicolumn{2}{l}{Current version: 1.0, 2021-01-17} \\
+		& \multicolumn{2}{l}{Previous version: 0.1, 2020-11-9} \\
+		\hline
+		&	17.01.2021 & FiniteStateMachines added \\
+		&	17.01.2021 & Block diagrams created and updated \\
+		&	17.01.2021 & Block descriptions added \\
+		&	06.11.2020 & General description added \\
+		&	06.11.2020 & Block diagram added \\
+		&	06.11.2020 & Functional description added \\
+		&	06.11.2020 & Document created
+	\end{tabular}
+\end{center}
 
 \newpage
 
@@ -64,9 +66,9 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 \begin{center}
 	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
 		\hline
-		\textbf{ID} & \textbf{Requirement} & \textbf{Importance} & \textbf{Verifiable} & \textbf{Description}\\
+		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description}\\
 		\hline
-		\textbf{General} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{General}} \\
 		\hline
 		G01 & Gen.: \#persons &  High &  Testbench & The number of persons in a room must be known. \\
 		\hline
@@ -78,7 +80,7 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		G05 & Gen.: only one door & High & ? & Only one door exists. \\
 		\hline
-		\textbf{Sound} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{Sound}} \\
 		\hline
 		S01 & Sound: entered & High & Testbench & A person entered the room, play a unique sound. \\
 		\hline
@@ -86,7 +88,7 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		S03 & Sound: stop & High & Testbench & The room is full, play a unique sound. \\
 		\hline
-		\textbf{LED} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{LED}} \\
 		\hline
 		LED01 & LED: red &  High & Testbench & The maximal number of persons reached. \\
 		\hline
@@ -97,9 +99,9 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 \begin{center}
 	\begin{tabular}{|p{1.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{6cm}|}
 		\hline
-		\textbf{ID} & \textbf{Requirement} & \textbf{Importance} & \textbf{Verifiable} & \textbf{Description}\\
+		\textbf{ID} & \textbf{Requirement} & \textbf{Priority} & \textbf{Verifiable} & \textbf{Description}\\
 		\hline
-		\textbf{UART} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{UART}} \\
 		\hline
 		UART01 & UART: 9600 baud & High &  Testbench & The speed of the serial transmission should be set to 9600 baud. \\
 		\hline
@@ -113,11 +115,11 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 		\hline
 		UART06 & UART: \#persons & High &  Testbench &  The \#persons should be transmitted to a PC. \\
 		\hline
-		\textbf{PC} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{PC}} \\
 		\hline	
 		PC01 & PC: language & Medium & C++-program &  The information should be displayed on a PC, the language is C++. \\
 		\hline
-		\textbf{IC\_S3} & & & & \\
+		\multicolumn{5}{|l|}{\textbf{IC\_S3}} \\
 		\hline
 		IC01 & IC\_S3: interface & Low & Testbench & Use a three wire IF. \\
 		\hline
@@ -182,39 +184,38 @@ C++.\\
 
  Table: Top level I/O \\
 \begin{center}
-	\begin{tabular}{ |p{2cm}|p{2cm}|p{1cm}|p{5cm}| } 
-	\hline
-	Pin & Direction & Width & Explanation \\
-	\hline
-	rst\_n\_i & IN & 1 & Reset, active low \\
-	\hline
-	clk\_i & IN & 1 & Syscp, @ 12MHz \\
-	\hline
-	s1\_i & IN & 3 & Sensor 1 \\
-	\hline
-	s2\_i & IN & 1 & Sensor 2 \\
-	\hline
-	s3\_i & IN & 1 & Sensor 3 \\
-	\hline
-	rst\_n\_o & OUT & 1 & Reset state LED \\
-	\hline
-	sec\_o & OUT & 1 & Pulse LED \\
-	\hline
-	grn\_o & OUT & 1 & Green LED \\
-	\hline
-	red\_o & OUT & 1 & Red LED\\
-	\hline
-	tled\_o & OUT & 1 & Transmission LED \\
-	\hline
-	txd\_o & OUT & 1 & Transmission \\
-	\hline
-	sdi\_o & OUT & 1 & S3 data value \\
-	\hline
-	sdv\_o & OUT &  1& S3 data valid \\
-	\hline
-	stx\_o & OUT & 1 & S3 transmission active \\
-	\hline
-	
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		s1\_i & IN & 3 & Sensor 1 \\
+		\hline
+		s2\_i & IN & 1 & Sensor 2 \\
+		\hline
+		s3\_i & IN & 1 & Sensor 3 \\
+		\hline
+		rst\_n\_o & OUT & 1 & Reset state LED \\
+		\hline
+		sec\_o & OUT & 1 & Pulse LED \\
+		\hline
+		grn\_o & OUT & 1 & Green LED \\
+		\hline
+		red\_o & OUT & 1 & Red LED\\
+		\hline
+		tled\_o & OUT & 1 & Transmission LED \\
+		\hline
+		txd\_o & OUT & 1 & Transmission \\
+		\hline
+		sdi\_o & OUT & 1 & S3 data value \\
+		\hline
+		sdv\_o & OUT & 1 & S3 data valid \\
+		\hline
+		stx\_o & OUT & 1 & S3 transmission active \\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -231,29 +232,31 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 \end{figure}
 
 \begin{center}
-	\begin{tabular}{ | p{2cm} | p{2cm} | c| p{4cm} |}
-	\hline
-	Pin & Direction & Width & Explanation\\
-	\hline
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
 	  rst\_n\_i & IN & 1 & Reset, active low\\
 	  \hline
-	clk\_i   & IN  & 1 & Syscp, @ 12MHz \\
-	\hline
-	ub1\_i   & IN  &  1 &Unbounced Input 1 \\
-	\hline
-	ub2\_i   & IN  & 1 &  Unbounced Input 2 \\
-	\hline
-	ub3\_i   & IN  &  1 & Unbounced Input 3 \\
-	\hline
-	db1\_o   & OUT &  1 & Debounced Output 1\\
-	\hline
-	db2\_o   & OUT &  1 & Debounced Output 2\\
-	\hline
-	db3\_o   & OUT &  1 & Debounced Output 3\\
-	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		ub1\_i & IN & 1 & Unbounced Input 1 \\
+		\hline
+		ub2\_i & IN & 1 & Unbounced Input 2 \\
+		\hline
+		ub3\_i & IN & 1 & Unbounced Input 3 \\
+		\hline
+		db1\_o & OUT & 1 & Debounced Output 1 \\
+		\hline
+		db2\_o & OUT & 1 & Debounced Output 2 \\
+		\hline
+		db3\_o & OUT & 1 & Debounced Output 3 \\
+		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
+
 \subsection{Signal Toggle}
 \begin{figure}[h]
 	\centering	
@@ -262,18 +265,18 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 	fig: toggle\_tgl \\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
-	\hline
-	Pin & Direction & Width & Explanation\\
-	\hline	
-	  rst\_n\_i & IN  & 1 &  Reset, active low\\
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+		\hline
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline	
+	  rst\_n\_i & IN & 1 & Reset, active low \\
 	  \hline
-	clk\_i & IN  & 1 & Syscp, @ 12MHz \\
-	\hline
-	sig\_i & IN   & 1 &  Pulseing signal\\
-	\hline
-	res\_o  & OUT   & 1 & Toggeled output\\
-	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		sig\_i & IN & 1 & Pulseing signal \\
+		\hline
+		res\_o & OUT & 1 & Toggeled output \\
+		\hline
 	\end{tabular}
 \end{center}
 \newpage
@@ -286,21 +289,23 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 \end{figure}
 
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		rst\_n\_i & IN & 1 &  Reset, active low\\
+		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		br\_o & OUT &   1    &  Baud Rate @9600Hz\\
+		br\_o & OUT & 1 & Baud Rate @9600Hz \\
 		\hline
-		hz\_o  &  OUT &   1  &  Alive Pulse @1Hz\\
+		hz\_o & OUT & 1 & Alive Pulse @1Hz \\
 		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
+
 \subsection{Sensor Handling}
 \begin{figure}[h]
 	\centering	
@@ -309,24 +314,24 @@ Blocks of Top Level diagram and its Pin and Sifnal are described below.
 	fig: trigr\_tri \\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-rst\_n\_i  & IN & 1 & Reset, active low \\
-\hline
-clk\_i   & IN  & 1 & Syscp, @ 12MHz \\
-\hline
-s1\_i    & IN   & 1 &  Sensor 1 \\
-\hline
-s2\_i    & IN & 1 & Sensor 2\\
-\hline
-s3\_i  &  IN  & 1 &   Sensor 3 \\
-\hline
-add\_o   &  OUT  & 1 &  Person entered \\
-\hline
-sub\_o   & OUT & 1 &  Person left \\
-\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		s1\_i & IN & 1 & Sensor 1 \\
+		\hline
+		s2\_i & IN & 1 & Sensor 2 \\
+		\hline
+		s3\_i & IN & 1 & Sensor 3 \\
+		\hline
+		add\_o & OUT & 1 & Person entered \\
+		\hline
+		sub\_o & OUT & 1 & Person left \\
+		\hline
 	\end{tabular}
 \end{center}
 \newpage
@@ -339,32 +344,32 @@ sub\_o   & OUT & 1 &  Person left \\
 	fig: hdcnt\_hdc \\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		rst\_n\_i &  IN  & 1 &  Reset, active low \\
+		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
-		clk\_i &   IN  & 1 &          Syscp, @ 12MHz\\
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		inc\_i  &  IN & 1 &           Increment Counter Signal\\
+		inc\_i & IN & 1 & Increment Counter Signal \\
 		\hline
-		dec\_i   & IN   & 1 &         Decrement Counter Signal\\
+		dec\_i & IN & 1 & Decrement Counter Signal \\
 		\hline
-		min\_o   & OUT  & 1 &         Min persons in room\\
+		min\_o & OUT & 1 & Min persons in room \\
 		\hline
-		max\_o   & OUT   & 1 &        Max persons in room\\
+		max\_o & OUT & 1 & Max persons in room \\
 		\hline
-		num\_o   & OUT &  & \\
+		num\_o & OUT &  & \\
 		\hline
 	\end{tabular}
 \end{center}
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
 		\hline
-		Generic & Type & Explanation \\
+		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
 		\hline
-		cnt\_width  & integer & \\
+		cnt\_width & integer & \\
 		\hline
 		max\_cnt & integer & \\
 		\hline
@@ -381,32 +386,33 @@ sub\_o   & OUT & 1 &  Person left \\
 	fig: cntrl\_con \\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-rst\_n\_i & IN & 1 & Reset, active low \\
-\hline
-clk\_i   & IN  &  1  & Syscp, @ 12MHz\\
-\hline
-add\_i   & IN  &   1  &         Person entered\\
-\hline
-sub\_i   & IN  &    1  &              Person left\\
-\hline
-min\_i   & IN  &     1  &                Min persons in room\\
-\hline
-max\_i   & IN  &      1  &               Max persons in room\\
-\hline
-inc\_o   & OUT &       1  &             Increment Counter Signal\\
-\hline
-dec\_o   & OUT &        1  &             Decrement Counter Signal\\
-\hline
-evt\_o   & OUT &		 & Happened event char\\
-\hline
-sub\_o   & OUT & 1  &     Submitt/Send Data\\
-\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
+		\hline
+		add\_i & IN & 1 & Person entered \\
+		\hline
+		sub\_i & IN & 1 & Person left \\
+		\hline
+		min\_i & IN & 1 & Min persons in room \\
+		\hline
+		max\_i & IN & 1 & Max persons in room \\
+		\hline
+		inc\_o & OUT & 1 & Increment Counter Signal \\
+		\hline
+		dec\_o & OUT & 1 & Decrement Counter Signal \\
+		\hline
+		evt\_o & OUT &  & Happened event char \\
+		\hline
+		sub\_o & OUT & 1 & Submitt/Send Data \\
+		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
 
 \subsection{UART to PC}
@@ -417,24 +423,25 @@ sub\_o   & OUT & 1  &     Submitt/Send Data\\
 	fig: uatpc\_uar\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-  		rst\_n\_i & IN & 1 & Reset, active low\\
-  		\hline
-		clk\_i & IN & 1 &  Syscp, @ 12MHz \\
+  	rst\_n\_i & IN & 1 & Reset, active low\\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		br\_i    & IN & 1 &      Baud rate \\
+		br\_i & IN & 1 & Baud rate \\
 		\hline
-		sub\_i   & IN & 1 &        Submitt/Send Data\\
+		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		num\_i   & IN  & &		Head count number\\
+		num\_i & IN &  & Head count number \\
 		\hline
-		txd\_o   & OUT & 1 &       Serial output \\
+		txd\_o & OUT & 1 & Serial output \\
 		\hline
 	\end{tabular}
 \end{center}
+
 \newpage
 
 \subsection{Interface to S3}
@@ -445,30 +452,31 @@ sub\_o   & OUT & 1  &     Submitt/Send Data\\
 	fig: infs3\_inf\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | c| p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction & Width & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-  		rst\_n\_i & IN & 1 & Reset, active low\\
-  		\hline
-		clk\_i   & IN  & 1 &  Syscp, @ 12MHz \\
+  	rst\_n\_i & IN & 1 & Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		sub\_i   & IN & 1 &   Submitt/Send Data \\
+		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		evt\_i   & IN  & 1 &  Occured event char \\
+		evt\_i & IN & 1 &  Occured event char \\
 		\hline
-		num\_i  &  IN & 1 & Head count number\\
+		num\_i & IN & 1 & Head count number \\
 		\hline
-		sdi\_o   & OUT &1 & S3 data value\\
+		sdi\_o & OUT & 1 & S3 data value \\
 		\hline
-		sdv\_o    & OUT&1 & S3 data valid\\
+		sdv\_o & OUT & 1 & S3 data valid \\
 		\hline
-		stx\_o   & OUT& 1& S3 transmission active\\
+		stx\_o & OUT & 1 & S3 transmission active\\
 		\hline
-	
-		\end{tabular}
+	\end{tabular}
 \end{center}
+
 \newpage
+
 Lower Level Modules are described below.\\
 \subsection{Debounc Input resulting in Pulse}
 \begin{figure}[h]
@@ -478,19 +486,18 @@ Lower Level Modules are described below.\\
 	fig: dbpul\_db2\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-  		rst\_n\_i & IN &  Reset, active low\\
-  		\hline
-		clk\_i   & IN   &  Syscp, @ 12MHz\\
+  	rst\_n\_i & IN & 1 &  Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		unb\_i   & IN   & Unbounced Input\\
+		unb\_i & IN & 1 & Unbounced Input \\
 		\hline
-		deb\_o   & OUT & Debounced Output \\
+		deb\_o & OUT & 1 & Debounced Output \\
 		\hline
-		
 	\end{tabular}
 \end{center}
 \newpage
@@ -508,15 +515,15 @@ Lower Level Modules are described below.\\
 	fig: clkgn\_csc\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-  		rst\_n\_i & IN & Reset, active low\\
-  		\hline
-		clk\_i   &IN & Syscp, @ 12MHz\\
+  	rst\_n\_i & IN & 1 & Reset, active low \\
+  	\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		res\_o   & OUT &Resulting Ticks\\
+		res\_o & OUT & 1 & Resulting Ticks \\
 		\hline
 		
 	\end{tabular}
@@ -524,7 +531,7 @@ Lower Level Modules are described below.\\
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
 	\hline
-	Generic & Type & Explanation \\
+	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
 	\hline
 	cnt\_width & integer & \\
 	\hline
@@ -545,29 +552,30 @@ Lower Level Modules are described below.\\
 \end{figure}
 
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
-		rst\_n\_i & IN  & Reset, active low\\
+		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
-		clk\_i   & IN  & Syscp, @ 12MHz \\
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		dv\_i    & IN  & Have new RTC or GPS-Data\\
+		dv\_i  & IN & 1 & Have new RTC or GPS-Data \\
 		\hline
-		br\_i    & IN  & Baud-Rate to ena Counter\\
+		br\_i  & IN & 1 & Baud-Rate to ena Counter \\
 		\hline
-		dne\_i   & IN  & Last Bit transmitted\\
+		dne\_i & IN & 1 & Last Bit transmitted \\
 		\hline
-		sto\_o   & OUT & enable register load\\
+		sto\_o & OUT & 1 & enable register load \\
 		\hline
-		clr\_o   & OUT & clear Bit-Counters\\
+		clr\_o & OUT & 1 & clear Bit-Counters \\
 		\hline
-		nxt\_o   & OUT & next Bit, inc count\\
+		nxt\_o & OUT & 1 & next Bit, inc count \\
 		\hline
 		
 	\end{tabular}
 \end{center}
+
 \newpage
 
 \subsection{Register to store bits}
@@ -592,19 +600,19 @@ Lower Level Modules are described below.\\
 \end{figure}
 dta\_width : integer\\
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
- 		 rst\_n\_i & IN &   Reset, active low\\
- 		 \hline
-		clk\_i   & IN  &      Syscp, @ 12MHz\\
+ 		rst\_n\_i & IN & 1 & Reset, active low \\
+ 		\hline
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		en\_i    & IN  &   Store Data\\
+		en\_i & IN & 1 & Store Data \\
 		\hline
-		d\_i     & IN  & Input Data\\
+		d\_i & IN & 1 & Input Data \\
 		\hline
-		q\_o     & OUT & Stored Data\\
+		q\_o & OUT & 1 & Stored Data \\
 		\hline
 		
 	\end{tabular}
@@ -623,7 +631,7 @@ dta\_width : integer\\
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
 		\hline
-		Generic & Type & Explanation \\
+		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
 		\hline
  		cnt\_width & integer & \\
 		\hline
@@ -633,21 +641,21 @@ dta\_width : integer\\
 \end{center}
 
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline	
- 		 rst\_n\_i & IN &   Reset, active low\\
+ 		 rst\_n\_i & IN & 1 & Reset, active low \\
  		 \hline
-		clk\_i   & IN   & Syscp, @ 12MHz\\
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		en\_i    & IN  & Enable Count\\
+		en\_i & IN & 1 & Enable Count \\
 		\hline
-		cl\_i    & IN   &Clear Counter\\
+		cl\_i & IN & 1 & Clear Counter \\
 		\hline
-		co\_o    & OUT & Carry Out\\
+		co\_o & OUT & 1 & Carry Out \\
 		\hline
-		q\_o     & OUT  & Counter Value\\
+		q\_o & OUT & 1 & Counter Value \\
 		\hline
 		
 	\end{tabular}
@@ -662,16 +670,15 @@ dta\_width : integer\\
 	fig:mxtxd\_mxp\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		Pin & Direction  & Explanation\\
-		
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		s\_i   &IN & Bit position\\
+		s\_i & IN & X & Bit position \\
 		\hline
-		d\_i   & IN & Bit vector\\
+		d\_i & IN & X & Bit vector \\
 		\hline
-		txd\_o & OUT & Txd, Serial Output\\
+		txd\_o & OUT & 1 & Txd, Serial Output \\
 		\hline	
 		
 	\end{tabular}
@@ -684,25 +691,27 @@ dta\_width : integer\\
 	fig:iffsm\_fsm\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		rst\_n\_i & IN &  Reset, active low\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		clk\_i   & IN  & Syscp, @ 12MHz\\
+		rst\_n\_i & IN &  & Reset, active low \\
 		\hline
-		dv\_i    & IN  &  Have new RTC or GPS-Data\\
+		clk\_i & IN &  & Syscp, @ 12MHz \\
 		\hline
-		dne\_i   & IN  & Last Bit transmitted\\
+		dv\_i & IN &  & Have new RTC or GPS-Data \\
 		\hline
-		ldr\_o   & OUT  & Enable register load\\
+		dne\_i & IN &  & Last Bit transmitted \\
 		\hline
-		act\_o   & OUT & Transmission active\\
+		ldr\_o & OUT &  & Enable register load \\
 		\hline
-		vld\_o   & OUT &  Data Bit valid\\
+		act\_o & OUT &  & Transmission active \\
 		\hline
-		clr\_o   & OUT &  Clear Bit-Counters\\
+		vld\_o & OUT &  & Data Bit valid \\
 		\hline
-		nxt\_o   & OUT &  Next Bit, inc count\\
+		clr\_o & OUT &  & Clear Bit-Counters \\
+		\hline
+		nxt\_o & OUT &  & Next Bit, inc count \\
 		\hline
 		
 	\end{tabular}
@@ -715,50 +724,27 @@ dta\_width : integer\\
 	fig:mxsnd\_mxp\\
 \end{figure}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		s\_i  & IN & Bit position\\
+		\textbf{Pin} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		d\_i   & IN  &  Bit vector\\
+		s\_i & IN &  & Bit position \\
+		\hline
+		d\_i & IN &  &  Bit vector \\
 		\hline	
-		txd\_o & OUT & txd, Serial Output\\
+		txd\_o & OUT &  & txd, Serial Output \\
 		\hline
 		
 	\end{tabular}
 \end{center}
+
 \newpage
+
 \section{State Diagrams}
 The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 are given below\\
- \begin{center}
-	\begin{tabular}{| p{4cm} | p{7cm} |}
-		\hline
-		State Name & Explanation \\
-		\hline
-		ini\_wait\_st & wait until\\
-		\hline
-		inc\_clac\_st& send increase signal to headcounter\\
-		\hline
-		dec\_calc\_st&     send decrease signal to headcounter\\
-		\hline
-		inc\_wait\_st&    wait until headcount calculated\\
-		\hline
-		dec\_wait\_st&     wait until headcount calculated\\
-		\hline
-		inc\_vali\_st&    done calculating, check if max\\
-		\hline
-		dec\_vali\_st&     done calculating, check if min\\
-		\hline
-		inc\_send\_st&    start sending num and ascii\\
-		\hline
-		dec\_send\_st&    start sending num and ascii\\
-		\hline
-		min\_send\_st&    start sending num and ascii\\
-		\hline
-		max\_send\_st&     start sending num and ascii\\
-		\hline
-	\end{tabular}
-\end{center}
+
 \newpage
+
 \subsection{Control Fsm}
 \begin{figure}[h]
 	\centering	
@@ -766,6 +752,35 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	\newline
 	fig: Control FSM\\
 \end{figure}
+\begin{center}
+ \begin{tabular}{| p{4cm} | p{7cm} |}
+	 \hline
+	 \textbf{State Name} & \textbf{Description} \\
+	 \hline
+	 ini\_wait\_st & wait until \\
+	 \hline
+	 inc\_clac\_st & send increase signal to headcounter \\
+	 \hline
+	 dec\_calc\_st & send decrease signal to headcounter \\
+	 \hline
+	 inc\_wait\_st & wait until headcount calculated \\
+	 \hline
+	 dec\_wait\_st & wait until headcount calculated \\
+	 \hline
+	 inc\_vali\_st & done calculating, check if max \\
+	 \hline
+	 dec\_vali\_st & done calculating, check if min \\
+	 \hline
+	 inc\_send\_st & start sending num and ascii \\
+	 \hline
+	 dec\_send\_st & start sending num and ascii \\
+	 \hline
+	 min\_send\_st & start sending num and ascii \\
+	 \hline
+	 max\_send\_st & start sending num and ascii \\
+	 \hline
+ \end{tabular}
+\end{center}
 
 \begin{center}
 	\begin{tabular}{| p{2cm} | p{2cm} | p{11cm} |}
@@ -813,7 +828,7 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
 	 \hline
-	 State Name & Description \\
+	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
 	 init\_st & wait for either sensor 1 or sensor 2 triggered \\
 	 \hline
@@ -853,7 +868,7 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
 	 \hline
-	 State Name & Description \\
+	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
 	 wtdv\_st & wait until data valid \\
 	 \hline
@@ -887,7 +902,7 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 \begin{center}
  \begin{tabular}{| p{4cm} | p{7cm} |}
 	 \hline
-	 State Name & Description \\
+	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
 	 wtdv\_st & wait until data valid \\
 	 \hline
@@ -913,7 +928,22 @@ The State Transition and the Output states of Uart,Control,Trigger and ifs\_3 ar
 	\end{tabular}	
 \end{center}
 
+\newpage
 
+\chapter{PC Program}
 
+\begin{center}
+	\begin{tabular}{|l|c|c|r|}
+		\hline
+		\textbf{Event} & \textbf{Beep One} & \textbf{Beep Two} & \textbf{Description} \\
+		\hline
+		Enter & LOW & HIGH & Someone entered the room \\
+		\hline
+		Leave & HIGH & LOW & Someone left the room \\
+		\hline
+		Stop & MEDIUM & MEDIUM & The room is full \\
+		\hline
+	\end{tabular}
+\end{center}
 
 \end{document}
