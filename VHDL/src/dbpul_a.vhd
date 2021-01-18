@@ -2,9 +2,9 @@
 
 ARCHITECTURE ar1 OF dbpul IS
 
-  constant all_ones : unsigned(debounce_width-1 DOWNTO 0) := (others => '1');
+  constant all_ones : unsigned(dbc_width-1 DOWNTO 0) := (others => '1');
 
-  SIGNAL cnt_s : unsigned(debounce_width-1 DOWNTO 0); -- counter
+  SIGNAL cnt_s : unsigned(dbc_width-1 DOWNTO 0); -- counter
   SIGNAL sig_s : std_logic;     -- stored signal
   SIGNAL pul_s : std_logic;     -- pulsed signal
 

@@ -169,7 +169,7 @@ END COMPONENT;
 
 COMPONENT dbpul IS  -- Debounc Input resulting in Pulse
 GENERIC (
-  debounce_width : integer
+  dbc_width : integer
   );
 PORT (
   rst_n_i : IN  std_logic;                      -- Reset, active low

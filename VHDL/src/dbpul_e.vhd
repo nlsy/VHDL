@@ -9,7 +9,7 @@ USE WORK.comp_pack.ALL;
 
 ENTITY dbpul IS
 GENERIC (
-  debounce_width : integer
+  dbc_width : integer
   );
 PORT (
   rst_n_i : IN  std_logic;

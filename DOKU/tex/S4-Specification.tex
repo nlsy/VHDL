@@ -33,11 +33,15 @@
 		\multicolumn{3}{l}{\textbf{History - Change Log}} \\
 		\hline
 		Target Spec. & \multicolumn{2}{l}{Current version: 1.0, 2021-01-17} \\
-		& \multicolumn{2}{l}{Previous version: 0.1, 2020-11-9} \\
+		& \multicolumn{2}{l}{Previous version: 0.4, 2021-01-15} \\
 		\hline
-		&	17.01.2021 & FiniteStateMachines added \\
-		&	17.01.2021 & Block diagrams created and updated \\
-		&	17.01.2021 & Block descriptions added \\
+		&	17.01.2021 & Repository added \\
+		&	17.01.2021 & Program Design added \\
+		&	15.01.2021 & Testbanches added \\
+		&	11.01.2021 & FiniteStateMachines added \\
+		&	10.01.2021 & Block descriptions added \\
+		&	10.01.2021 & Block diagrams created and updated \\
+		&	10.01.2021 & Restructured \\
 		&	06.11.2020 & General description added \\
 		&	06.11.2020 & Block diagram added \\
 		&	06.11.2020 & Functional description added \\
@@ -134,7 +138,7 @@ Each block has the same clock cycle starting with the rising edge event.
 \section*{Reset}
 To reset the whole project an active low is required. That is due to FPGA board, which has buttons with active low signals build in.
 \section*{FSM}
-The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows to easily construct and madify them if needed.
+The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows to easily construct and modify them quickly if needed.
 
 \newpage
 
@@ -297,7 +301,7 @@ signal is in a static state. Than this module creates a single one clock cycle p
 	\hline
 	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
 	\hline
-	debounce\_width & integer & Duration of debouncing (vector size) \\
+	dbc\_width & integer & Duration of debouncing (vector size) \\
 	\hline
 	\end{tabular}
 \end{center}
@@ -309,7 +313,7 @@ This module works as a flipflop. Every time it gets a impulse the output toggles
 from the 1Hz clock signal.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/toggl_tgl.png}
+	\includegraphics[scale=0.15]{../png/toggl_tgl.png}
 	\caption{toggle\_tgl}
 \end{figure}
 \begin{center}
@@ -335,7 +339,7 @@ This module generates an 1Hz signal as well as an 9600Hz baud rate. To generate 
 times.
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.3]{../png/clkrt_rts.png}
+	\includegraphics[scale=0.15]{../png/clkrt_rts.png}
 	\caption{clkrt\_rts}
 \end{figure}
 \begin{center}
@@ -505,7 +509,7 @@ Additionally it indecates if min or max number of people is reached.
 This module controls the whole system and decides what to do next according to the inputs and the current states.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.3]{../png/cntrl_con.png}
+	\includegraphics[scale=0.25]{../png/cntrl_con.png}
 	\caption{cntrl\_con}
 \end{figure}
 \begin{center}
@@ -610,7 +614,7 @@ the send/data valid bit is received it starts to send the number bit by bit.
 To secure the number it gets loaded and stored in the register until something new is stored.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.1]{../png/regsr_reg.png}
+	\includegraphics[scale=0.15]{../png/regsr_reg.png}
 	\caption{regsr\_reg}
 \end{figure}
 \begin{center}
@@ -647,7 +651,7 @@ This binary counter counts until a pre-set value. It increments, when an enable 
 number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
+	\includegraphics[scale=0.3]{../png/ctbin_cnt.png}
 	\caption{ctbin\_cnt}
 \end{figure}
 \begin{center}
@@ -688,7 +692,7 @@ This multiplexer has some special states, where it has the required stopbit and 
 build in. In total it pushes 10 bits one by one.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/mxtxd_mxp.png}
+	\includegraphics[scale=0.15]{../png/mxtxd_mxp.png}
 	\caption{mxtxd\_mxp}
 \end{figure}
 \begin{center}
@@ -802,12 +806,12 @@ of people in the room.
 To secure the number and the event they get loaded and stored in a register until something new is stored.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.15]{../png/regsr_rge.png}
+	\includegraphics[scale=0.12]{../png/regsr_rge.png}
 	\caption{regsr\_rge}
 \end{figure}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.15]{../png/regsr_rgn.png}
+	\includegraphics[scale=0.12]{../png/regsr_rgn.png}
 	\caption{regsr\_rgn}
 \end{figure}
 \begin{center}
@@ -844,7 +848,7 @@ This binary counter counts until a pre-set value. It increments, when an enable 
 number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
+	\includegraphics[scale=0.3]{../png/ctbin_cnt.png}
 	\caption{ctbin\_cnt}
 \end{figure}
 \begin{center}
@@ -884,7 +888,7 @@ number and the carry can always be seen.
 This multiplexer has in total 17 bits to push one by one. One of them is a initial 0 bit.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/mxsnd_mxp.png}
+	\includegraphics[scale=0.15]{../png/mxsnd_mxp.png}
 	\caption{mxsnd\_mxp}
 \end{figure}
 \begin{center}
