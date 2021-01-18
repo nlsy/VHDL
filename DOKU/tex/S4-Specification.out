@@ -15,11 +15,12 @@
 \BOOKMARK [2][-]{subsection.5.7.1}{regsr: Register to store bits}{section.5.7}% 15
 \BOOKMARK [2][-]{subsection.5.7.2}{ctbin: Binary Counter}{section.5.7}% 16
 \BOOKMARK [2][-]{subsection.5.7.3}{mxtxd: Multiplexer for TXD}{section.5.7}% 17
-\BOOKMARK [2][-]{subsection.5.7.4}{utfsm: Finite State Machine for UART}{section.5.7}% 18
+\BOOKMARK [2][-]{subsection.5.7.4}{utfsm: FSM for UART}{section.5.7}% 18
 \BOOKMARK [1][-]{section.5.8}{infs3: Interface to S3}{chapter.5}% 19
 \BOOKMARK [2][-]{subsection.5.8.1}{regsr: Register to store bits}{section.5.8}% 20
 \BOOKMARK [2][-]{subsection.5.8.2}{ctbin: Binary Counter}{section.5.8}% 21
 \BOOKMARK [2][-]{subsection.5.8.3}{mxsnd: Multiplexer for Interface to S3}{section.5.8}% 22
-\BOOKMARK [2][-]{subsection.5.8.4}{iffsm: Finite State Machine for Interface to S3}{section.5.8}% 23
-\BOOKMARK [0][-]{chapter.6}{Program Design}{}% 24
-\BOOKMARK [0][-]{chapter.7}{Repository - Download}{}% 25
+\BOOKMARK [2][-]{subsection.5.8.4}{iffsm: FSM for Interface to S3}{section.5.8}% 23
+\BOOKMARK [0][-]{chapter.6}{Testbenches}{}% 24
+\BOOKMARK [0][-]{chapter.7}{Program Design}{}% 25
+\BOOKMARK [0][-]{chapter.8}{Repository - Download}{}% 26

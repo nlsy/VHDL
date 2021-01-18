@@ -213,11 +213,23 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 	\end{tabular}
 \end{center}
 
+\newpage
 
+\section*{Functionality}
+When some one passes the sensors, the IC\_S4 will recognize if the person passing enters the room or leaves it. 
+According to the event the headcounter gets adjusted (either increased or decreased). With a red LED is indicated that 
+the maximum amount of people in the room is reached. Else a green LED indicates otherwise. \\ \\
+\textbf{Assumptions}:
+\begin{itemize}
+	\item Everyone completes the enter/leave process compleatly.
+	\item No one enters, when the room is full.
+	\item No one leaves, when room is already empty.
+\end{itemize}
 \chapter{VHDL Design}
 
 \section{debnc: Signal Debouncing}
-This module debounces three incomming signals into unbounced pulsed signals.
+This module debounces three incomming signals into unbounced pulsed signals. To do that it uses the module dbpul 
+three times.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/debnc_deb.png}
@@ -250,6 +262,9 @@ This module debounces three incomming signals into unbounced pulsed signals.
 \newpage
 
 \subsection{dbpul: Pulse Debouncer}
+An unbounced signal from e.g. a Button can create multiple signals when only once pressed. To get a more reliable signal 
+the input needs to be debounced. Therefor the module waits a specified amount of time when a change happens, until the 
+signal is in a static state. Than this module creates a single one clock cycle pulse.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/dbpul_db2.png}
@@ -283,7 +298,8 @@ This module debounces three incomming signals into unbounced pulsed signals.
 \newpage
 
 \section{toggl: Signal Toggle}
-This module works as a flipflop. Every time it gets a impulse the output toggles.
+This module works as a flipflop. Every time it gets a impulse the output toggles. It creates the hartbeat LED pulse 
+from the 1Hz clock signal.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/toggl_tgl.png}
@@ -308,7 +324,8 @@ This module works as a flipflop. Every time it gets a impulse the output toggles
 \newpage
 
 \section{clkrt: Clock Rate Generator}
-This module generates an 1Hz signal as well as an 9600Hz baud rate.
+This module generates an 1Hz signal as well as an 9600Hz baud rate. To generate those it uses the module clkgn two 
+times.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.3]{../png/clkrt_rts.png}
@@ -333,6 +350,8 @@ This module generates an 1Hz signal as well as an 9600Hz baud rate.
 \newpage
 
 \subsection{clkgn: Clock Generator}
+This module has a counter, which counts the clock cycles. When the pre-set amount of clock cycles is counted a pulsed 
+is released.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/clkgn_cbr.png}
@@ -371,7 +390,8 @@ This module generates an 1Hz signal as well as an 9600Hz baud rate.
 \newpage
 
 \section{trigr: Sensor Handling}
-This module handles the debounced and pulsed sensor inputs and detects the events.
+This module handles the debounced and pulsed sensor inputs and detects the events. It can recognize if someone is entering 
+or leaving the room. According to the detection a signal is send.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/trigr_tri.png}
@@ -432,7 +452,8 @@ This module handles the debounced and pulsed sensor inputs and detects the event
 \newpage
 
 \section{hdcnt: HeadCounter}
-This module stores the current number of people in the room. It increments or decrements the number if needed. Additionally it indecates if min or max number of people is reached.
+This module stores the current number of people in the room. It increments or decrements the number if needed. 
+Additionally it indecates if min or max number of people is reached.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/hdcnt_hdc.png}
@@ -455,7 +476,7 @@ This module stores the current number of people in the room. It increments or de
 		\hline
 		max\_o & OUT & 1 & Max persons in room \\
 		\hline
-		num\_o & OUT &  & \\
+		num\_o & OUT & 8 & Contains the number \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -464,9 +485,9 @@ This module stores the current number of people in the room. It increments or de
 		\hline
 		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
 		\hline
-		cnt\_width & integer & \\
+		cnt\_width & integer & Counter bit vector size  \\
 		\hline
-		max\_cnt & integer & \\
+		max\_cnt & integer & Trigger number \\
 		\hline
 	\end{tabular}	
 \end{center}
@@ -474,7 +495,7 @@ This module stores the current number of people in the room. It increments or de
 \newpage
 
 \section{cntrl: Controller}
-This module controls the whole system and decides what to do next.
+This module controls the whole system and decides what to do next according to the inputs and the current states.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/cntrl_con.png}
@@ -501,7 +522,7 @@ This module controls the whole system and decides what to do next.
 		\hline
 		dec\_o & OUT & 1 & Decrement Counter Signal \\
 		\hline
-		evt\_o & OUT &  & Happened event char \\
+		evt\_o & OUT & 8 & Happened event char \\
 		\hline
 		sub\_o & OUT & 1 & Submitt/Send Data \\
 		\hline
@@ -510,7 +531,7 @@ This module controls the whole system and decides what to do next.
 
 \newpage
 
-\subsection*{cntrl Finite State Machine}
+\subsection*{cntrl - Finite State Machine}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/Control.png}
@@ -549,7 +570,8 @@ This module controls the whole system and decides what to do next.
 \newpage
 
 \section{uatpc: UART to PC}
-This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate, 8 bit, no parity and 1 stop bit.
+This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate, 8 bit, no parity and 1 stop bit. When 
+the send/data valid bit is received it starts to send the number bit by bit.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/uatpc_uar.png}
@@ -568,7 +590,7 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 		\hline
 		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		num\_i & IN &  & Head count number \\
+		num\_i & IN & 8 & Headcount number \\
 		\hline
 		txd\_o & OUT & 1 & Serial output \\
 		\hline
@@ -578,6 +600,7 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 \newpage
 
 \subsection{regsr: Register to store bits}
+To secure the number it gets loaded and stored in the register until something new is stored.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.1]{../png/regsr_reg.png}
@@ -613,6 +636,8 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 \newpage
 
 \subsection{ctbin: Binary Counter}
+This binary counter counts until a pre-set value. It increments, when an enable counter signal is received. The current 
+number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
@@ -633,7 +658,7 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 		\hline
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
-		q\_o & OUT & 1 & Counter Value \\
+		q\_o & OUT & 4 & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -652,6 +677,8 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 \newpage
 
 \subsection{mxtxd: Multiplexer for TXD}
+This multiplexer has some special states, where it has the required stopbit and initial state, for the UART transmission 
+build in. In total it pushes 10 bits one by one.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/mxtxd_mxp.png}
@@ -662,9 +689,9 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		s\_i & IN & X & Bit position \\
+		s\_i & IN & 4 & Bit position \\
 		\hline
-		d\_i & IN & X & Bit vector \\
+		d\_i & IN & 8 & Bit vector \\
 		\hline
 		txd\_o & OUT & 1 & Txd, Serial Output \\
 		\hline
@@ -673,7 +700,8 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 
 \newpage
 
-\subsection{utfsm: Finite State Machine for UART}
+\subsection{utfsm: FSM for UART}
+This module contains the FSM for the UART.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/utfsm_fsm.png}
@@ -705,7 +733,7 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 
 \newpage
 
-\subsection*{Uart Fsm}
+\subsection*{utfsm - Finite State Machine}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.5]{../png/Uart.png}
@@ -730,8 +758,8 @@ This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate,
 \newpage
 
 \section{infs3: Interface to S3}
-This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes the current event as well as the number of people in the room.
-
+This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes the current event as well as the number 
+of people in the room.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/infs3_inf.png}
@@ -748,9 +776,9 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 		\hline
 		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		evt\_i & IN & 1 &  Occured event char \\
+		evt\_i & IN & 8 &  Occured event char \\
 		\hline
-		num\_i & IN & 1 & Head count number \\
+		num\_i & IN & 8 & Head count number \\
 		\hline
 		sdi\_o & OUT & 1 & S3 data value \\
 		\hline
@@ -764,14 +792,15 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 \newpage
 
 \subsection{regsr: Register to store bits}
+To secure the number and the event they get loaded and stored in a register until something new is stored.
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.1]{../png/regsr_rge.png}
+	\includegraphics[scale=0.15]{../png/regsr_rge.png}
 	\caption{regsr\_rge}
 \end{figure}
 \begin{figure}[h]
 	\centering	
-	\includegraphics[scale=0.2]{../png/regsr_rgn.png}
+	\includegraphics[scale=0.15]{../png/regsr_rgn.png}
 	\caption{regsr\_rgn}
 \end{figure}
 \begin{center}
@@ -785,9 +814,9 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 		\hline
 		en\_i & IN & 1 & Store Data \\
 		\hline
-		d\_i & IN & 1 & Input Data \\
+		d\_i & IN & 8 & Input Data \\
 		\hline
-		q\_o & OUT & 1 & Stored Data \\
+		q\_o & OUT & 8 & Stored Data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -804,6 +833,8 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 \newpage
 
 \subsection{ctbin: Binary Counter}
+This binary counter counts until a pre-set value. It increments, when an enable counter signal is received. The current 
+number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/ctbin_cnt.png}
@@ -824,7 +855,7 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 		\hline
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
-		q\_o & OUT & 1 & Counter Value \\
+		q\_o & OUT & 5 & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -843,6 +874,7 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 \newpage
 
 \subsection{mxsnd: Multiplexer for Interface to S3}
+This multiplexer has in total 17 bits to push one by one. One of them is a initial 0 bit.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/mxsnd_mxp.png}
@@ -853,18 +885,19 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		s\_i & IN &  & Bit position \\
+		s\_i & IN & 5 & Bit position \\
 		\hline
-		d\_i & IN &  &  Bit vector \\
+		d\_i & IN & 16 &  Bit vector \\
 		\hline	
-		txd\_o & OUT &  & txd, Serial Output \\
+		txd\_o & OUT & 1 & txd, Serial Output \\
 		\hline
 	\end{tabular}
 \end{center}
 
 \newpage
 
-\subsection{iffsm: Finite State Machine for Interface to S3}
+\subsection{iffsm: FSM for Interface to S3}
+This module contains the FSM for the 3-wire-interface to S3.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.2]{../png/iffsm_fsm.png}
@@ -875,30 +908,30 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		rst\_n\_i & IN &  & Reset, active low \\
+		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
-		clk\_i & IN &  & Syscp, @ 12MHz \\
+		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		dv\_i & IN &  & Have new RTC or GPS-Data \\
+		dv\_i & IN & 1 & Have new RTC or GPS-Data \\
 		\hline
-		dne\_i & IN &  & Last Bit transmitted \\
+		dne\_i & IN & 1 & Last Bit transmitted \\
 		\hline
-		ldr\_o & OUT &  & Enable register load \\
+		ldr\_o & OUT & 1 & Enable register load \\
 		\hline
-		act\_o & OUT &  & Transmission active \\
+		act\_o & OUT & 1 & Transmission active \\
 		\hline
-		vld\_o & OUT &  & Data Bit valid \\
+		vld\_o & OUT & 1 & Data Bit valid \\
 		\hline
-		clr\_o & OUT &  & Clear Bit-Counters \\
+		clr\_o & OUT & 1 & Clear Bit-Counters \\
 		\hline
-		nxt\_o & OUT &  & Next Bit, inc count \\
+		nxt\_o & OUT & 1 & Next Bit, inc count \\
 		\hline
 	\end{tabular}
 \end{center}
 
 \newpage
 
-\subsection*{ifs3 Fsm}
+\subsection*{ifs3 - Finite State Machine}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.5]{../png/ifs3.png}
@@ -923,6 +956,25 @@ This module connects the IC\_S4 to a IC\_S3 via a 3-wire-interface. It passes th
 	 \hline
  \end{tabular}
 \end{center}
+
+\newpage
+
+\chapter{Testbenches}
+Testbenches are a great tool to test if the requirements are met. Our Project contains multiple testbenches to test the
+important and complex modules. The trivial modules aren't tested directly, but they are tested in testbenches of modules 
+with higher hiarchie aswell. \\ \\
+\textbf{Testbenches:}
+\begin{itemize}
+	\item TB-top
+	\item TB-clkgn
+	\item TB-cntrl
+	\item TB-dbpul
+	\item TB-hdcnt
+	\item TB-infs3
+	\item TB-toggl
+	\item TB-trigr
+	\item TB-uatpc
+\end{itemize}
 
 \newpage
 
