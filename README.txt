@@ -1,39 +1,45 @@
 VHDL-Lab Task
---------------------
+-----------------------------------
 
 Blocks:
   - top           
-  -- Rate         - done
-  --- c10ec       - done
-  --- c10xc       - done
-  --- c12ec       - done
-  -- count        - done
-  -- trigger      - done
-  -- uart         - done (bit is send in reverse)
-  --- fsm         - done
-  --- c11bin      - done
-  --- reg8        - done
-  --- mx2tdo      - done
-  -- interface    - done
-  --- fsm         - done
-  --- c16bin      - done
-  --- reg8        - done
-  --- mx2snd      - done (bit is send in reverse)
-  -- control      - done
+  -- debnc        - done
+  --- dbpul       - done
+  -- toggl        - done
+  -- clkrt        - done
+  --- clkgn       - done
+  -- trigr        - done
+  -- hdcnt        - done
+  -- cntrl        - done
+  -- uatpc        - done
+  --- regsr       - done
+  --- ctbin       - done
+  --- mxtxd       - done
+  --- utfsm       - done
+  -- infs3        - done
+  --- regsr       - done
+  --- ctbin       - done
+  --- mxsnd       - done
+  --- iffsm       - done
 
 Testbenches
   - TB-top        - done
-  - TB-count      - done
-  - TB-trigger    - done
-  - TB-uart       - done
-  - TB-control    - done
-  - TB-interface  - done
+  - TB-clkgn      - done
+  - TB-cntrl      - done
+  - TB-dbpul      - done
+  - TB-hdcnt      - done
+  - TB-infs3      - done
+  - TB-toggl      - done
+  - TB-trigr      - done
+  - TB-uatpc      - done
 
 Structure:
+  - C++     // contains the C++ project
   - DOKU    // contains documentation
   --- pdf   // contains final pdf
   --- png   // contains pictures
   --- tex   // contains latex files
+  --- xml   // contains diagram designs
   - VHDL    // contains vhdl-project
   --- src   // contains source-code
   --- tb    // contains testbenches
@@ -50,4 +56,4 @@ Schedule:
   19.01.2020 - Final Specification
   02.02.2021 - Presentation
 
-The Blockdiagrams and Flowcharts are made with: https://www.diagrameditor.com
+The (some) Blockdiagrams and Flowcharts are made with: https://www.diagrameditor.com
