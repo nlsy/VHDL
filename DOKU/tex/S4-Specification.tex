@@ -210,24 +210,28 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 		\hline
 	\end{tabular}
 \end{center}
+
+\newpage
+
+\section*{OSI Layers}
 \begin{center}
-	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
+	\begin{tabular}{ | p{2cm} | c | p{5cm} |}
 		\hline
-		\textbf{OSI Layer} & \textbf{Width} & \textbf{Description} \\
+		\textbf{Layer} & \textbf{Part} & \textbf{Explanation} \\
 		\hline
-  	Application & 1 &  Reset, active low \\
+  	Application & C++ Program &  Everything is printet out on the PC in a Console for better interaction \\
   	\hline
-		Presentation & 1 & Syscp, @ 12MHz \\
+		Presentation & C++ Program & The handling of the received data is also done in C++ \\
 		\hline
-		Session & 1 & Unbounced Input \\
+		Session & C++ Program & The program opens the serial port and catches the transmitted bits \\
 		\hline
-		Transport & 1 & Debounced Output \\
+		Transport & - & The bits in this project have only one way/application to go, that is why redirecting is not needed \\
 		\hline
-		Network & 1 & Debounced Output \\
+		Network & - & Due to direct connection between the IC\_S4 and the PC/IC\_S3 there is no routing or addressing needed \\
 		\hline
-		Data Link & 1 & Debounced Output \\
+		Data Link & - & Our system does not provide any parity or checkbits to confirm the correctness \\
 		\hline
-		Physical & 1 & Debounced Output \\
+		Physical & UART \& 3-WireInterface & Those units are responsibe to convert the bits into a transmittable signal for physical transmittion \\
 		\hline
 	\end{tabular}
 \end{center}
