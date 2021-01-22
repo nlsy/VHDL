@@ -132,12 +132,12 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 \newpage
 
 \chapter{Architecture Concepts}
-\section*{Clock Cycle - Trigger}
-This project uses a 12MHz clock with a rising edge trigger signal. This allows to syncronize the modules within the IC\_S4.
+\section*{Clock Concept}
+This project uses only a 12MHz clock with a rising edge trigger signal. This allows to syncronize the modules within the IC\_S4.
 Each block has the same clock cycle starting with the rising edge event.
-\section*{Reset}
+\section*{Reset Concept}
 To reset the whole project an active low is required. That is due to FPGA board, which has buttons with active low signals build in.
-\section*{FSM}
+\section*{FSM Concept}
 The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows to easily construct and modify them quickly if needed.
 
 \newpage
@@ -156,63 +156,78 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 \begin{center}
 	\begin{tabular}{|l|l|c|r|}
 		\hline
-		\textbf{Signal} & \textbf{Pin} & \textbf{Direction} & \textbf{Description} \\
+		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-		rst\_n\_i & E6 & IN & Reset, active low \\
+		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
-		cp\_i & H6 & IN & Syscp, @ 12MHz \\
+		cp\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		s1\_i & L12 & IN & Sensor 1 \\
+		s1\_i & IN & 1 & Sensor 1 \\
 		\hline
-		s2\_i & J12 & IN & Sensor 2 \\
+		s2\_i & IN & 1 & Sensor 2 \\
 		\hline
-		s3\_i & J13 & IN & Sensor 3 \\
+		s3\_i & IN & 1 & Sensor 3 \\
 		\hline
-		rst\_n\_o & A8 & OUT & Reset state LED  \\
+		rst\_n\_o & OUT & 1 & Reset state LED  \\
 		\hline
-		sec\_o & A9 & OUT & Pulse LED \\
+		sec\_o & OUT & 1 & Pulse LED \\
 		\hline
-		grn\_o & A11 & OUT & Green LED, go ahead \\
+		grn\_o & OUT & 1 & Green LED, go ahead \\
 		\hline
-		red\_o & A10 & OUT & Red LED, stop, access denied \\
+		red\_o & OUT & 1 & Red LED, stop, access denied \\
 		\hline
-		tled\_o & B10 & OUT & Transmission LED \\
+		tled\_o & OUT & 1 & Transmission LED \\
 		\hline
-		txd\_o & K11 & OUT & Transmission RS-232-driver, 9k6,8N2,ASCII,to PC \\
+		txd\_o & OUT & 1 & Transmission RS-232-driver, 9k6,8N2,ASCII,to PC \\
 		\hline
-		sdi\_o & K12 & OUT & S3 data value \\
+		sdi\_o & OUT & 1 & S3 data value \\
 		\hline
-		sdv\_o & J10 & OUT & S3 data valid \\
+		sdv\_o & OUT & 1 & S3 data valid \\
 		\hline
-		stx\_o & H10 & OUT & S3 transmission active \\
+		stx\_o & OUT & 1 & S3 transmission active \\
+		\hline
+		\hline
+		br\_s & SIGNAL & 1 & 9600 baud rate signal \\
+		\hline
+		hz\_s & SIGNAL & 1 & 1Hz signal \\
+		\hline
+		add\_s & SIGNAL & 1 & trigger signal that someone entered \\
+		\hline
+		sub\_s & SIGNAL & 1 & trigger signal that someone left \\
+		\hline
+		inc\_s & SIGNAL & 1 & increment headcount signal \\
+		\hline
+		dec\_s & SIGNAL & 1 & decrement headcount signal \\
+		\hline
+		min\_s & SIGNAL & 1 & headcount reached min \\
+		\hline
+		max\_s & SIGNAL & 1 & headcount reached max \\
+		\hline
+		num\_s & SIGNAL & [7:0] & contains the headcount number \\
+		\hline
+		evh\_s & SIGNAL & [7:0] & contains the current event (ASCII) \\
 		\hline
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{ | p{2cm} | c | p{5cm} |}
+	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Internal Signal} & \textbf{Width} & \textbf{Description} \\
+		\textbf{OSI Layer} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		br\_s & 1 & 9600 baud rate signal \\
+  	Application & 1 &  Reset, active low \\
+  	\hline
+		Presentation & 1 & Syscp, @ 12MHz \\
 		\hline
-		hz\_s & 1 & 1Hz signal \\
+		Session & 1 & Unbounced Input \\
 		\hline
-		add\_s & 1 & trigger signal that someone entered \\
+		Transport & 1 & Debounced Output \\
 		\hline
-		sub\_s & 1 & trigger signal that someone left \\
+		Network & 1 & Debounced Output \\
 		\hline
-		inc\_s & 1 & increment headcount signal \\
+		Data Link & 1 & Debounced Output \\
 		\hline
-		dec\_s & 1 & decrement headcount signal \\
-		\hline
-		min\_s & 1 & headcount reached min \\
-		\hline
-		max\_s & 1 & headcount reached max \\
-		\hline
-		num\_s & 8 & contains the headcount number \\
-		\hline
-		evh\_s & 8 & contains the current event (ASCII) \\
+		Physical & 1 & Debounced Output \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -285,7 +300,7 @@ signal is in a static state. Than this module creates a single one clock cycle p
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
   	rst\_n\_i & IN & 1 &  Reset, active low \\
   	\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -487,7 +502,7 @@ Additionally it indecates if min or max number of people is reached.
 		\hline
 		max\_o & OUT & 1 & Max persons in room \\
 		\hline
-		num\_o & OUT & 8 & Contains the number \\
+		num\_o & OUT & [7:0] & Contains the number \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -533,7 +548,7 @@ This module controls the whole system and decides what to do next according to t
 		\hline
 		dec\_o & OUT & 1 & Decrement Counter Signal \\
 		\hline
-		evt\_o & OUT & 8 & Happened event char \\
+		evt\_o & OUT & [7:0] & Happened event char \\
 		\hline
 		sub\_o & OUT & 1 & Submitt/Send Data \\
 		\hline
@@ -601,7 +616,7 @@ the send/data valid bit is received it starts to send the number bit by bit.
 		\hline
 		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		num\_i & IN & 8 & Headcount number \\
+		num\_i & IN & [7:0] & Headcount number \\
 		\hline
 		txd\_o & OUT & 1 & Serial output \\
 		\hline
@@ -675,7 +690,7 @@ number and the carry can always be seen.
 		\hline
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
-		q\_o & OUT & 4 & Counter Value \\
+		q\_o & OUT & [3:0] & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -706,9 +721,9 @@ build in. In total it pushes 10 bits one by one.
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		s\_i & IN & 4 & Bit position \\
+		s\_i & IN & [3:0] & Bit position \\
 		\hline
-		d\_i & IN & 8 & Bit vector \\
+		d\_i & IN & [7:0] & Bit vector \\
 		\hline
 		txd\_o & OUT & 1 & Txd, Serial Output \\
 		\hline
@@ -793,9 +808,9 @@ of people in the room.
 		\hline
 		sub\_i & IN & 1 & Submitt/Send Data \\
 		\hline
-		evt\_i & IN & 8 &  Occured event char \\
+		evt\_i & IN & [7:0] &  Occured event char \\
 		\hline
-		num\_i & IN & 8 & Head count number \\
+		num\_i & IN & [7:0] & Head count number \\
 		\hline
 		sdi\_o & OUT & 1 & S3 data value \\
 		\hline
@@ -837,9 +852,9 @@ To secure the number and the event they get loaded and stored in a register unti
 		\hline
 		en\_i & IN & 1 & Store Data \\
 		\hline
-		d\_i & IN & 8 & Input Data \\
+		d\_i & IN & [7:0] & Input Data \\
 		\hline
-		q\_o & OUT & 8 & Stored Data \\
+		q\_o & OUT & [7:0] & Stored Data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -878,7 +893,7 @@ number and the carry can always be seen.
 		\hline
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
-		q\_o & OUT & 5 & Counter Value \\
+		q\_o & OUT & [4:0] & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -908,9 +923,9 @@ This multiplexer has in total 17 bits to push one by one. One of them is a initi
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
-		s\_i & IN & 5 & Bit position \\
+		s\_i & IN & [4:0] & Bit position \\
 		\hline
-		d\_i & IN & 16 &  Bit vector \\
+		d\_i & IN & [15:0] &  Bit vector \\
 		\hline	
 		txd\_o & OUT & 1 & txd, Serial Output \\
 		\hline
