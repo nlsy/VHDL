@@ -20,7 +20,7 @@
 	Prof. Dr. -Ing Andreas Siggelkow \\
 }
 \author{Nils Schlegel, 32067 \& Tara Jaishi, 32289}
-\date{17.01.2021}
+\date{23.01.2021}
 
 
 \begin{document}
@@ -32,12 +32,14 @@
 	\begin{tabular}{llr}
 		\multicolumn{3}{l}{\textbf{History - Change Log}} \\
 		\hline
-		Target Spec. & \multicolumn{2}{l}{Current version: 1.0, 2021-01-17} \\
-		& \multicolumn{2}{l}{Previous version: 0.4, 2021-01-15} \\
+		Target Spec. & \multicolumn{2}{l}{Current version: 1.0, 2021-01-23} \\
+		& \multicolumn{2}{l}{Previous version: 0.4, 2021-01-17} \\
 		\hline
+		&	23.01.2021 & OSI Layers added \\
 		&	17.01.2021 & Repository added \\
 		&	17.01.2021 & Program Design added \\
 		&	15.01.2021 & Testbanches added \\
+		&	11.01.2021 & Concepts added \\
 		&	11.01.2021 & FiniteStateMachines added \\
 		&	10.01.2021 & Block descriptions added \\
 		&	10.01.2021 & Block diagrams created and updated \\
@@ -57,11 +59,11 @@
 
 \chapter{General description}
 IC4 is a single chip based application containing processing capabilities to detect and keep track of the amount of people in a room. 
-It is part of a system solution to fullfill the covid-19-restrictions and regulate the amount of people in an area. This solution is only 
+It is part of a system solution to full fill the covid-19-restrictions and regulate the amount of people in an area. This solution is only 
 meant for a chamber with only one doorway available to enter or to exit.\newline
-The current state of the room is beeing indecated by two LEDs (room=full;room!=full). Additionally the current number of people in the room 
-gets transmitted through a serial connection to a Computer. The application also allows to connect external hardware like the IC\_S3 via a 
-3 wire interface which transmitts the current event as well as the current number of people in the chamber.
+The current state of the room is being indicated by two LEDs (room=full;room!=full). Additionally, the current number of people in the room 
+gets transmitted through a serial connection to a Computer. The application also allows to connecting external hardware like the IC\_S3 via a 
+3 wire interface which transmits the current event as well as the current number of people in the chamber.
 
 \newpage
 
@@ -73,13 +75,13 @@ gets transmitted through a serial connection to a Computer. The application also
 		\hline
 		\multicolumn{5}{|l|}{\textbf{General}} \\
 		\hline
-		G01 & Gen.: \#persons &  High &  Testbench & The number of persons in a room must be known. \\
+		G01 & Gen.: \#persons & High & Testbench & The number of persons in a room must be known. \\
 		\hline
-		G02 & Gen.: max & High &  Testbench & The number of persons in a room must not exceed a given limit. \\
+		G02 & Gen.: max & High & Testbench & The number of persons in a room must not exceed a given limit. \\
 		\hline
 		G03 & Gen.: only one pers. & High & N/A & Only one person can either enter or leave the room at a time. \\
 		\hline
-		G04 & Gen.: three light sensors & Medium & Testbench & Along the doorway, there are three light-curtains to allow directiontracking of possible visitors. \\
+		G04 & Gen.: three light sensors & Medium & Testbench & Along the doorway, there are three light-curtains to allow direction tracking of possible visitors. \\
 		\hline
 		G05 & Gen.: only one door & High & N/A & Only one door exists. \\
 		\hline
@@ -93,7 +95,7 @@ gets transmitted through a serial connection to a Computer. The application also
 		\hline
 		\multicolumn{5}{|l|}{\textbf{LED}} \\
 		\hline
-		LED01 & LED: red &  High & Testbench & The maximal number of persons reached. \\
+		LED01 & LED: red & High & Testbench & The maximal number of persons reached. \\
 		\hline
 		LED02 & LED: green & High & Testbench & The maximal number of persons not reached. \\
 		\hline
@@ -106,21 +108,21 @@ gets transmitted through a serial connection to a Computer. The application also
 		\hline
 		\multicolumn{5}{|l|}{\textbf{UART}} \\
 		\hline
-		UART01 & UART: 9600 baud & High &  Testbench & The speed of the serial transmission should be set to 9600 baud. \\
+		UART01 & UART: 9600 baud & High & Testbench & The speed of the serial transmission should be set to 9600 baud. \\
 		\hline
 		UART02 & UART: 8 bit & High & Testbench & The data width of the serial transmission should be set to 8 bit. \\
 		\hline
 		UART03 & UART: no parity & High & Testbench & The serial transmission should not be checked with a parity bit. \\
 		\hline
-		UART04 & UART: one stop bit & High  & Testbench & The serial transmission should have only one stop bit. \\
+		UART04 & UART: one stop bit & High & Testbench & The serial transmission should have only one stop bit. \\
 		\hline
-		UART06 & UART: \#persons & High &  Testbench &  The \#persons should be transmitted to a PC. \\
+		UART06 & UART: \#persons & High & Testbench & The \#persons should be transmitted to a PC. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{PC}} \\
 		\hline	
-		PC01 & PC: language & Medium & N/A &  Information should be displayed on a PC, the language is C++. \\
+		PC01 & PC: language & Medium & N/A & Information should be displayed on a PC, the language is C++. \\
 		\hline
-		PC02 & PC: timestamp & Low & N/A  & Every event should have a unique timestamp. \\
+		PC02 & PC: timestamp & Low & N/A & Every event should have a unique timestamp. \\
 		\hline
 		\multicolumn{5}{|l|}{\textbf{IC\_S3}} \\
 		\hline
@@ -128,7 +130,7 @@ gets transmitted through a serial connection to a Computer. The application also
 		\hline
 		IC02 & IC\_S3: events & Low & Testbench & All events should be transmitted via the three wire IF. \\
 		\hline
-		IC03 & IC\_S3: \#persons & Low  & Testbench & The \#persons should be transmitted via the three wire IF. \\
+		IC03 & IC\_S3: \#persons & Low & Testbench & The \#persons should be transmitted via the three wire IF. \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -137,7 +139,7 @@ gets transmitted through a serial connection to a Computer. The application also
 
 \chapter{Architecture Concepts}
 \section*{Clock Concept}
-This project uses only a 12MHz clock with a rising edge trigger signal. This allows to syncronize the modules within the IC\_S4.
+This project uses only a 12MHz clock with a rising edge trigger signal. This allows to synchronize the modules within the IC\_S4.
 Each block has the same clock cycle starting with the rising edge event. With the help of clock divider rates with less than 12MHz can be created.
 \section*{Reset Concept}
 To reset the whole project an active low is required. That is due to FPGA board, which has buttons with active low signals build in.
@@ -173,7 +175,7 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 		\hline
 		s3\_i & IN & 1 & Sensor 3 \\
 		\hline
-		rst\_n\_o & OUT & 1 & Reset state LED  \\
+		rst\_n\_o & OUT & 1 & Reset state LED \\
 		\hline
 		sec\_o & OUT & 1 & Pulse LED \\
 		\hline
@@ -223,8 +225,8 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 		\hline
 		\textbf{Layer} & \textbf{Part} & \textbf{Explanation} \\
 		\hline
-  	Application & C++ Program &  Everything is printed out on the PC in a Console for better interaction \\
-  	\hline
+		Application & C++ Program & Everything is printed out on the PC in a Console for better interaction \\
+		\hline
 		Presentation & C++ Program & The handling of the received data is also done in C++ \\
 		\hline
 		Session & C++ Program & The program opens the serial port and catches the transmitted bits \\
@@ -235,7 +237,7 @@ The FSMs (Finite State Machines) in this project are 3 process FSMs. This allows
 		\hline
 		Data Link & - & Our system does not provide any parity or checkbits to confirm the correctness \\
 		\hline
-		Physical & UART \& 3-WireInterface & Those units are responsibe to convert the bits into a transmittable signal for physical transmittion \\
+		Physical & UART \& 3-WireInterface & Those units are responsible to convert the bits into a transmittable signal for physical transmission \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -248,7 +250,7 @@ According to the event the headcounter gets adjusted (either increased or decrea
 the maximum amount of people in the room is reached. Else a green LED indicates otherwise. \\ \\
 \textbf{Assumptions}:
 \begin{itemize}
-	\item Everyone completes the enter/leave process compleatly.
+	\item Everyone completes the enter-/leave-process completely.
 	\item No one enters, when the room is full.
 	\item No one leaves, when room is already empty.
 \end{itemize}
@@ -262,7 +264,7 @@ the maximum amount of people in the room is reached. Else a green LED indicates 
 
 \chapter{VHDL Design}
 \section{debnc: Signal Debouncing}
-This module debounces three incomming signals into unbounced pulsed signals. To do that it uses the module dbpul 
+This module debounces three incoming signals into unbounced pulsed signals. To do that it uses the module dbpul 
 three times.
 \begin{figure}[h]
 	\centering	
@@ -275,8 +277,8 @@ three times.
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-	  rst\_n\_i & IN & 1 & Reset, active low \\
-	  \hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
 		ub1\_i & IN & 1 & Unbounced Input 1 \\
@@ -299,7 +301,7 @@ three times.
 \subsection{dbpul: Pulse Debouncer}
 An unbounced signal from e.g. a Button can create multiple signals when only once pressed. To get a more reliable signal 
 the input needs to be debounced. Therefor the module waits a specified amount of time when a change happens, until the 
-signal is in a static state. Than this module creates a single one clock cycle pulse.
+signal is in a static state. Then this module creates a single one clock cycle pulse.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/dbpul_db2.png}
@@ -311,8 +313,8 @@ signal is in a static state. Than this module creates a single one clock cycle p
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-  	rst\_n\_i & IN & 1 &  Reset, active low \\
-  	\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
 		unb\_i & IN & 1 & Unbounced Input \\
@@ -354,16 +356,16 @@ from the 1Hz clock signal.
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-	  rst\_n\_i & IN & 1 & Reset, active low \\
-	  \hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		sig\_i & IN & 1 & Pulseing signal \\
+		sig\_i & IN & 1 & Pulsing signal \\
 		\hline
-		res\_o & OUT & 1 & Toggeled output \\
+		res\_o & OUT & 1 & Toggled output \\
 		\hline
 		\hline	
-		tog\_s & SIGNAL & 1  & Toggeling signal \\
+		tog\_s & SIGNAL & 1 & Toggling signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -403,7 +405,7 @@ times.
 \newpage
 
 \subsection{clkgn: Clock Generator}
-This module has a counter, which counts the clock cycles. When the pre-set amount of clock cycles is counted a pulsed 
+This module has a counter, which counts the clock cycles. When the preset amount of clock cycles is counted a pulsed 
 is released.
 \begin{figure}[h]
 	\centering	
@@ -421,8 +423,8 @@ is released.
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-  	rst\_n\_i & IN & 1 & Reset, active low \\
-  	\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
 		res\_o & OUT & 1 & Resulting Ticks \\
@@ -441,7 +443,7 @@ is released.
 	\hline
 	cnt\_width & integer & 11/24 & Counter bit vector \\
 	\hline
-	div\_cnt & integer & 1.25k/12M & Clock cycle durations \\	
+	div\_cnt & integer & 1.25k/12M & Needed clock cycles \\	
 	\hline
 	\end{tabular}
 \end{center}
@@ -559,7 +561,7 @@ Additionally it indecates if min or max number of people is reached.
 		\hline
 		\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 		\hline
-		cnt\_width & integer & 8 & Counter bit vector size  \\
+		cnt\_width & integer & 8 & Counter bit vector size \\
 		\hline
 		max\_cnt & integer & 3 & Trigger number \\
 		\hline
@@ -599,7 +601,7 @@ This module controls the whole system and decides what to do next according to t
 		\hline
 		evt\_o & OUT & [7:0] & Happened event char \\
 		\hline
-		sub\_o & OUT & 1 & Submitt/Send Data \\
+		sub\_o & OUT & 1 & Submit/Send Data \\
 		\hline
 		\hline
 		stnow\_s & SIGNAL & - & Present state signal \\
@@ -663,13 +665,13 @@ the send/data valid bit is received it starts sending the current headcount numb
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-  	rst\_n\_i & IN & 1 & Reset, active low\\
-  	\hline
+		rst\_n\_i & IN & 1 & Reset, active low\\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
 		br\_i & IN & 1 & Baud rate \\
 		\hline
-		sub\_i & IN & 1 & Submitt/Send Data \\
+		sub\_i & IN & 1 & Submit/Send Data \\
 		\hline
 		num\_i & IN & [7:0] & Headcount number \\
 		\hline
@@ -678,7 +680,7 @@ the send/data valid bit is received it starts sending the current headcount numb
 		\hline
 		dat\_s & SIGNAL & [7:0] & Headcount number \\
 		\hline	
-		sel\_s & SIGNAL & [3:0] & Select mutliplexer \\
+		sel\_s & SIGNAL & [3:0] & Select multiplexer \\
 		\hline 
 		ld\_s & SIGNAL & 1 & Load in register \\
 		\hline
@@ -701,7 +703,7 @@ the send/data valid bit is received it starts sending the current headcount numb
 \end{figure}
 When sending a byte with the UART the signal goes from the initial high state to low indicating the start bit. Then the byte is transmitted starting 
 with the least significant bit to the highest significant bit. In the end the signal goes back to the initial high state. Every change of the signal 
-syncronized and happens with the baud rate of 9600Hz.
+synchronized and happens with the baud rate of 9600Hz.
 
 \newpage
 
@@ -746,7 +748,7 @@ To secure the number it gets loaded and stored in the register until something n
 \newpage
 
 \subsection{ctbin: Binary Counter}
-This binary counter counts until a pre-set value. It increments, when an enable counter signal is received. The current 
+This binary counter counts until a preset value. It increments, when an enable counter signal is received. The current 
 number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
@@ -792,7 +794,7 @@ number and the carry can always be seen.
 
 \subsection{mxtxd: Multiplexer for TXD}
 This multiplexer has some special states, where it has the required stopbit and initial state, for the UART transmission 
-build in. In total it pushes 10 bits one by one.
+build in. In total, it pushes 10 bits one by one.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.15]{../png/mxtxd_mxp.png}
@@ -832,9 +834,9 @@ This module contains the FSM for the UART.
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		dv\_i  & IN & 1 & Have new RTC or GPS-Data \\
+		dv\_i & IN & 1 & Have new RTC or GPS-Data \\
 		\hline
-		br\_i  & IN & 1 & Baud-Rate to ena Counter \\
+		br\_i & IN & 1 & Baud-Rate to ena Counter \\
 		\hline
 		dne\_i & IN & 1 & Last Bit transmitted \\
 		\hline
@@ -892,13 +894,13 @@ of people in the room.
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
 		\hline
-  	rst\_n\_i & IN & 1 & Reset, active low \\
-  	\hline
+		rst\_n\_i & IN & 1 & Reset, active low \\
+		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
 		\hline
-		sub\_i & IN & 1 & Submitt/Send Data \\
+		sub\_i & IN & 1 & Submit/Send Data \\
 		\hline
-		evt\_i & IN & [7:0] &  Occured event char \\
+		evt\_i & IN & [7:0] & Occurred event char \\
 		\hline
 		num\_i & IN & [7:0] & Head count number \\
 		\hline
@@ -917,7 +919,7 @@ of people in the room.
 		\hline
 		nxt\_s & SIGNAL & 1 & Next Bit \\
 		\hline
-		sel\_s & SIGNAL & [4:0] & Select mutliplexer \\
+		sel\_s & SIGNAL & [4:0] & Select multiplexer \\
 		\hline
 		dat\_s & SIGNAL & [15:0] & Headcount number and ASCII Event \\
 		\hline
@@ -931,7 +933,7 @@ of people in the room.
 	\caption{Uart FSM}
 \end{figure}
 
-The first transmitted byte is the current event ASCII code and the second byte ist than the current headcount number.
+The first transmitted byte is the current event ASCII code and the second byte is than the current headcount number.
 
 \newpage
 
@@ -981,7 +983,7 @@ To secure the number and the event they get loaded and stored in a register unti
 \newpage
 
 \subsection{ctbin: Binary Counter}
-This binary counter counts until a pre-set value. It increments, when an enable counter signal is received. The current 
+This binary counter counts until a preset value. It increments, when an enable counter signal is received. The current 
 number and the carry can always be seen.
 \begin{figure}[h]
 	\centering	
@@ -1040,7 +1042,7 @@ This multiplexer has in total 17 bits to push one by one. One of them is a initi
 		\hline
 		s\_i & IN & [4:0] & Bit position \\
 		\hline
-		d\_i & IN & [15:0] &  Bit vector \\
+		d\_i & IN & [15:0] & Bit vector \\
 		\hline	
 		txd\_o & OUT & 1 & txd, Serial Output \\
 		\hline
@@ -1121,7 +1123,7 @@ This module contains the FSM for the 3-wire-interface to S3.
 \chapter{Testbenches}
 Testbenches are a great tool to test if the requirements are met. Our Project contains multiple testbenches to test the
 important and complex modules. The trivial modules aren't tested directly, but they are tested in testbenches of modules 
-with higher hierarchy aswell. \\ \\
+with higher hierarchy as well. \\ \\
 \textbf{Testbenches:}
 \begin{itemize}
 	\item TB-top
@@ -1138,7 +1140,7 @@ with higher hierarchy aswell. \\ \\
 \newpage
 
 \chapter{Program Design}
-The pc program is written in C++. It monitors a choosen COM-Port and receives the current number of people in the room when it changes.\\
+The PC program is written in C++. It monitors a chosen COM-Port and receives the current number of people in the room when it changes.\\
 The program is asking for a port number (between 0 and 9) and tries to open the serial connection afterwards. When an invalid number is entered, 
 it tries to open the serial connection at the standard port COM5. \\
 The PC only receives the current number of people in the room, therefor the detection of the events has to be done by the program on the computer. 
@@ -1172,6 +1174,6 @@ The repository includes:
 	\item C++ source code
 	\item Documentation/Specification
 \end{itemize}
-The lastest version of this project can be downloaded directly from \href{https://github.com/nlsy/VHDL}{https://github.com/nlsy/VHDL}. \\
+The latest version of this project can be downloaded directly from \href{https://github.com/nlsy/VHDL}{https://github.com/nlsy/VHDL}. \\
 
 \end{document}
