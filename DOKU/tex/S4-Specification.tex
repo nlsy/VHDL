@@ -56,8 +56,12 @@
 \newpage
 
 \chapter{General description}
-IC4 is a single chip based application containing processing capabilities to detect and keep track of the amount of people in one room. It is part of a system solution to fullfill the covid-19-restrictions and regulate the amount of people in an area. This solution is only meant for a chamber with only one doorway available to enter or to exit.\newline
-The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device on board.
+IC4 is a single chip based application containing processing capabilities to detect and keep track of the amount of people in a room. 
+It is part of a system solution to fullfill the covid-19-restrictions and regulate the amount of people in an area. This solution is only 
+meant for a chamber with only one doorway available to enter or to exit.\newline
+The current state of the room is beeing indecated by two LEDs (room=full;room!=full). Additionally the current number of people in the room 
+gets transmitted through a serial connection to a Computer. The application also allows to connect external hardware like the IC\_S3 via a 
+3 wire interface which transmitts the current event as well as the current number of people in the chamber.
 
 \newpage
 
@@ -134,7 +138,7 @@ The IC4 is designed on a FPGA prototype-board Max1000 with 10M16SAU169C8G device
 \chapter{Architecture Concepts}
 \section*{Clock Concept}
 This project uses only a 12MHz clock with a rising edge trigger signal. This allows to syncronize the modules within the IC\_S4.
-Each block has the same clock cycle starting with the rising edge event.
+Each block has the same clock cycle starting with the rising edge event. With the help of clock divider rates with less than 12MHz can be created.
 \section*{Reset Concept}
 To reset the whole project an active low is required. That is due to FPGA board, which has buttons with active low signals build in.
 \section*{FSM Concept}
@@ -270,6 +274,7 @@ three times.
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
+		\hline
 	  rst\_n\_i & IN & 1 & Reset, active low \\
 	  \hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -314,6 +319,7 @@ signal is in a static state. Than this module creates a single one clock cycle p
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
 		\hline
+		\hline
   	rst\_n\_i & IN & 1 &  Reset, active low \\
   	\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -332,11 +338,11 @@ signal is in a static state. Than this module creates a single one clock cycle p
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 	\hline
-	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 	\hline
-	dbc\_width & integer & Duration of debouncing (vector size) \\
+	dbc\_width & integer & 19 & Duration of debouncing (vector size) \\
 	\hline
 	\end{tabular}
 \end{center}
@@ -355,7 +361,8 @@ from the 1Hz clock signal.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 	  rst\_n\_i & IN & 1 & Reset, active low \\
 	  \hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -384,7 +391,8 @@ times.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -420,7 +428,8 @@ is released.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
   	rst\_n\_i & IN & 1 & Reset, active low \\
   	\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -432,17 +441,16 @@ is released.
 		\hline
 		co\_s & SIGNAL & 1 & counter cycles \\
 		\hline
-		
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 	\hline
-	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 	\hline
-	cnt\_width & integer & Counter bit vector \\
+	cnt\_width & integer &  & Counter bit vector \\
 	\hline
-	div\_cnt & integer & Clock cycle durations \\	
+	div\_cnt & integer &  & Clock cycle durations \\	
 	\hline
 	\end{tabular}
 \end{center}
@@ -461,7 +469,8 @@ or leaving the room. According to the detection a signal is send.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -529,7 +538,8 @@ Additionally it indecates if min or max number of people is reached.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -554,13 +564,13 @@ Additionally it indecates if min or max number of people is reached.
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+		\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 		\hline
-		cnt\_width & integer & Counter bit vector size  \\
+		cnt\_width & integer & 8 & Counter bit vector size  \\
 		\hline
-		max\_cnt & integer & Trigger number \\
+		max\_cnt & integer & 3 & Trigger number \\
 		\hline
 	\end{tabular}	
 \end{center}
@@ -578,7 +588,8 @@ This module controls the whole system and decides what to do next according to t
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -648,8 +659,8 @@ This module controls the whole system and decides what to do next according to t
 \newpage
 
 \section{uatpc: UART to PC}
-This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate, 8 bit, no parity and 1 stop bit. When 
-the send/data valid bit is received it starts to send the number bit by bit.
+This module connects the IC\_S4 to a PC via the RS232. It uses a 9600 baud rate, 8 bit, no parity and 1 stop bit (8N1 coding). When 
+the send/data valid bit is received it starts sending the current headcount number byte bit by bit.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/uatpc_uar.png}
@@ -659,7 +670,8 @@ the send/data valid bit is received it starts to send the number bit by bit.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
   	rst\_n\_i & IN & 1 & Reset, active low\\
   	\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -698,6 +710,9 @@ the send/data valid bit is received it starts to send the number bit by bit.
 	\includegraphics[scale=0.5]{../png/rs232image.png}
 	\caption{Uart FSM}
 \end{figure}
+When sending a byte with the UART the signal goes from the initial high state to low indicating the start bit. Then the byte is transmitted starting 
+with the least significant bit to the highest significant bit. In the end the signal goes back to the initial high state. Every change of the signal 
+syncronized and happens with the baud rate of 9600Hz.
 
 \newpage
 
@@ -712,7 +727,8 @@ To secure the number it gets loaded and stored in the register until something n
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
  		rst\_n\_i & IN & 1 & Reset, active low \\
  		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -729,11 +745,11 @@ To secure the number it gets loaded and stored in the register until something n
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 	\hline
-	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 	\hline
-	dta\_width & integer & Data bit vector size \\
+	dta\_width & integer & 8 & Data bit vector size \\
 	\hline
 	\end{tabular}
 \end{center}
@@ -752,7 +768,8 @@ number and the carry can always be seen.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
  		 rst\_n\_i & IN & 1 & Reset, active low \\
  		 \hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -771,13 +788,13 @@ number and the carry can always be seen.
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 		\hline
-		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+		\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 		\hline
- 		cnt\_width & integer & Counter bit vector size \\
+ 		cnt\_width & integer & 4 & Counter bit vector size \\
 		\hline
-		cnt\_max & integer & Trigger number \\
+		cnt\_max & integer & 11 & Trigger number \\
 		\hline
 	\end{tabular}	
 \end{center}
@@ -796,6 +813,7 @@ build in. In total it pushes 10 bits one by one.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
 		\hline
 		s\_i & IN & [3:0] & Bit position \\
 		\hline
@@ -819,7 +837,8 @@ This module contains the FSM for the UART.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -865,8 +884,6 @@ This module contains the FSM for the UART.
 	 \hline
 	 cinc\_st & get next bit (increment counter) \\
 	 \hline
-	 \hline
-
  \end{tabular}
 \end{center}
 
@@ -884,7 +901,8 @@ of people in the room.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
   	rst\_n\_i & IN & 1 & Reset, active low \\
   	\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -924,6 +942,8 @@ of people in the room.
 	\caption{Uart FSM}
 \end{figure}
 
+The first transmitted byte is the current event ASCII code and the second byte ist than the current headcount number.
+
 \newpage
 
 \subsection{regsr: Register to store bits}
@@ -942,7 +962,8 @@ To secure the number and the event they get loaded and stored in a register unti
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
  		rst\_n\_i & IN & 1 & Reset, active low \\
  		\hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -956,16 +977,14 @@ To secure the number and the event they get loaded and stored in a register unti
 		\hline
 		state\_s & SIGNAL & [7:0] & \\
 		\hline
-		
-
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | c | c | p{5cm} |}
 	\hline
-	\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+	\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 	\hline
-	dta\_width & integer & Data bit vector size \\
+	dta\_width & integer & 8 & Data bit vector size \\
 	\hline
 	\end{tabular}
 \end{center}
@@ -984,7 +1003,8 @@ number and the carry can always be seen.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
-		\hline	
+		\hline
+		\hline
  		 rst\_n\_i & IN & 1 & Reset, active low \\
  		 \hline
 		clk\_i & IN & 1 & Syscp, @ 12MHz \\
@@ -1003,13 +1023,13 @@ number and the carry can always be seen.
 	\end{tabular}
 \end{center}
 \begin{center}
-	\begin{tabular}{| p{2cm} | p{2cm} | p{4cm} |}
+	\begin{tabular}{| p{2cm} | p{2cm} | p{2cm} | p{5cm} |}
 		\hline
-		\textbf{Generic} & \textbf{Type} & \textbf{Description} \\
+		\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 		\hline
- 		cnt\_width & integer & Counter bit vector size \\
+ 		cnt\_width & integer & 5 & Counter bit vector size \\
 		\hline
-		cnt\_max & integer & Trigger number \\
+		cnt\_max & integer & 16 & Trigger number \\
 		\hline
 	\end{tabular}	
 \end{center}
@@ -1027,6 +1047,7 @@ This multiplexer has in total 17 bits to push one by one. One of them is a initi
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
 		\hline
 		s\_i & IN & [4:0] & Bit position \\
 		\hline
@@ -1050,6 +1071,7 @@ This module contains the FSM for the 3-wire-interface to S3.
 	\begin{tabular}{ | p{2cm} | c | c | p{5cm} |}
 		\hline
 		\textbf{Signal} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+		\hline
 		\hline
 		rst\_n\_i & IN & 1 & Reset, active low \\
 		\hline
@@ -1128,7 +1150,10 @@ with higher hierarchy aswell. \\ \\
 
 \chapter{Program Design}
 The pc program is written in C++. It monitors a choosen COM-Port and receives the current number of people in the room when it changes.\\
-The program is asking for a port number (between 0 and 10) and tries to open the serial connection afterwards. When an invalid number is entered, it tries to open the serial connection at the standard port COM5.
+The program is asking for a port number (between 0 and 9) and tries to open the serial connection afterwards. When an invalid number is entered, 
+it tries to open the serial connection at the standard port COM5. \\
+The PC only receives the current number of people in the room, therefor the detection of the events has to be done by the program on the computer. 
+Depending on the determined happened event the application prints out some lines in the console and makes an acoustic beep sound.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.8]{../png/program.png}
