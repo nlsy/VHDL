@@ -286,6 +286,15 @@ three times.
 		\hline
 		db3\_o & OUT & 1 & Debounced Output 3 \\
 		\hline
+		\hline
+		clk\_i & SIGNAL & 1 & Clock at 12 MHz\\
+		\hline
+		rst\_n\_i & SIGNAL & 1 & Reset, active low\\
+		\hline
+		unb\_i & SIGNAL & 1 & Unbounced Input Signal\\
+		\hline
+		deb\_o & SIGNAL & 1 & Debounced Output\\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -312,6 +321,13 @@ signal is in a static state. Than this module creates a single one clock cycle p
 		unb\_i & IN & 1 & Unbounced Input \\
 		\hline
 		deb\_o & OUT & 1 & Debounced Output \\
+		\hline
+		\hline	
+		cnt\_s & SIGNAL & 1 & Counter \\
+		\hline
+		sig\_s & SIGNAL & 1 & stored signal \\ 
+		\hline
+		pul\_s & SIGNAL & 1 & pulse signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -348,6 +364,9 @@ from the 1Hz clock signal.
 		\hline
 		res\_o & OUT & 1 & Toggeled output \\
 		\hline
+		\hline	
+		tog\_s & SIGNA & 1  & toggeling signal \\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -374,6 +393,11 @@ times.
 		\hline
 		hz\_o & OUT & 1 & Alive Pulse @1Hz \\
 		\hline
+		\hline
+		br\_s & SIGNAL & 1 & Internal Baud Rate Signal \\
+		\hline	
+		hz\_s & SIGNAL & 1 & Internal Alive Pulse \\
+		\hline	
 	\end{tabular}
 \end{center}
 
@@ -403,6 +427,12 @@ is released.
 		\hline
 		res\_o & OUT & 1 & Resulting Ticks \\
 		\hline
+		\hline
+		ck\_s & SIGNAL & 1 & clock cycles\\
+		\hline
+		co\_s & SIGNAL & 1 & counter cycles \\
+		\hline
+		
 	\end{tabular}
 \end{center}
 \begin{center}
@@ -446,6 +476,12 @@ or leaving the room. According to the detection a signal is send.
 		\hline
 		sub\_o & OUT & 1 & Person left \\
 		\hline
+		\hline
+		stnow\_s & SIGNAL & 1 & \\
+		\hline
+		stnxt\_s & SIGNAL & 1 & \\
+		\hline
+
 	\end{tabular}
 \end{center}
 
@@ -508,6 +544,13 @@ Additionally it indecates if min or max number of people is reached.
 		\hline
 		num\_o & OUT & [7:0] & Contains the number \\
 		\hline
+		\hline
+		num\_s & SIGNAL & & \\
+		\hline
+		min\_s & SIGNAL & & \\
+		\hline
+		max\_s & SIGNAL & & \\
+		\hline
 	\end{tabular}
 \end{center}
 \begin{center}
@@ -556,6 +599,11 @@ This module controls the whole system and decides what to do next according to t
 		\hline
 		sub\_o & OUT & 1 & Submitt/Send Data \\
 		\hline
+		\hline
+		stnow\_s & SIGNAL & 1 & Present state signal \\
+		\hline
+		stnxt\_s  & SIGNAL & 1 & Next state signal \\
+		\hline	
 	\end{tabular}
 \end{center}
 
@@ -624,8 +672,26 @@ the send/data valid bit is received it starts to send the number bit by bit.
 		\hline
 		txd\_o & OUT & 1 & Serial output \\
 		\hline
+		\hline
+		dat\_s & SIGNAL & & 8 BCD \\
+		\hline	
+		sel\_s & SIGNAL & & \\
+		\hline 
+		ld\_s & SIGNAL & 1 & load in register\\
+		\hline
+		nxt\_s & SIGNAL & 1 & Next Bit \\
+		\hline
+		clr\_s & SIGNAL & 1 &  Clear Counter\\
+		\hline
+		dne\_s & SIGNAL & 1 & Last bit of 8x8 \\
+		\hline
+		d\_s & SIGNAL & & \\
+		\hline
+		txd\_s & SIGNAL & & \\
+		\hline
 	\end{tabular}
 \end{center}
+\newpage
 \subsection*{UART transmission - Output}
 \begin{figure}[h]
 	\centering	
@@ -656,6 +722,9 @@ To secure the number it gets loaded and stored in the register until something n
 		d\_i & IN & 1 & Input Data \\
 		\hline
 		q\_o & OUT & 1 & Stored Data \\
+		\hline
+		\hline
+		state\_s & SIGNAL & 1 & \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -695,6 +764,9 @@ number and the carry can always be seen.
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
 		q\_o & OUT & [3:0] & Counter Value \\
+		\hline
+		\hline
+		state\_s & SIGNAL & [3:0] & \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -764,6 +836,11 @@ This module contains the FSM for the UART.
 		\hline
 		nxt\_o & OUT & 1 & next Bit, inc count \\
 		\hline
+		\hline
+		stnow\_s & SIGNAL & 1 & State now \\
+		\hline
+		stnxt\_s & SIGNAL & 1 & state next \\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -788,6 +865,8 @@ This module contains the FSM for the UART.
 	 \hline
 	 cinc\_st & get next bit (increment counter) \\
 	 \hline
+	 \hline
+
  \end{tabular}
 \end{center}
 
@@ -822,8 +901,22 @@ of people in the room.
 		\hline
 		stx\_o & OUT & 1 & S3 transmission active\\
 		\hline
+		\hline
+		ld\_s & SIGNAL & 1 & \\
+		\hline
+		clr\_s & SIGNAL & 1 & \\
+		\hline
+		dne\_s & SIGNAL & 1 & \\
+		\hline
+		nxt\_s & SIGNAL & 1 & \\
+		\hline
+		sel\_s & SIGNAL & 1 & \\
+		\hline
+		dat\_s & SIGNAL & 1 & \\
+		\hline
 	\end{tabular}
 \end{center}
+\newpage
 \subsection*{3-Wire-Interface transmission - Output}
 \begin{figure}[h]
 	\centering	
@@ -860,6 +953,11 @@ To secure the number and the event they get loaded and stored in a register unti
 		\hline
 		q\_o & OUT & [7:0] & Stored Data \\
 		\hline
+		\hline
+		state\_s & SIGNAL & [7:0] & \\
+		\hline
+		
+
 	\end{tabular}
 \end{center}
 \begin{center}
@@ -898,6 +996,9 @@ number and the carry can always be seen.
 		co\_o & OUT & 1 & Carry Out \\
 		\hline
 		q\_o & OUT & [4:0] & Counter Value \\
+		\hline
+		\hline
+		state\_s & SIGNAL & [3:0] & \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -967,6 +1068,11 @@ This module contains the FSM for the 3-wire-interface to S3.
 		clr\_o & OUT & 1 & Clear Bit-Counters \\
 		\hline
 		nxt\_o & OUT & 1 & Next Bit, inc count \\
+		\hline
+		\hline
+		stnow\_s & SIGNAL & 1 & current state\\
+		\hline	
+		stnxt\_s & SIGNAL & 1 & Next state\\
 		\hline
 	\end{tabular}
 \end{center}
