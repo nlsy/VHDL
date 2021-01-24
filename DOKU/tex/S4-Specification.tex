@@ -486,9 +486,9 @@ or leaving the room. According to the detection a signal is send.
 		sub\_o & OUT & 1 & Person left \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & \\
+		stnow\_s & SIGNAL & 1 & Present state signal \\
 		\hline
-		stnxt\_s & SIGNAL & 1 & \\
+		stnxt\_s & SIGNAL & 1 & Next state Signal \\
 		\hline
 
 	\end{tabular}
@@ -497,6 +497,19 @@ or leaving the room. According to the detection a signal is send.
 \newpage
 
 \subsection*{trigr - Finite State Machine}
+The sensor interface is implemented in terms of finite state machine where 3 light curtains act as input for single way chamber. \\
+\begin{itemize}
+	\item After retset output state at initial state init\_st is '00' i.e. no event is happining. \\
+	\item When someone enters  sensor S1\_i is activated i.e. high'1' and enters the state ewt1\_st and stays in this state as long as sensor S1\_i is active.\\
+
+	\item similarly when Sensor S2\_i is active it enters the state ewt2\_st and stay in same state as long as sensor S2\_i is deactivate due to state transition when Sensor S3\_i is active it enters the state ewt3\_st. \\
+	\item Similarly lwt1\_st, lwt2\_st and lwt3\_st are the stated for sensors when someone leaves the room. \\
+	\item the the final state ewt3\_st the output is changed to event'10' that means something is encoded as " Someone ENTERED" when the process is complete the state again comes back to init\_st where someone can again enters/leaves .\\
+	\item when someone has to leaves the room the process is reversed and the output event becomes "01" which is encoded as " Someone LEFT".\\
+	
+	
+\end{itemize}
+when such process is not executed in oder FSM itself put it in initial state init\_st and waits if someone leaves/enters.
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.4]{../png/trigger.png}
@@ -555,11 +568,11 @@ Additionally it indecates if min or max number of people is reached.
 		num\_o & OUT & [7:0] & Contains the number \\
 		\hline
 		\hline
-		num\_s & SIGNAL & & \\
+		num\_s & SIGNAL & [7:0] & contains headcount number\\
 		\hline
-		min\_s & SIGNAL & & \\
+		min\_s & SIGNAL & 1 & headcount reached min\\
 		\hline
-		max\_s & SIGNAL & & \\
+		max\_s & SIGNAL & 1 & headcount reached max\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -621,6 +634,12 @@ This module controls the whole system and decides what to do next according to t
 \newpage
 
 \subsection*{cntrl - Finite State Machine}
+
+\begin{itemize}
+\item At reset intial state we have int\_wait\_st with all no event and 0 outputs.  
+	
+	
+\end{itemize}
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.3]{../png/Control.png}
@@ -685,9 +704,9 @@ the send/data valid bit is received it starts sending the current headcount numb
 		txd\_o & OUT & 1 & Serial output \\
 		\hline
 		\hline
-		dat\_s & SIGNAL & & 8 BCD \\
+		dat\_s & SIGNAL & 1 & 8 BCD \\
 		\hline	
-		sel\_s & SIGNAL & & \\
+		sel\_s & SIGNAL & 1 & \\
 		\hline 
 		ld\_s & SIGNAL & 1 & load in register\\
 		\hline
@@ -697,9 +716,9 @@ the send/data valid bit is received it starts sending the current headcount numb
 		\hline
 		dne\_s & SIGNAL & 1 & Last bit of 8x8 \\
 		\hline
-		d\_s & SIGNAL & & \\
+		d\_s & SIGNAL & [7:0] & data valid \\
 		\hline
-		txd\_s & SIGNAL & & \\
+		txd\_s & SIGNAL & 1 & Trasnsmission for RS232 \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -740,7 +759,7 @@ To secure the number it gets loaded and stored in the register until something n
 		q\_o & OUT & 1 & Stored Data \\
 		\hline
 		\hline
-		state\_s & SIGNAL & 1 & \\
+		state\_s & SIGNAL & [7:0] & Stored  data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -783,7 +802,7 @@ number and the carry can always be seen.
 		q\_o & OUT & [3:0] & Counter Value \\
 		\hline
 		\hline
-		state\_s & SIGNAL & [3:0] & \\
+		state\_s & SIGNAL & [3:0] & Counter states\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -856,9 +875,9 @@ This module contains the FSM for the UART.
 		nxt\_o & OUT & 1 & next Bit, inc count \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & State now \\
+		stnow\_s & SIGNAL & 1 & FSM current state \\
 		\hline
-		stnxt\_s & SIGNAL & 1 & state next \\
+		stnxt\_s & SIGNAL & 1 & FSM transitioning state \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -866,6 +885,19 @@ This module contains the FSM for the UART.
 \newpage
 
 \subsection*{utfsm - Finite State Machine}
+The \textbf{utfsm- Finite State Machine} synchronize the coordinates and timing of components. \\
+\begin{itemize}	
+
+\item In intial state wtdv\_st FSM wait until data is valid  i.e. an event to happen. No transmission is done in this states which means Flipflops and counters are clear.\\
+
+\item In the transmission state ldrg\_st data in register is enabled directing it to next state wtbr\_st. \\
+
+\item when baud rate signal is high i.e. 1 for state wtbr\_st the FSM change its state from wtbr\_st to cinc\_st else it remains in state wtdv\_st when transmission is done. \\
+
+\item In oder to get next bit in state cinc\_st we enable counter causing start transmission, directing it to wtbr\_st.\\
+\end{itemize}
+
+
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.5]{../png/uart.png}
@@ -920,17 +952,17 @@ of people in the room.
 		stx\_o & OUT & 1 & S3 transmission active\\
 		\hline
 		\hline
-		ld\_s & SIGNAL & 1 & \\
+		ld\_s & SIGNAL & 1 & Load register, enables register \\
 		\hline
-		clr\_s & SIGNAL & 1 & \\
+		clr\_s & SIGNAL & 1 & set counter \\
 		\hline
-		dne\_s & SIGNAL & 1 & \\
+		dne\_s & SIGNAL & 1 & transmission stop \\
 		\hline
-		nxt\_s & SIGNAL & 1 & \\
+		nxt\_s & SIGNAL & 1 & fsm is transitioning to next \\
 		\hline
-		sel\_s & SIGNAL & 1 & \\
+		sel\_s & SIGNAL & 1 & 8 bit vector\\
 		\hline
-		dat\_s & SIGNAL & 1 & \\
+		dat\_s & SIGNAL & 1 & 16 bit vector\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -1102,6 +1134,22 @@ This module contains the FSM for the 3-wire-interface to S3.
 \newpage
 
 \subsection*{ifs3 - Finite State Machine}
+\\
+The \textbf{ifs3- finite sate machine} synchronize the coordinates and timing of components. \\
+\begin{itemize}	
+	
+	\item In intial state wtdv\_st FSM wait until data is valid  i.e. an event to happen. No transmission is done in this states which means Flipflops and counters are clear and also no output to IC\_S3.\\
+	
+	\item In the transmission state ldrg\_st data in register is enabled directing it to next state tick\_st. \\
+	
+	\item in state tick\_st check and rirect it to incre\_st if transmission is done else redirect it to wldv\_st.\\
+	
+	\item To get next bit counter is enabled in state incr\_st directed to state wocy\_st.\\
+	
+	\item  for sending validation bit state valid\_st waits for one clock cycle followed by state wocy\_st. \\
+	
+\end{itemize}
+
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.5]{../png/ifs3.png}

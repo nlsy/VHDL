@@ -11,17 +11,17 @@
 \contentsline {subsection}{\numberline {5.3.1}clkgn: Clock Generator}{15}{subsection.5.3.1}%
 \contentsline {section}{\numberline {5.4}trigr: Sensor Handling}{16}{section.5.4}%
 \contentsline {section}{\numberline {5.5}hdcnt: HeadCounter}{18}{section.5.5}%
-\contentsline {section}{\numberline {5.6}cntrl: Controller}{19}{section.5.6}%
-\contentsline {section}{\numberline {5.7}uatpc: UART to PC}{21}{section.5.7}%
-\contentsline {subsection}{\numberline {5.7.1}regsr: Register to store bits}{23}{subsection.5.7.1}%
-\contentsline {subsection}{\numberline {5.7.2}ctbin: Binary Counter}{24}{subsection.5.7.2}%
-\contentsline {subsection}{\numberline {5.7.3}mxtxd: Multiplexer for TXD}{25}{subsection.5.7.3}%
-\contentsline {subsection}{\numberline {5.7.4}utfsm: FSM for UART}{26}{subsection.5.7.4}%
-\contentsline {section}{\numberline {5.8}infs3: Interface to S3}{28}{section.5.8}%
-\contentsline {subsection}{\numberline {5.8.1}regsr: Register to store bits}{30}{subsection.5.8.1}%
-\contentsline {subsection}{\numberline {5.8.2}ctbin: Binary Counter}{31}{subsection.5.8.2}%
-\contentsline {subsection}{\numberline {5.8.3}mxsnd: Multiplexer for Interface to S3}{32}{subsection.5.8.3}%
-\contentsline {subsection}{\numberline {5.8.4}iffsm: FSM for Interface to S3}{33}{subsection.5.8.4}%
-\contentsline {chapter}{\numberline {6}Testbenches}{35}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Program Design}{36}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Repository - Download}{37}{chapter.8}%
+\contentsline {section}{\numberline {5.6}cntrl: Controller}{20}{section.5.6}%
+\contentsline {section}{\numberline {5.7}uatpc: UART to PC}{22}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}regsr: Register to store bits}{24}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}ctbin: Binary Counter}{25}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}mxtxd: Multiplexer for TXD}{26}{subsection.5.7.3}%
+\contentsline {subsection}{\numberline {5.7.4}utfsm: FSM for UART}{27}{subsection.5.7.4}%
+\contentsline {section}{\numberline {5.8}infs3: Interface to S3}{29}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}regsr: Register to store bits}{31}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}ctbin: Binary Counter}{32}{subsection.5.8.2}%
+\contentsline {subsection}{\numberline {5.8.3}mxsnd: Multiplexer for Interface to S3}{33}{subsection.5.8.3}%
+\contentsline {subsection}{\numberline {5.8.4}iffsm: FSM for Interface to S3}{34}{subsection.5.8.4}%
+\contentsline {chapter}{\numberline {6}Testbenches}{37}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Program Design}{38}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Repository - Download}{39}{chapter.8}%
