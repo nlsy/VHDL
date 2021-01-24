@@ -291,15 +291,6 @@ three times.
 		\hline
 		db3\_o & OUT & 1 & Debounced Output 3 \\
 		\hline
-		\hline
-		clk\_i & SIGNAL & 1 & Clock at 12 MHz\\
-		\hline
-		rst\_n\_i & SIGNAL & 1 & Reset, active low\\
-		\hline
-		unb\_i & SIGNAL & 1 & Unbounced Input Signal\\
-		\hline
-		deb\_o & SIGNAL & 1 & Debounced Output\\
-		\hline
 	\end{tabular}
 \end{center}
 
@@ -331,9 +322,9 @@ signal is in a static state. Than this module creates a single one clock cycle p
 		\hline	
 		cnt\_s & SIGNAL & 1 & Counter \\
 		\hline
-		sig\_s & SIGNAL & 1 & stored signal \\ 
+		sig\_s & SIGNAL & 1 & Stored signal \\ 
 		\hline
-		pul\_s & SIGNAL & 1 & pulse signal \\
+		pul\_s & SIGNAL & 1 & Pulsed signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -372,7 +363,7 @@ from the 1Hz clock signal.
 		res\_o & OUT & 1 & Toggeled output \\
 		\hline
 		\hline	
-		tog\_s & SIGNA & 1  & toggeling signal \\
+		tog\_s & SIGNAL & 1  & Toggeling signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -402,9 +393,9 @@ times.
 		hz\_o & OUT & 1 & Alive Pulse @1Hz \\
 		\hline
 		\hline
-		br\_s & SIGNAL & 1 & Internal Baud Rate Signal \\
+		br\_s & SIGNAL & 1 & Baud Rate Signal (9600Hz) \\
 		\hline	
-		hz\_s & SIGNAL & 1 & Internal Alive Pulse \\
+		hz\_s & SIGNAL & 1 & Alive Pulse (1Hz) \\
 		\hline	
 	\end{tabular}
 \end{center}
@@ -437,9 +428,9 @@ is released.
 		res\_o & OUT & 1 & Resulting Ticks \\
 		\hline
 		\hline
-		ck\_s & SIGNAL & 1 & clock cycles\\
+		ck\_s & SIGNAL & 11/24 & Amount of clock cycles \\
 		\hline
-		co\_s & SIGNAL & 1 & counter cycles \\
+		co\_s & SIGNAL & 1 & Resulting signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -448,9 +439,9 @@ is released.
 	\hline
 	\textbf{Generic} & \textbf{Type} & \textbf{Value} & \textbf{Description} \\
 	\hline
-	cnt\_width & integer &  & Counter bit vector \\
+	cnt\_width & integer & 11/24 & Counter bit vector \\
 	\hline
-	div\_cnt & integer &  & Clock cycle durations \\	
+	div\_cnt & integer & 1.25k/12M & Clock cycle durations \\	
 	\hline
 	\end{tabular}
 \end{center}
@@ -486,9 +477,9 @@ or leaving the room. According to the detection a signal is send.
 		sub\_o & OUT & 1 & Person left \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & \\
+		stnow\_s & SIGNAL & - & Present state signal \\
 		\hline
-		stnxt\_s & SIGNAL & 1 & \\
+		stnxt\_s & SIGNAL & - & Next state signal \\
 		\hline
 
 	\end{tabular}
@@ -507,19 +498,19 @@ or leaving the room. According to the detection a signal is send.
 	 \hline
 	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
-	 init\_st & wait for either sensor 1 or sensor 2 triggered \\
+	 init\_st & Wait for either sensor 1 or sensor 2 triggered \\
 	 \hline
-	 ewt1\_st & someone entering, sensor 1 triggered wait for sensor 2 \\
+	 ewt1\_st & Someone entering, sensor 1 triggered wait for sensor 2 \\
 	 \hline
-	 lwt1\_st & someone leaving, sensor 3 triggered wait for sensor 2 \\
+	 lwt1\_st & Someone leaving, sensor 3 triggered wait for sensor 2 \\
 	 \hline
-	 ewt2\_st & someone entering, sensor 2 triggered wait for sensor 3 \\
+	 ewt2\_st & Someone entering, sensor 2 triggered wait for sensor 3 \\
 	 \hline
-	 lwt2\_st & someone leaving, sensor 2 triggered wait for sensor 1 \\
+	 lwt2\_st & Someone leaving, sensor 2 triggered wait for sensor 1 \\
 	 \hline
-	 ewt3\_st & someone entering, sensor 3 triggered -> back to init \\
+	 ewt3\_st & Someone entering, sensor 3 triggered -> back to init \\
 	 \hline
-	 lwt3\_st & someone leaving, sensor 1 triggered -> back to init \\
+	 lwt3\_st & Someone leaving, sensor 1 triggered -> back to init \\
 	 \hline
  \end{tabular}
 \end{center}
@@ -555,11 +546,11 @@ Additionally it indecates if min or max number of people is reached.
 		num\_o & OUT & [7:0] & Contains the number \\
 		\hline
 		\hline
-		num\_s & SIGNAL & & \\
+		num\_s & SIGNAL & [7:0] & Number of people in room \\
 		\hline
-		min\_s & SIGNAL & & \\
+		min\_s & SIGNAL & 1 & Min number reached \\
 		\hline
-		max\_s & SIGNAL & & \\
+		max\_s & SIGNAL & 1 & Max number reached \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -611,9 +602,9 @@ This module controls the whole system and decides what to do next according to t
 		sub\_o & OUT & 1 & Submitt/Send Data \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & Present state signal \\
+		stnow\_s & SIGNAL & - & Present state signal \\
 		\hline
-		stnxt\_s  & SIGNAL & 1 & Next state signal \\
+		stnxt\_s & SIGNAL & - & Next state signal \\
 		\hline	
 	\end{tabular}
 \end{center}
@@ -631,27 +622,27 @@ This module controls the whole system and decides what to do next according to t
 	 \hline
 	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
-	 ini\_wait\_st & wait until \\
+	 ini\_wait\_st & Wait until \\
 	 \hline
-	 inc\_clac\_st & send increase signal to headcounter \\
+	 inc\_clac\_st & Send increase signal to headcounter \\
 	 \hline
-	 dec\_calc\_st & send decrease signal to headcounter \\
+	 dec\_calc\_st & Send decrease signal to headcounter \\
 	 \hline
-	 inc\_wait\_st & wait until headcount calculated \\
+	 inc\_wait\_st & Wait until headcount calculated \\
 	 \hline
-	 dec\_wait\_st & wait until headcount calculated \\
+	 dec\_wait\_st & Wait until headcount calculated \\
 	 \hline
-	 inc\_vali\_st & done calculating, check if max \\
+	 inc\_vali\_st & Done calculating, check if max \\
 	 \hline
-	 dec\_vali\_st & done calculating, check if min \\
+	 dec\_vali\_st & Done calculating, check if min \\
 	 \hline
-	 inc\_send\_st & start sending num and ascii \\
+	 inc\_send\_st & Start sending num and ascii \\
 	 \hline
-	 dec\_send\_st & start sending num and ascii \\
+	 dec\_send\_st & Start sending num and ascii \\
 	 \hline
-	 min\_send\_st & start sending num and ascii \\
+	 min\_send\_st & Start sending num and ascii \\
 	 \hline
-	 max\_send\_st & start sending num and ascii \\
+	 max\_send\_st & Start sending num and ascii \\
 	 \hline
  \end{tabular}
 \end{center}
@@ -685,21 +676,19 @@ the send/data valid bit is received it starts sending the current headcount numb
 		txd\_o & OUT & 1 & Serial output \\
 		\hline
 		\hline
-		dat\_s & SIGNAL & & 8 BCD \\
+		dat\_s & SIGNAL & [7:0] & Headcount number \\
 		\hline	
-		sel\_s & SIGNAL & & \\
+		sel\_s & SIGNAL & [3:0] & Select mutliplexer \\
 		\hline 
-		ld\_s & SIGNAL & 1 & load in register\\
+		ld\_s & SIGNAL & 1 & Load in register \\
 		\hline
 		nxt\_s & SIGNAL & 1 & Next Bit \\
 		\hline
-		clr\_s & SIGNAL & 1 &  Clear Counter\\
+		clr\_s & SIGNAL & 1 & Clear Counter \\
 		\hline
-		dne\_s & SIGNAL & 1 & Last bit of 8x8 \\
+		dne\_s & SIGNAL & 1 & Last bit send \\
 		\hline
-		d\_s & SIGNAL & & \\
-		\hline
-		txd\_s & SIGNAL & & \\
+		txd\_s & SIGNAL & 1 & Transmitting data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -740,7 +729,7 @@ To secure the number it gets loaded and stored in the register until something n
 		q\_o & OUT & 1 & Stored Data \\
 		\hline
 		\hline
-		state\_s & SIGNAL & 1 & \\
+		state\_s & SIGNAL & [15:0] & Stored Data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -783,7 +772,7 @@ number and the carry can always be seen.
 		q\_o & OUT & [3:0] & Counter Value \\
 		\hline
 		\hline
-		state\_s & SIGNAL & [3:0] & \\
+		state\_s & SIGNAL & [3:0] & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -849,16 +838,16 @@ This module contains the FSM for the UART.
 		\hline
 		dne\_i & IN & 1 & Last Bit transmitted \\
 		\hline
-		sto\_o & OUT & 1 & enable register load \\
+		sto\_o & OUT & 1 & Enable register load \\
 		\hline
-		clr\_o & OUT & 1 & clear Bit-Counters \\
+		clr\_o & OUT & 1 & Clear Bit-Counters \\
 		\hline
-		nxt\_o & OUT & 1 & next Bit, inc count \\
+		nxt\_o & OUT & 1 & Next Bit, inc count \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & State now \\
+		stnow\_s & SIGNAL & - & Present state signal \\
 		\hline
-		stnxt\_s & SIGNAL & 1 & state next \\
+		stnxt\_s & SIGNAL & - & Next state signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -876,13 +865,13 @@ This module contains the FSM for the UART.
 	 \hline
 	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
-	 wtdv\_st & wait until data valid \\
+	 wtdv\_st & Wait until data valid \\
 	 \hline
-	 ldrg\_st & load data in register \\
+	 ldrg\_st & Load data in register \\
 	 \hline
-	 wtbr\_st & wait till baud rate is 1 or goto wtdv when done transmitting \\
+	 wtbr\_st & Wait till baud rate is 1 or goto wtdv when done transmitting \\
 	 \hline
-	 cinc\_st & get next bit (increment counter) \\
+	 cinc\_st & Get next bit (increment counter) \\
 	 \hline
  \end{tabular}
 \end{center}
@@ -920,17 +909,17 @@ of people in the room.
 		stx\_o & OUT & 1 & S3 transmission active\\
 		\hline
 		\hline
-		ld\_s & SIGNAL & 1 & \\
+		ld\_s & SIGNAL & 1 & Load in register \\
 		\hline
-		clr\_s & SIGNAL & 1 & \\
+		clr\_s & SIGNAL & 1 & Clear Counter \\
 		\hline
-		dne\_s & SIGNAL & 1 & \\
+		dne\_s & SIGNAL & 1 & Last bit transmitted \\
 		\hline
-		nxt\_s & SIGNAL & 1 & \\
+		nxt\_s & SIGNAL & 1 & Next Bit \\
 		\hline
-		sel\_s & SIGNAL & 1 & \\
+		sel\_s & SIGNAL & [4:0] & Select mutliplexer \\
 		\hline
-		dat\_s & SIGNAL & 1 & \\
+		dat\_s & SIGNAL & [15:0] & Headcount number and ASCII Event \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -975,7 +964,7 @@ To secure the number and the event they get loaded and stored in a register unti
 		q\_o & OUT & [7:0] & Stored Data \\
 		\hline
 		\hline
-		state\_s & SIGNAL & [7:0] & \\
+		state\_s & SIGNAL & [7:0] & Stored Data \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -1018,7 +1007,7 @@ number and the carry can always be seen.
 		q\_o & OUT & [4:0] & Counter Value \\
 		\hline
 		\hline
-		state\_s & SIGNAL & [3:0] & \\
+		state\_s & SIGNAL & [4:0] & Counter Value \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -1092,9 +1081,9 @@ This module contains the FSM for the 3-wire-interface to S3.
 		nxt\_o & OUT & 1 & Next Bit, inc count \\
 		\hline
 		\hline
-		stnow\_s & SIGNAL & 1 & current state\\
+		stnow\_s & SIGNAL & - & Present state signal \\
 		\hline	
-		stnxt\_s & SIGNAL & 1 & Next state\\
+		stnxt\_s & SIGNAL & - & Next state signal \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -1112,17 +1101,17 @@ This module contains the FSM for the 3-wire-interface to S3.
 	 \hline
 	 \textbf{State Name} & \textbf{Description} \\
 	 \hline
-	 wtdv\_st & wait until data valid \\
+	 wtdv\_st & Wait until data valid \\
 	 \hline
-	 ldrg\_st & load data in register \\
+	 ldrg\_st & Load data in register \\
 	 \hline
-	 tick\_st & check if done, else go on \\
+	 tick\_st & Check if done, else go on \\
 	 \hline
-	 incr\_st & get next bit (increment counter) \\
+	 incr\_st & Get next bit (increment counter) \\
 	 \hline
-	 wocy\_st & wait one clock cycle \\
+	 wocy\_st & Wait one clock cycle \\
 	 \hline
-	 vali\_st & send validation bit \\
+	 vali\_st & Send validation bit \\
 	 \hline
  \end{tabular}
 \end{center}
