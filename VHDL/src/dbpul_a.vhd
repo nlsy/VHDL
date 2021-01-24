@@ -29,7 +29,7 @@ BEGIN
       END IF;
 
     END IF;
-  END deb;
+  END PROCESS deb;
   deb_o <= pul_s;
 
 END ar1;

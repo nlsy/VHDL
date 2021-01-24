@@ -8,9 +8,8 @@ ARCHITECTURE ar1 OF uatpc is
   SIGNAL ld_s  : std_logic;                        -- load in register
   SIGNAL nxt_s : std_logic;                       -- Next Bit
   SIGNAL clr_s : std_logic;                       -- Clear Counters
-  SIGNAL dne_s : std_logic;                       -- Last Bit of 8x8
-  SIGNAL d_s   : std_logic;
-  SIGNAL txd_s : std_logic;
+  SIGNAL dne_s : std_logic;                       -- Last Bit send
+  SIGNAL txd_s : std_logic;                       -- Transmitting data
 
 BEGIN
 
